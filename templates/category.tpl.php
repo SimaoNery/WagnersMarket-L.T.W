@@ -10,6 +10,8 @@
     <section id="categories">
         <?php foreach($categories as $category) { ?>
             <article>
+                <a href="../pages/filters.php?id=<?=$category->id?>"><?=$category->categoryName?></a>
+                <img src= "<?=$category->categoryImage?>" <!-- To adjust image size: style="width: 100px; height: 100px;">     -->
             </article>
         <?php } ?>
     </section>
