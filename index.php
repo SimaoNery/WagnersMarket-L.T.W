@@ -1,6 +1,3 @@
 <?php
-    require 'templates/common.php';
-
-    drawHeader();
-    drawFooter();
+    header('Location: pages');
 ?>

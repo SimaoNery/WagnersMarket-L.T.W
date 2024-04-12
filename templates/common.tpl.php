@@ -15,21 +15,15 @@
         <body>
             <header>
                 <h1>
-                    Wagner's Market <!-- Make it a link To the Main Page -->
+                    <a href="index.php">Wagner's Market</a>
                     <!-- Show if logged-in session | Otherwise show LogIn Screen -->
                 </h1>
                 <h2>
-                    <a><i class="fa-solid fa-heart"></i>Wishlist</a>
-                    <a><i class="fa-solid fa-user"></i>Account</a>
+                    <a href="wishlist.php"><i class="fa-solid fa-heart"></i>Wishlist</a>
+                    <a href="profile.php"><i class="fa-solid fa-user"></i>Your Profile</a>
+                    <a href="messages.php"><i class="fa-solid fa-message"></i>Messages</a>
                 </h2>
             </header>
-
-            <section id="messages">
-                <h2>
-                    <a><i class="fa-solid fa-message"></i>Messages</a>
-                </h2>
-                <!-- Message Logic -->
-            </section>
 
 <?php } ?>
 

@@ -35,6 +35,7 @@ CREATE TABLE SIZE (
 CREATE TABLE ITEM (
     ItemId INTEGER NOT NULL PRIMARY KEY,
     UserId INTEGER NOT NULL,
+    Title TEXT NOT NULL,
     Price FLOAT NOT NULL,
     Description TEXT NOT NULL,
     ConditionId INTEGER NOT NULL,
@@ -83,7 +84,7 @@ CREATE TABLE CATEGORY (
 CREATE TABLE ITEM_CATEGORY (
     CategoryId INTEGER NOT NULL,
     ItemId INTEGER NOT NULL,
-    FOREIGN KEY (CategoryId) REFERENCES CATEGORY (CategoryId) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (CategoryId) REFERENCES CATEGORY (CategoryName) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (ItemId) REFERENCES ITEM (ItemId) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_ItemCategory PRIMARY KEY (CategoryId, ItemId)
 );
@@ -93,3 +94,45 @@ CREATE TABLE IMAGE (
     ItemId INTEGER NOT NULL,
     FOREIGN KEY (ItemId) REFERENCES ITEM (ItemId) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+-- Inserting data into USER table
+INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (1, 'John Doe', 'johndoe', 'password123', 'johndoe@example.com', TRUE);
+INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (2, 'Jane Smith', 'janesmith', 'securepwd', 'janesmith@example.com', FALSE);
+
+-- Inserting data into CONDITION table
+INSERT INTO CONDITION (ConditionId, ConditionVal) VALUES (1, 'New');
+INSERT INTO CONDITION (ConditionId, ConditionVal) VALUES (2, 'Used');
+
+-- Inserting data into SIZE table
+INSERT INTO SIZE (SizeId, SizeVal) VALUES (1, 'Small');
+INSERT INTO SIZE (SizeId, SizeVal) VALUES (2, 'Medium');
+INSERT INTO SIZE (SizeId, SizeVal) VALUES (3, 'Large');
+
+-- Inserting data into ITEM table
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (1, 1, 'T-shirt', 15.99, 'Comfortable cotton t-shirt', 1, 2, 'Nike');
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (2, 2, 'Jeans', 29.99, 'Classic blue jeans', 2, 3, 'Levi''s');
+
+-- Inserting data into MESSAGE table
+INSERT INTO MESSAGE (MessageId, AuthorId, ReceiverId, Content, Timestamp) VALUES (1, 1, 2, 'Hi Jane, I''m interested in your jeans.', '2024-04-12 10:00:00');
+INSERT INTO MESSAGE (MessageId, AuthorId, ReceiverId, Content, Timestamp) VALUES (2, 2, 1, 'Hi John, sure! Let me know if you have any questions.', '2024-04-12 10:05:00');
+
+-- Inserting data into WISHLIST table
+INSERT INTO WISHLIST (UserId, ItemId) VALUES (1, 2);
+INSERT INTO WISHLIST (UserId, ItemId) VALUES (2, 1);
+
+-- Inserting data into CART table
+INSERT INTO CART (UserId, ItemId) VALUES (1, 1);
+INSERT INTO CART (UserId, ItemId) VALUES (2, 2);
+
+-- Inserting data into CATEGORY table
+INSERT INTO CATEGORY (CategoryName) VALUES ('Clothing');
+INSERT INTO CATEGORY (CategoryName) VALUES ('Shoes');
+
+-- Inserting data into ITEM_CATEGORY table
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 1);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 2);
+
+-- Inserting data into IMAGE table
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/tshirt.jpg', 1);
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/jeans.jpg', 2);
