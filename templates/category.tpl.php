@@ -5,12 +5,11 @@
 
 <?php function drawCategories(array $categories) { ?>
     <header>
-        <h2>Categorias</h2>
+        <h2>Categories</h2>
     </header>
     <section id="categories">
         <?php foreach($categories as $category) { ?>
             <article>
-                <a href="../pages/index.php"><?=$category->categoryId?></a>
             </article>
         <?php } ?>
     </section>

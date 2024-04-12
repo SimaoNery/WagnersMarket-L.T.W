@@ -78,26 +78,28 @@ CREATE TABLE CART (
 
 -- Create CATEGORY table
 CREATE TABLE CATEGORY (
-    CategoryName TEXT NOT NULL PRIMARY KEY
+    CategoryName TEXT NOT NULL,
+    CategoryImage TEXT NOT NULL,
+    CONSTRAINT Pk_CategoryName PRIMARY KEY (CategoryName)
 );
 
 CREATE TABLE ITEM_CATEGORY (
-    CategoryId INTEGER NOT NULL,
+    CategoryId TEXT NOT NULL,
     ItemId INTEGER NOT NULL,
     FOREIGN KEY (CategoryId) REFERENCES CATEGORY (CategoryName) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (ItemId) REFERENCES ITEM (ItemId) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT PK_ItemCategory PRIMARY KEY (CategoryId, ItemId)
 );
 
-CREATE TABLE IMAGE (
-    Path TEXT NOT NULL PRIMARY KEY,
+CREATE TABLE IMAGE(
+    Path TEXT NOT NULL,
     ItemId INTEGER NOT NULL,
-    FOREIGN KEY (ItemId) REFERENCES ITEM (ItemId) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (ItemId) REFERENCES ITEM (ItemId) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT Pk_Path PRIMARY KEY (Path)
 );
 
-
 -- Inserting data into USER table
-INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (1, 'John Doe', 'johndoe', 'password123', 'johndoe@example.com', TRUE);
+INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (1, 'Paulo Fidalgo', 'paulinho', 'password123', 'paulofidalgo@gmail.com', TRUE);
 INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (2, 'Jane Smith', 'janesmith', 'securepwd', 'janesmith@example.com', FALSE);
 
 -- Inserting data into CONDITION table
@@ -126,13 +128,14 @@ INSERT INTO CART (UserId, ItemId) VALUES (1, 1);
 INSERT INTO CART (UserId, ItemId) VALUES (2, 2);
 
 -- Inserting data into CATEGORY table
-INSERT INTO CATEGORY (CategoryName) VALUES ('Clothing');
-INSERT INTO CATEGORY (CategoryName) VALUES ('Shoes');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Fashion', 'category_images/f12c3daebcdec7b46698bf46ce66831c.jpg');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Tech', 'category_images/computer-design-template-19fcbb354d2bd7bde0059de2c0ac1cca_screen.jpg');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('House', 'category_images/houses-logo-illustration-free-vector.jpg');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Vehicles', 'category_images/623448-auto-car-logo-template-vector-icone-gratis-vetor.jpg');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Leisure', 'category_images/500_F_164837045_YK4gjpzRiZyqnjmVa4304BSCrq3plKd9.jpg');
 
 -- Inserting data into ITEM_CATEGORY table
 INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 1);
 INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 2);
 
 -- Inserting data into IMAGE table
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/tshirt.jpg', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/jeans.jpg', 2);

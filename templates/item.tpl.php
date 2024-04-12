@@ -6,14 +6,12 @@
 
 <?php function drawItems(array $items) { ?>
   <header>
-    <h2>Anúncios</h2>
-    <input id="searchadd" type="text" placeholder="O que procuras?">
+    <h2>Featured Items</h2>
   </header>
   <section id="items">
     <?php foreach($items as $item) { ?> 
       <article>
-        <img src="https://picsum.photos/200?<?=$item->id?>">
-        <a href="../pages/item.php?id=<?=$item->id?>"><?=$item->name?></a>
+
       </article>
     <?php } ?>
   </section>

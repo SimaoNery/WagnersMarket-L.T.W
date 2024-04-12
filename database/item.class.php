@@ -12,7 +12,7 @@
     public string $brand;
 
 
-    public function __construct(int $itemId, string $title, int $userId, float $price, string $description, int $condition, int $size, string $brand)
+    public function __construct(int $itemId, int $userId, string $title, float $price, string $description, int $condition, int $size, string $brand)
     {
       $this->itemId = $itemId;
       $this->userId = $userId;
