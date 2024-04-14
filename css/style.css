@@ -297,3 +297,46 @@ section#categories {
     margin-right: 20px;
 }
 
+footer {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+    font-size: 0.8em;
+    text-align: center;
+    background: rgba(253, 237, 132, 1);
+    padding: 10px 0 5px 0;
+}
+
+footer ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 5px 0;
+    list-style: none;
+}
+
+footer ul li {
+    display: inline-block;
+    flex-basis: 10%;
+}
+
+footer ul li a {
+    font-size: 1rem;
+    transition: color 0.1s;
+}
+
+footer ul li::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -5px; /* Adjust the position of the separator */
+    transform: translateY(-50%);
+    height: 40%; /* Set the height of the separator */
+    width: 2px;
+    background-color: #777; /* Color of the separator */
+}
+
+footer ul li:last-child::after {
+    display: none;
+}
+

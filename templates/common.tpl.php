@@ -42,8 +42,14 @@
 <?php } ?>
 
 <?php function drawFooter() { ?>
+
             <footer>
-                 LTW Wagner's Market &copy; 2024
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Purpose</a></li>
+                    <li><a href="#">Contact us</a></li>
+                </ul>
+                <p>LTW Wagner's Market &copy; 2024</p>
             </footer>
         </body>
     </html>
