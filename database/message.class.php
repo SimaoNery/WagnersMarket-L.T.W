@@ -1,7 +1,7 @@
 <?php
   declare(strict_types = 1);
 
-  class Condition {
+  class Message {
     public int $messageId;
     public int $authorId;
     public int $receiverId;

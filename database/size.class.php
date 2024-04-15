@@ -1,7 +1,7 @@
 <?php
   declare(strict_types = 1);
 
-  class Condition {
+  class Size {
     public int $sizeId;
     public string $sizeVal;
 

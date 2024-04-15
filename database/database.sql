@@ -14,6 +14,7 @@ CREATE TABLE USER (
     UserId INTEGER NOT NULL PRIMARY KEY,
     Name TEXT NOT NULL,
     Username TEXT NOT NULL,
+    ProfilePic TEXT NOT NULL,
     Password TEXT NOT NULL,
     Email TEXT NOT NULL,
     Admin BOOLEAN DEFAULT FALSE
@@ -99,8 +100,8 @@ CREATE TABLE IMAGE(
 );
 
 -- Inserting data into USER table
-INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (1, 'Paulo Fidalgo', 'paulinho', 'password123', 'paulofidalgo@gmail.com', TRUE);
-INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (2, 'Jane Smith', 'janesmith', 'securepwd', 'janesmith@example.com', FALSE);
+INSERT INTO USER (UserId, Name, Username, ProfilePic, Password, Email, Admin) VALUES (1, 'Paulo Fidalgo', 'paulinho', 'profile_pictures/1600w-kpZhUIzCx_w.webp', 'password123', 'paulofidalgo@gmail.com', TRUE);
+INSERT INTO USER (UserId, Name, Username, ProfilePic, Password, Email, Admin) VALUES (2, 'Jane Smith', 'janesmith', 'profile_pictures/pexels-photo-771742.webp', 'securepwd', 'janesmith@example.com', FALSE);
 
 -- Inserting data into CONDITION table
 INSERT INTO CONDITION (ConditionId, ConditionVal) VALUES (1, 'New');
@@ -149,6 +150,11 @@ INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 2);
 
 -- Inserting data into IMAGE table
 INSERT INTO IMAGE (Path, ItemId) VALUES ('images/tshirt.png', 1);
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/202868.jpg', 1);
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/8252262.webp', 1);
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/15407337_350_A.jpg', 1);
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/AR4997-101.jpg', 1);
+INSERT INTO IMAGE (Path, ItemId) VALUES ('images/images.jpeg', 1);
 INSERT INTO IMAGE (Path, ItemId) VALUES ('images/samsung-galaxy-a23-5g-4gb-64gb-dual-sim-azul-claro.jpg', 2);
 INSERT INTO IMAGE (Path, ItemId) VALUES ('images/2023-toyota-corolla-zr-hybrid-hatch-silver-1.jpg', 3);
 INSERT INTO IMAGE (Path, ItemId) VALUES ('images/Football-l1600.jpg', 4);
