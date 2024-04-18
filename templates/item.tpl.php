@@ -51,18 +51,17 @@
         <section id="images" class="col-2">
             <?php
                 $images = Image::getImages($db, $item->itemId);
-                $mainImage = array_shift($images); //remove the first element and returns it | adjusts the indexes accordingly
+                $mainImage = $images[0];
             ?>
 
-            <div class="side_images">
-                <?php $sideImages = array_slice($images, 0, 4); //limit the side images
-                    foreach($sideImages as $image) { ?>
-                        <img src="/<?= $image->path ?>">
+            <div class="sideImagesContainer">
+                    <?php foreach($images as $image) { ?>
+                        <img src="/<?= $image->path ?>" id="<?= $image->id ?>" class="sideImage">
                     <?php } ?>
             </div>
 
             <div class="main_image">
-                <img src="/<?= $mainImage->path ?>">
+                <img src="/<?= $mainImage->path ?>" id="mainImage" data-id="<?= $mainImage->id ?>">
             </div>
         </section>
 

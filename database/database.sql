@@ -93,10 +93,11 @@ CREATE TABLE ITEM_CATEGORY (
 );
 
 CREATE TABLE IMAGE(
+    ImageId NOT NULL,
     Path TEXT NOT NULL,
     ItemId INTEGER NOT NULL,
     FOREIGN KEY (ItemId) REFERENCES ITEM (ItemId) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT Pk_Path PRIMARY KEY (Path)
+    CONSTRAINT Pk_ImageId PRIMARY KEY (ImageId)
 );
 
 -- Inserting data into USER table
@@ -149,16 +150,16 @@ INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 1);
 INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 2);
 
 -- Inserting data into IMAGE table
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/tshirt.png', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/202868.jpg', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/8252262.webp', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/15407337_350_A.jpg', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/AR4997-101.jpg', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/images.jpeg', 1);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/samsung-galaxy-a23-5g-4gb-64gb-dual-sim-azul-claro.jpg', 2);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/2023-toyota-corolla-zr-hybrid-hatch-silver-1.jpg', 3);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/Football-l1600.jpg', 4);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/double_hammer_1000x380.webp', 5);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/DogFood.jpg', 6);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/ikea_micke_desk__suitable_for__1646211721_b1d62fdb_progressive.jpg', 7);
-INSERT INTO IMAGE (Path, ItemId) VALUES ('images/www.toysrus.jpeg', 8);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (1,'images/tshirt.png', 1);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (2,'images/202868.jpg', 1);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (3,'images/8252262.webp', 1);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (4,'images/15407337_350_A.jpg', 1);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (5,'images/AR4997-101.jpg', 1);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (6,'images/images.jpeg', 1);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (7,'images/samsung-galaxy-a23-5g-4gb-64gb-dual-sim-azul-claro.jpg', 2);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (8,'images/2023-toyota-corolla-zr-hybrid-hatch-silver-1.jpg', 3);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (9,'images/Football-l1600.jpg', 4);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (10,'images/double_hammer_1000x380.webp', 5);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (11,'images/DogFood.jpg', 6);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (12,'images/ikea_micke_desk__suitable_for__1646211721_b1d62fdb_progressive.jpg', 7);
+INSERT INTO IMAGE (ImageId, Path, ItemId) VALUES (13,'images/www.toysrus.jpeg', 8);
