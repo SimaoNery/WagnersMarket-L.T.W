@@ -330,12 +330,8 @@ footer ul li:last-child a{
     border: none;
 }
 
-.pagination {
-    margin: 10px;
-}
 
 .pagination-button {
-    size: 2em;
     border: none;
     color: #777;
     background-color: rgba(253, 237, 132, 0.7);
@@ -345,11 +341,21 @@ footer ul li:last-child a{
     transition: color 0.1s linear;
 }
 
+.pagination {
+    display: flex;
+}
+
 .pagination-button:hover {
     color: black;
     background-color: rgba(253, 237, 132, 1);
 }
 
+.pagination-container {
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 #images {
     margin-top: 5%;
     margin-left: 5%;
@@ -534,6 +540,12 @@ footer ul li:last-child a{
         font-weight: 200;
     }
 
+#itemsPerPage {
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
     .sendMessageButton {
         padding: 30px 60px;
         background-color: rgba(253, 237, 132, 1);

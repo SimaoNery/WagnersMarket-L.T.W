@@ -10,7 +10,6 @@
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="/css/style.css">
-            <script src="../javascript/pagination.js"></script>
             <script src="https://kit.fontawesome.com/8c148179b8.js" crossorigin="anonymous"></script>
             <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
         </head>
@@ -52,6 +51,7 @@
                 </ul>
                 <p>LTW Wagner's Market &copy; 2024</p>
             </footer>
+            <script src="../javascript/pagination.js"></script>
         </body>
     </html>
 <?php } ?>
