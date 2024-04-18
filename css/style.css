@@ -126,8 +126,7 @@ header h6 {
 }
 
 .col-2 {
-    flex-basis: 50%;
-    min-width: 300px;
+    flex-basis: 40%;
 }
 
 .col-2 h1 {
@@ -280,23 +279,6 @@ section#categories {
     color: #777;
 }
 
-@media (min-width: 768px) {
-    .most-popular {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
-    .item-card {
-        flex-basis: 25%;
-    }
-}
-
-.most-popular {
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
 footer {
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
@@ -329,14 +311,233 @@ footer ul li::after {
     content: '';
     position: absolute;
     top: 50%;
-    right: -5px; /* Adjust the position of the separator */
+    right: -5px;
     transform: translateY(-50%);
-    height: 40%; /* Set the height of the separator */
+    height: 40%;
     width: 2px;
-    background-color: #777; /* Color of the separator */
+    background-color: #777;
 }
 
 footer ul li:last-child::after {
     display: none;
 }
 
+#images {
+    margin-top: 5%;
+    margin-left: 5%;
+
+    display: flex;
+}
+
+.main_image {
+    margin-left: 20px;
+}
+
+.main_image img {
+    width: 500px;
+}
+
+.side_images {
+    margin-top: 23px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.side_images img {
+    width: 130px;
+    margin-bottom: 10px;
+}
+
+#information {
+    margin-left: 5%;
+
+    h3 {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700    ;
+        font-size: 30px;
+        margin-left: 35px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+
+        margin-left: 35px;
+    }
+
+    #brandName {
+        font-weight: 450;
+        font-size: 20px;
+    }
+
+    #conditionValue {
+        font-weight: 450;
+        font-size: 20px;
+    }
+}
+
+#mainInfo {
+    h1 {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 100px;
+        margin-bottom: 25px;
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-left: 31px;
+        margin-bottom: 60px;
+
+        font-size: 25px;
+        color: #333333;
+    }
+
+    ul li:first-child {
+        margin-right: 275px;
+    }
+
+    .add-to-wishlist-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .add-to-wishlist-button i {
+        font-size: 27px;
+        color: rgba(255, 0, 0, 0.3);
+        transition: color 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .add-to-wishlist-button:hover i {
+        color: rgba(255, 0, 0, 0.6);
+    }
+
+    .add-to-bag-button {
+        padding: 10px 20px;
+        background-color: rgba(253, 237, 132, 1);
+        color: #777777;
+        font-weight: 700;
+        font-size: 17px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .add-to-bag-button .fa-bag-shopping {
+        margin-right: 5px;
+        font-size: 20px;
+    }
+
+    .add-to-bag-button:hover {
+        color: black;
+    }
+
+    margin-bottom: 45px;
+}
+
+#description_seller {
+    h2 {
+        margin-top: 75px;
+        margin-bottom: 5px;
+        text-align: center;
+
+        font-family: 'Open Sans', sans-serif;
+        font-size: 27px;
+    }
+
+    hr{
+        margin-bottom: 15px;
+    }
+
+    .box_yellow {
+        background-color: rgba(253, 237, 132, 0.25);
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 95%;
+        margin: 25px auto;
+
+        font-family: 'Roboto', sans-serif;
+        font-size: 21px;
+    }
+
+    .description {
+        margin-left: 80px;
+    }
+
+    #sellerInfo {
+        display: flex;
+        align-items: center;
+
+        margin-left: 75px;
+    }
+
+    .profilePic {
+        width: 100px;
+        height: 100px;
+        border: 2px solid rgba(253, 237, 132, 1);
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 15px;
+    }
+
+    .profilePic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .username {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 35px;
+        font-weight: 500;
+    }
+
+    .name {
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
+        font-weight: 200;
+    }
+
+    .sendMessageButton {
+        padding: 30px 60px;
+        background-color: rgba(253, 237, 132, 1);
+        color: #777777;
+        font-weight: 700;
+        font-size: 21px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 75px;
+    }
+
+    .sendMessageButton:hover {
+        color: black;
+    }
+}
+
+@media (min-width: 768px) {
+    .most-popular {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .item-card {
+        flex-basis: 25%;
+    }
+
+    .most-popular {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+}

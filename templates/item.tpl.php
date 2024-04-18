@@ -28,39 +28,83 @@
 <?php }?>
 
 <?php function drawItem(Item $item, PDO $db) { ?>
-    <section id="information">
-        <article>
-            <h1><?=$item->title?></h1>
-            <?=number_format($item->price, 2)?>€
-            <i class="fa-regular fa-heart"></i>
-            <i class="fa-solid fa-bag-shopping"></i>Add To Cart
-        </article>
+    <section class="row">
+        <section id="images" class="col-2">
+            <?php
+                $images = Image::getImages($db, $item->itemId);
+                $mainImage = array_shift($images); //remove the first element and returns it | adjusts the indexes accordingly
+            ?>
 
-        <h3>Product Details</h3>
-        <p>Brand: <?=$item->brand?></p>
-        <?php $condition = Condition::getCondition($db, $item->condition); ?>
-        <p>Condition: <?=$condition->conditionVal ?></p>
+            <div class="side_images">
+                <?php $sideImages = array_slice($images, 0, 4); //limit the side images
+                    foreach($sideImages as $image) { ?>
+                        <img src="/<?= $image->path ?>">
+                    <?php } ?>
+            </div>
+
+            <div class="main_image">
+                <img src="/<?= $mainImage->path ?>">
+            </div>
+        </section>
+
+        <section id="information" class="col-2">
+            <article id="mainInfo">
+                <h1><?=$item->title?></h1>
+                <ul>
+                    <li>
+                        <?=number_format($item->price, 2)?>€
+                    </li>
+                    <li id="wishlist">
+                        <button class="add-to-wishlist-button">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </li>
+                    <li id="bag">
+                        <button class="add-to-bag-button">
+                            <i class="fa-solid fa-bag-shopping"></i> Add To Bag
+                        </button>
+                    </li>
+                </ul>
+            </article>
+
+            <h3>Product Details</h3>
+
+            <p>Brand: <span id="brandName"><?=$item->brand?></span></p>
+            <?php $condition = Condition::getCondition($db, $item->condition); ?>
+            <p>Condition: <span id="conditionValue"><?=$condition->conditionVal?></span></p>
+
+        </section>
     </section>
 
-    <section id="images">
-        <?php $images = Image::getImages($db, $item->itemId); ?>
-        <?php foreach($images as $image) { ?>
-            <img src= "/<?= $image->path ?>" style="width: 100px; height: 100px;">
-        <?php } ?>
-    </section>
-
-    <section id="description&seller">
+    <section id="description_seller">
         <h2>Product Description</h2>
-        <?=$item->description?>
+        <hr class="line-yellow">
+
+        <div class="box_yellow">
+            <p class="description"><?=$item->description?></p>
+        </div>
 
         <h2>Contact the seller</h2>
-        <?php $user = User::getUser($db, $item->userId); ?>
-        <img src= "/<?= $user->profilePic ?>" style="width: 100px; height: 100px;">
-        <?=$user->username ?>
-        <?=$user->name ?>
-        <?=$user->email ?>
+        <hr class="line-yellow">
 
-        <p>Send Message</p>
+        <div class="box_yellow">
+            <section id="sellerInfo">
+                <?php $user = User::getUser($db, $item->userId); ?>
+                <div class="profilePic">
+                    <img src= "/<?= $user->profilePic ?>">
+                </div>
+
+                <div class="sellerDetails">
+                    <p class="username"><?=$user->username ?></p>
+                    <p class="name"><?=$user->name ?></p>
+                </div>
+
+                <button class="sendMessageButton">
+                    <p>Send Message</p>
+                </button>
+
+            </section>
+        </div>
     </section>
 <?php } ?>
 
