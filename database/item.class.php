@@ -24,11 +24,17 @@
       $this->brand = $brand;
     }
 
+      static function getNumItems(PDO $db): int {
+          $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM');
+          $stmt->execute();
+          return (int) $stmt->fetch(PDO::FETCH_COLUMN, 0);
+      }
+  
 
-      static function getItems(PDO $db, int $count) : array {
+      static function getItems(PDO $db, int $count, int $offset) : array {
           $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, ConditionId, 
-            SizeId, Brand FROM ITEM LIMIT ?');
-          $stmt->execute(array($count));
+            SizeId, Brand FROM ITEM LIMIT ? OFFSET ?');
+          $stmt->execute(array($count, $offset));
 
           $items = array();
           while ($item = $stmt->fetch()) {
