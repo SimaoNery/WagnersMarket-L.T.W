@@ -24,21 +24,22 @@
     <?php } ?>
   </ul>
 
+<div class="pagination-container">
+    <div class="pagination" id="pagination">
+        <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
+            <button id="pagination-button" class="pagination-button"><?= $i ?></button>
+        <?php } ?>
+        <?php if ($pages > 4) { ?>
+            <button id="pagination-button" class="pagination-button">&#8594;</button>
+        <?php } ?>
+    </div>
 
-<div class="pagination">
-    <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
-        <button onclick="fetchItems($limit, <?= ($i - 1) * 4 ?>)" class="pagination-button"><?= $i ?></button>
-    <?php } ?>
-    <?php if ($pages > 4) { ?>
-        <button onclick="fetchItems($limit, <?= ($pages - 1) * 4 ?>)" class="pagination-button">&#8594;</button>
-    <?php } ?>
+    <select id="itemsPerPage" onchange="changeItemsPerPage()">
+        <option value="8">8 per page</option>
+        <option value="16">16 per page</option>
+        <option value="32">32 per page</option>
+    </select>
 </div>
-
-<select id="itemsPerPage" onchange="changeItemsPerPage()">
-    <option value="8">8 per page</option>
-    <option value="16">16 per page</option>
-    <option value="32">32 per page</option>
-</select>
 
 
 <?php }?>

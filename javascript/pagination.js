@@ -1,56 +1,85 @@
-const itemsPerPageSelect = document.getElementById('itemsPerPage');
-const paginationButtons = document.querySelectorAll('.pagination-button');
+const paginationContainer = document.querySelector('#pagination');
+let limit = 8;
+let offset = 0;
+paginationContainer.addEventListener('click', function(event) {
+    if (event.target.tagName === 'BUTTON') {
+        const buttonId = event.target.id;
+        let pageNumber = 1;
 
-if (itemsPerPageSelect) {
-    itemsPerPageSelect.addEventListener('change', function() {
-        const limit = parseInt(this.value);
-        const offset = 0; 
-        reload(limit, offset);
-    });
+        if (buttonId === 'pagination-button') {
+            pageNumber = parseInt(event.target.textContent);
+        } else if (buttonId === 'next-button') {
+            console.log('Clicked on Next button');
+            pageNumber += 1;
+        }
+
+        offset = (pageNumber - 1) * limit;
+
+        fetchMostPopularItems(limit, offset);
+    }
+});
+
+function changeItemsPerPage() {
+    const selectElement = document.getElementById('itemsPerPage');
+    limit = parseInt(selectElement.value);
+
+    fetchMostPopularItems(limit, offset);
 }
 
-if (paginationButtons) {
-    paginationButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            const limit = parseInt(itemsPerPageSelect.value);
-            const offset = parseInt(this.dataset.offset);
-            reload(limit, offset);
-        });
-    });
+function fetchMostPopularItems(limit, offset) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `../api/api_items.php?limit=${limit}&offset=${offset}`, true);
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 400) {
+            try {
+                const response = JSON.parse(xhr.responseText);
+
+                const mostPopularContainer = document.querySelector('#most-popular');
+                mostPopularContainer.innerHTML = '';
+
+                response.forEach(item => {
+                    const itemElement = document.createElement('li');
+                    itemElement.classList.add('item-card');
+
+                    const linkElement = document.createElement('a');
+                    linkElement.href = `../pages/item.php?id=${item.itemId}`;
+
+                    const imageElement = document.createElement('img');
+                    imageElement.src = item.imagePath;
+                    imageElement.style.width = '100px';
+                    imageElement.style.height = '100px';
+
+                    const titleElement = document.createElement('h4');
+                    titleElement.textContent = item.title;
+
+                    const priceElement = document.createElement('p');
+                    const formattedPrice = new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(item.price);
+
+                    priceElement.textContent = formattedPrice + '€';
+
+                    linkElement.appendChild(imageElement);
+                    linkElement.appendChild(titleElement);
+                    linkElement.appendChild(priceElement);
+
+                    itemElement.appendChild(linkElement);
+
+                    mostPopularContainer.appendChild(itemElement);
+                });
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        } else {
+            console.error('HTTP Error:', xhr.status);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error('Request failed');
+    };
+
+    xhr.send();
 }
-
-async function reload(limit, offset) {
-    const response = await fetch('../api/api_item.php?limit=' + limit + '&offset=' + offset);
-    const items = await response.json();
-
-    const container = document.querySelector('most-popular');
-    container.innerHTML = '';
-
-    items.forEach(function(item) {
-        const li = document.createElement('li');
-        li.classList.add('item-card');
-
-        const link = document.createElement('a');
-        link.href = '../pages/item.php?id=' + item.itemId;
-
-        const img = document.createElement('img');
-        img.src = item.images.length > 0 ? item.images[0].path : ''; 
-        img.style.width = '100px';
-        img.style.height = '100px';
-
-        const h4 = document.createElement('h4');
-        h4.textContent = item.title;
-
-        const p = document.createElement('p');
-        p.textContent = Number(item.price).toFixed(2) + '€';
-
-        link.appendChild(img);
-        link.appendChild(h4);
-        link.appendChild(p);
-
-        li.appendChild(link);
-        container.appendChild(li);
-    });
-}
-
-
