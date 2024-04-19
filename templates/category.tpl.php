@@ -11,7 +11,7 @@
         <ul class="category-list">
             <?php foreach($categories as $category) { ?>
                 <li class="category-item">
-                    <a href="../pages/search.php?id=<?=$category->id?>">
+                    <a href="../pages/search.php?category=<?=$category->categoryName?>">
                         <img src="<?=$category->categoryImage?>" alt="<?=$category->categoryName?>">
                         <span><?=$category->categoryName?></span>
                     </a>

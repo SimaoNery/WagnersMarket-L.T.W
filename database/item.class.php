@@ -60,7 +60,7 @@
           return $items;
       }
 
-      static function searchItems(PDO $db, string $search, array $categories, array $conditions, string $min, string $max, string $order, int $count): array {
+      static function searchItems(PDO $db, string $search, array $categories, array $conditions, string $min, string $max, string $order, int $limit, int $offset): array {
           $sql = 'SELECT DISTINCT ITEM.ItemId, UserId, Title, Price, Description, Condition, 
             Size, Brand, ImagePath, WishlistCounter
             FROM ITEM';
@@ -88,7 +88,7 @@
               default => ' ORDER BY WishlistCounter DESC ',
           };
 
-          $sql .= ' LIMIT ?';
+          $sql .= ' LIMIT ? OFFSET ?';
           $stmt = $db->prepare($sql);
 
           $paramIndex = 1;
@@ -113,7 +113,8 @@
               $stmt->bindValue($paramIndex++, $search . '%');
           }
 
-          $stmt->bindValue($paramIndex, $count, PDO::PARAM_INT);
+          $stmt->bindValue($paramIndex, $limit, PDO::PARAM_INT);
+          $stmt->bindValue($paramIndex, $offset, PDO::PARAM_INT);
 
           $stmt->execute();
 
@@ -136,7 +137,7 @@
       }
 
       static function getItem(PDO $db, int $id) : Item {
-        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand, ImagePath, WishlistCounter FROM ITEM WHERE ItemId = ?');
+        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter FROM ITEM WHERE ItemId = ?');
         $stmt->execute(array($id));
 
         $item = $stmt->fetch();
@@ -147,8 +148,8 @@
             $item['Title'],
             $item['Price'],
             $item['Description'],
-            $item['ConditionId'],
-            $item['SizeId'],
+            $item['Condition'],
+            $item['Size'],
             $item['Brand'],
             $item['ImagePath'],
             $item['WishlistCounter']

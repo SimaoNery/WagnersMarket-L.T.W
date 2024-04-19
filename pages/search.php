@@ -10,8 +10,11 @@ require_once(__DIR__ . '/../database/item.class.php');
 require_once(__DIR__ . '/../templates/common.tpl.php');
 require_once(__DIR__ . '/../templates/item.tpl.php');
 
+$limit = 8;
+$offset = 0;
+
 $db = getDatabaseConnection();
-$items = Item::getItems($db,8);
+$items = Item::getItems($db, $limit, $offset);
 
 
 drawHeader();

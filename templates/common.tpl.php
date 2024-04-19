@@ -12,7 +12,6 @@
             <link rel="stylesheet" href="/css/style.css">
             <script src="https://kit.fontawesome.com/8c148179b8.js" crossorigin="anonymous"></script>
             <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
-            <script src="../javascript/script.js" defer></script>
         </head>
         <body>
             <header>
@@ -36,8 +35,8 @@
                         <li><a href="wishlist.php"><i class="fas fa-heart"></i></a></li>
                         <li><a href="shopping-bag.php"><i class="fas fa-shopping-bag"></i></a></li>
 
-                        </ul>
-</section>
+                    </ul>
+                </section>
             </header>
 
 <?php } ?>
@@ -54,6 +53,7 @@
             </footer>
             <script src="../javascript/pagination.js"></script>
             <script src="../javascript/imagesLogic.js" defer></script>
+            <script src="../javascript/script.js" defer></script>
         </body>
     </html>
 <?php } ?>

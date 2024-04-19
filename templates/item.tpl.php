@@ -18,7 +18,7 @@
     <?php foreach($items as $item) { ?>
       <li class="item-card">
           <a href="../pages/item.php?id=<?=$item->itemId?>">
-          <img src="<?= (Image::getImages($db, $item->itemId)[0])->path ?>" style="width: 100px; height: 100px;">
+          <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
           <h4><?=$item->title?></h4>
               <p><?=number_format($item->price, 2)?>€</p>
           </a>
@@ -56,12 +56,12 @@
 
             <div class="sideImagesContainer">
                     <?php foreach($images as $image) { ?>
-                        <img src="/<?= $image->path ?>" id="<?= $image->id ?>" class="sideImage">
+                        <img src="/<?= $image->path ?>" id="<?= $image->imageId ?>" class="sideImage">
                     <?php } ?>
             </div>
 
             <div class="main_image">
-                <img src="/<?= $mainImage->path ?>" id="mainImage" data-id="<?= $mainImage->id ?>">
+                <img src="/<?= $mainImage->path ?>" id="mainImage" data-id="<?= $mainImage->imageId ?>">
             </div>
         </section>
 
@@ -88,8 +88,7 @@
             <h3>Product Details</h3>
 
             <p>Brand: <span id="brandName"><?=$item->brand?></span></p>
-            <?php $condition = Condition::getCondition($db, $item->condition); ?>
-            <p>Condition: <span id="conditionValue"><?=$condition->conditionVal?></span></p>
+            <p>Condition: <span id="conditionValue"><?=$item->condition?></span></p>
 
         </section>
     </section>
@@ -113,7 +112,7 @@
                 </div>
 
                 <div class="sellerDetails">
-                    <p class="username"><?=$user->username ?></p>
+                    <p class="username"><?=$user->username?></p>
                     <p class="name"><?=$user->name ?></p>
                 </div>
 

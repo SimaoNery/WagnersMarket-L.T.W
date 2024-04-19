@@ -15,22 +15,22 @@ require_once(__DIR__ . '/../database/image.class.php');
 try {
     $db = getDatabaseConnection();
 
-$search = $_GET['search'];
-$categories = empty($_GET['category']) ? [] : explode(';', $_GET['category']);
-$conditions = empty($_GET['condition']) ? [] : explode(';', $_GET['condition']);
-$min = $_GET['min'];
-$max = $_GET['max'];
-$order = $_GET['order'];
+    $search = $_GET['search'];
+    $categories = empty($_GET['category']) ? [] : explode(';', $_GET['category']);
+    $conditions = empty($_GET['condition']) ? [] : explode(';', $_GET['condition']);
+    $min = $_GET['min'];
+    $max = $_GET['max'];
+    $order = $_GET['order'];
 
-$limit = isset($_GET['limit']) ? intval($_GET['limit']) : null;
-$offset = isset($_GET['offset']) ? intval($_GET['offset']) : null;
+    $limit = isset($_GET['limit']) ? intval($_GET['limit']) : null;
+    $offset = isset($_GET['offset']) ? intval($_GET['offset']) : null;
 
-$items = Item::getItems($db, $limit, $offset);
+    $items = Item::getItems($db, $limit, $offset);
 
-foreach ($items as $item) {
-    $images = Image::getImages($db, $item->itemId);
-    $item->images = $images;
-}
+    foreach ($items as $item) {
+        $images = Image::getImages($db, $item->itemId);
+        $item->images = $images;
+    }
 
 header('Content-Type: application/json');
 echo json_encode($items);
