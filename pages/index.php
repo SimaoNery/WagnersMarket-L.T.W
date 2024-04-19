@@ -19,6 +19,6 @@ $items = Item::getItems($db, 8);
 
 drawHeader();
 drawCategories($categories);
-drawItems($items, $db);
+drawItems($items);
 drawFooter();
 ?>

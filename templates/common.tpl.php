@@ -11,6 +11,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="stylesheet" href="/css/style.css">
             <script src="https://kit.fontawesome.com/8c148179b8.js" crossorigin="anonymous"></script>
+            <script src="../javascript/script.js" defer></script>
         </head>
         <body>
             <header>
@@ -34,4 +35,7 @@
         </body>
     </html>
 <?php } ?>
+
+
+
 

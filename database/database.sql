@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS USER;
-DROP TABLE IF EXISTS CONDITION;
-DROP TABLE IF EXISTS SIZE;
 DROP TABLE IF EXISTS ITEM;
+DROP TABLE IF EXISTS SIZE;
+DROP TABLE IF EXISTS CONDITION;
+DROP TABLE IF EXISTS BRAND;
 DROP TABLE IF EXISTS MESSAGE;
 DROP TABLE IF EXISTS WISHLIST;
 DROP TABLE IF EXISTS CART;
@@ -19,32 +20,43 @@ CREATE TABLE USER (
     Admin BOOLEAN DEFAULT FALSE
 );
 
--- Create CONDITION table
-CREATE TABLE CONDITION (
-    ConditionId INTEGER PRIMARY KEY,
-    ConditionVal TEXT NOT NULL
-);
-
--- Create SIZE table
-CREATE TABLE SIZE (
-    SizeId INTEGER PRIMARY KEY,
-    SizeVal TEXT NOT NULL
-);
 
 -- Create ITEM table
 CREATE TABLE ITEM (
-    ItemId INTEGER NOT NULL PRIMARY KEY,
+    ItemId INTEGER NOT NULL,
     UserId INTEGER NOT NULL,
     Title TEXT NOT NULL,
     Price FLOAT NOT NULL,
     Description TEXT NOT NULL,
-    ConditionId INTEGER NOT NULL,
-    SizeId INTEGER NOT NULL,
-    Brand TEXT,
+    Condition TEXT NOT NULL,
+    Size TEXT NOT NULL,
+    Brand TEXT NOT NULL,
+    ImagePath TEXT NOT NULL,
+    WishlistCounter INTEGER NOT NULL,
+    CONSTRAINT PK_ItemId PRIMARY KEY (ItemId),
     CONSTRAINT PriceConstraint CHECK (Price > 0),
     FOREIGN KEY (UserId) REFERENCES USER (UserId) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (ConditionId) REFERENCES CONDITION (ConditionId) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (SizeId) REFERENCES SIZE (SizeId) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (Condition) REFERENCES CONDITION (Condition) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (Size) REFERENCES SIZE (Size) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (Brand) REFERENCES BRAND ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Create SIZE table
+CREATE TABLE SIZE (
+    Size TEXT NOT NULL,
+    CONSTRAINT PK_ItemId PRIMARY KEY (Size)
+);
+
+-- Create CONDITION table
+CREATE TABLE CONDITION (
+    Condition TEXT NOT NULL,
+    CONSTRAINT PK_Condition PRIMARY KEY (Condition)
+);
+
+-- Create BRAND table
+CREATE TABLE BRAND (
+    Brand TEXT NOT NULL,
+    CONSTRAINT PK_Brand PRIMARY KEY (Brand)
 );
 
 -- Create MESSAGE table
@@ -102,32 +114,47 @@ CREATE TABLE IMAGE(
 INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (1, 'Paulo Fidalgo', 'paulinho', 'password123', 'paulofidalgo@gmail.com', TRUE);
 INSERT INTO USER (UserId, Name, Username, Password, Email, Admin) VALUES (2, 'Jane Smith', 'janesmith', 'securepwd', 'janesmith@example.com', FALSE);
 
--- Inserting data into CONDITION table
-INSERT INTO CONDITION (ConditionId, ConditionVal) VALUES (1, 'New');
-INSERT INTO CONDITION (ConditionId, ConditionVal) VALUES (2, 'Used');
-
--- Inserting data into SIZE table
-INSERT INTO SIZE (SizeId, SizeVal) VALUES (1, 'Small');
-INSERT INTO SIZE (SizeId, SizeVal) VALUES (2, 'Medium');
-INSERT INTO SIZE (SizeId, SizeVal) VALUES (3, 'Large');
 
 -- Inserting data into ITEM table
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (1, 1, 'T-shirt', 15.99, 'Comfortable cotton t-shirt', 1, 2, 'Nike');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (2, 2, 'Samsung A23', 450, 'Samsung A23-Specs', 2, 1, 'Samsung');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (3, 1, 'Toyota Corolla', 10.000, 'Toyota Corolla-Description', 2, 3, 'Toyota');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (4, 2, 'Football', 10, 'Classic Football', 1, 2, 'Viper');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (5, 1, 'Hammer', 7, 'Double Headed Hammer', 2, 1, 'Sparta');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (6, 2, 'Dog Food', 45, 'Bag of Dog Food', 1, 2, 'Pedigree');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (7, 1, 'Desk', 35, 'Simple White Desk', 1, 2, 'Ikea');
-INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, ConditionId, SizeId, Brand) VALUES (8, 2, 'Toy', 16, 'Spiderman Toy', 1, 1, 'Continente');
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (1, 1, 'T-shirt', 15.99, 'Comfortable cotton t-shirt', 'New', 'Small', 'Nike', 'images/tshirt.png', 0);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (2, 2, 'Samsung A23', 450, 'Samsung A23-Specs', 'New', 'Medium', 'Samsung', 'images/samsung-galaxy-a23-5g-4gb-64gb-dual-sim-azul-claro.jpg', 2);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (3, 1, 'Toyota Corolla', 10.000, 'Toyota Corolla-Description','Used', 'Medium', 'Toyota', 'images/2023-toyota-corolla-zr-hybrid-hatch-silver-1.jpg', 1);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (4, 2, 'Football', 10, 'Classic Football','New', 'Small', 'Viper', 'images/Football-l1600.jpg', 0);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (5, 1, 'Hammer', 7, 'Double Headed Hammer', 'Used', 'Medium', 'Sparta', 'images/double_hammer_1000x380.webp', 0);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (6, 2, 'Dog Food', 45, 'Bag of Dog Food', 'New', 'Small', 'Pedigree', 'images/DogFood.jpg', 0);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (7, 1, 'Desk', 35, 'Simple White Desk', 'New', 'Small', 'Ikea', 'images/ikea_micke_desk__suitable_for__1646211721_b1d62fdb_progressive.jpg', 0);
+INSERT INTO ITEM (ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter) VALUES (8, 2, 'Toy', 16, 'Spiderman Toy', 'Used', 'Small', 'Continente', 'images/www.toysrus.jpeg', 0);
+
+
+--Inserting data into SIZE table
+INSERT INTO SIZE (Size) VALUES ('Small');
+INSERT INTO SIZE (Size) VALUES ('Medium');
+INSERT INTO SIZE (Size) VALUES ('Large');
+
+--Inserting data into CONDITION table
+INSERT INTO CONDITION (Condition) VALUES ('Used');
+INSERT INTO CONDITION (Condition) VALUES ('New');
+
+--Inserting data into BRAND table
+INSERT INTO BRAND (Brand) VALUES ('Nike');
+INSERT INTO BRAND (Brand) VALUES ('Samsung');
+INSERT INTO BRAND (Brand) VALUES ('Toyota');
+INSERT INTO BRAND (Brand) VALUES ('Viper');
+INSERT INTO BRAND (Brand) VALUES ('Sparta');
+INSERT INTO BRAND (Brand) VALUES ('Pedigree');
+INSERT INTO BRAND (Brand) VALUES ('Ikea');
+INSERT INTO BRAND (Brand) VALUES ('Continente');
+
 
 -- Inserting data into MESSAGE table
 INSERT INTO MESSAGE (MessageId, AuthorId, ReceiverId, Content, Timestamp) VALUES (1, 1, 2, 'Hi Jane, I''m interested in your jeans.', '2024-04-12 10:00:00');
 INSERT INTO MESSAGE (MessageId, AuthorId, ReceiverId, Content, Timestamp) VALUES (2, 2, 1, 'Hi John, sure! Let me know if you have any questions.', '2024-04-12 10:05:00');
 
 -- Inserting data into WISHLIST table
+INSERT INTO WISHLIST (UserId, ItemId) VALUES (1, 3);
 INSERT INTO WISHLIST (UserId, ItemId) VALUES (1, 2);
-INSERT INTO WISHLIST (UserId, ItemId) VALUES (2, 1);
+INSERT INTO WISHLIST (UserId, ItemId) VALUES (2, 2);
+
 
 -- Inserting data into CART table
 INSERT INTO CART (UserId, ItemId) VALUES (1, 1);
@@ -138,14 +165,21 @@ INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Fashion', 'category_
 INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Technology', 'category_images/Untitled.png');
 INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Vehicles', 'category_images/pngtree-vector-car-icon-png-image_1834527.jpg');
 INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Sports', 'category_images/2525535-200.png');
-INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Tools and Equipment', 'category_images/tools-icon.webp');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('ToolsAndEquipment', 'category_images/tools-icon.webp');
 INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Animals', 'category_images/151542-200.png');
-INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Furniture and Home', 'category_images/1311796-200.png');
-INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('Babies and Children', 'category_images/3890909-200.png');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('FurnitureAndHome', 'category_images/1311796-200.png');
+INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES ('BabiesAndChildren', 'category_images/3890909-200.png');
 
 -- Inserting data into ITEM_CATEGORY table
-INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 1);
-INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES (1, 2);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('Fashion', 1);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('Technology', 2);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('Vehicles', 3);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('Sports', 4);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('ToolsAndEquipment', 2);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('Animals', 2);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('FurnitureAndHome', 7);
+INSERT INTO ITEM_CATEGORY (CategoryId, ItemId) VALUES ('BabiesAndChildren', 4);
+
 
 -- Inserting data into IMAGE table
 INSERT INTO IMAGE (Path, ItemId) VALUES ('images/tshirt.png', 1);
