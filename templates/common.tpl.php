@@ -38,6 +38,7 @@
                         </ul>
 </section>
             </header>
+            <div class="scroll-watcher"></div>
 
 <?php } ?>
 

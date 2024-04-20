@@ -17,9 +17,14 @@ ul li a {
 
 header {
     display: flex;
+    height: 3.5rem;
     justify-content: space-between;
     align-items: center;
     background-color: rgba(253, 237, 132, 0.85);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: auto;
 }
 
 .logo {
@@ -118,11 +123,29 @@ header h6 {
     font-size: 18px;
 }
 
+.scroll-watcher {
+    height: 6px;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    background-color: #777;
+    width: 100%;
+    scale: 0 1;
+    transform-origin: left;
+    animation: scroll-watcher linear;
+    animation-timeline: scroll();
+}
+
+@keyframes scroll-watcher {
+    to {scale: 1 1;}
+}
+
 .row {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-around;
+    margin: 30px;
 }
 
 .col-2 {
@@ -134,13 +157,13 @@ header h6 {
     font-family: 'Open Sans', sans-serif;
     font-size: 6rem;
     line-height: 6rem;
-    margin: 30px 0 15px 30px;
+    margin: 30px 0 15px 0;
 }
 
 .col-2 p {
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
-    margin: 15px 10px 15px 30px;
+    margin: 15px 10px 15px 0;
 }
 
 .btn {
@@ -148,7 +171,7 @@ header h6 {
     background: rgba(253, 237, 132, 1);
     color: #777;
     padding: 8px 30px;
-    margin: 6px 0 5px 30px;
+    margin: 6px 0 5px 0;
     border-radius: 30px;
     transition: 0.3s;
 }
@@ -156,6 +179,45 @@ header h6 {
 .btn:hover {
     color: black;
 }
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px 16px;
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.search-bar button {
+    background-color: rgba(253, 237, 132, 1);
+    color: #777;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-left: 8px;
+    transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+    color: black;
+}
+
+.search-bar button i {
+    font-size: 18px;
+}
+
 
 section#categories {
     font-family: 'Open Sans', sans-serif;
