@@ -52,6 +52,29 @@
 
           return $items;
       }
+
+      static function getItemSuggestions(PDO $db, string $text) {
+        $searchTerm = "%$text%";
+        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, ConditionId, 
+        SizeId, Brand FROM ITEM WHERE Title LIKE ? OR Description LIKE ? OR Brand LIKE ? LIMIT 5');
+        $stmt->execute(array($searchTerm, $searchTerm, $searchTerm));
+        
+        $items = array();
+          while ($item = $stmt->fetch()) {
+              $items[] = new Item(
+                  $item['ItemId'],
+                  $item['UserId'],
+                  $item['Title'],
+                  $item['Price'],
+                  $item['Description'],
+                  $item['ConditionId'],
+                  $item['SizeId'],
+                  $item['Brand']
+              );
+          }
+
+          return $items;
+      }
   }
 
 ?>

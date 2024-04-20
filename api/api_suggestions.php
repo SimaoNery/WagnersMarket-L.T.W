@@ -1,0 +1,43 @@
+<?php
+declare(strict_types=1);
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+require_once(__DIR__ . '/../utils/session.php');
+$session = new Session();
+
+require_once(__DIR__ . '/../database/connection.db.php');
+require_once(__DIR__ . '/../database/item.class.php');
+require_once(__DIR__ . '/../database/image.class.php');
+
+try {
+    $db = getDatabaseConnection();
+
+    $searchTerm = $_GET['search'] ?? '';
+
+    $items = Item::getItemSuggestions($db, $searchTerm);
+
+    $result = array();
+
+    foreach ($items as $item) {
+        $images = Image::getImages($db, $item->itemId);
+
+        $itemSuggestions = [
+            'itemId' => $item->itemId,
+            'title' => $item->title,
+            'images' => $images 
+        ];
+
+        $result[] = $itemSuggestions;
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($result);
+} catch (Exception $e) {
+    error_log('Error in api_suggestions.php: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
+}
+

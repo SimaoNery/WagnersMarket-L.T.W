@@ -15,10 +15,11 @@ declare(strict_types=1);
             <a href="" class="btn">Explore Now &#8594;</a>
         </section>
         <section class="col-2">
-            <div class="search-bar">
+            <div class="search-bar" id="search-bar">
                 <input type="text" placeholder="Search...">
                 <button><i class="fa fa-search"></i></button>
             </div>
+            <div class="suggestions" id="suggestions"></div>
         </section>
     </section>
 <?php }?>

@@ -53,6 +53,7 @@
                 <p>LTW Wagner's Market &copy; 2024</p>
             </footer>
             <script src="../javascript/pagination.js"></script>
+            <script src="../javascript/suggestion.js"></script>
         </body>
     </html>
 <?php } ?>
