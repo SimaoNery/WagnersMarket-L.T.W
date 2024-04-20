@@ -149,7 +149,7 @@ header h6 {
 }
 
 .col-2 {
-    flex-basis: 50%;
+    flex-basis: 40%;
     min-width: 300px;
 }
 
