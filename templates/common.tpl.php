@@ -58,6 +58,14 @@
     </html>
 <?php } ?>
 
+<?php function drawSearchBar(string $id) { ?>
+    <section id="<?= $id ?>" class="search-bar">
+        <input id="searchitem" type="text" placeholder="What are you looking for?">
+        <button><i class="fa fa-search"></i></button>
+    </section>
+<?php }?>
+
+
 
 
 

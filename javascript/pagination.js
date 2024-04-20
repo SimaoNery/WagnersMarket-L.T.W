@@ -1,5 +1,6 @@
+
 const paginationContainer = document.querySelector('#pagination');
-let limit = 8;
+let limit = 4;
 let offset = 0;
 paginationContainer.addEventListener('click', function(event) {
     if (event.target.tagName === 'BUTTON') {
@@ -17,7 +18,7 @@ paginationContainer.addEventListener('click', function(event) {
 
         fetchMostPopularItems(limit, offset);
     }
-});
+})
 
 function changeItemsPerPage() {
     const selectElement = document.getElementById('itemsPerPage');
@@ -26,19 +27,29 @@ function changeItemsPerPage() {
     fetchMostPopularItems(limit, offset);
 }
 
+
+
+
 function fetchMostPopularItems(limit, offset) {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `../api/api_items.php?limit=${limit}&offset=${offset}`, true);
+    xhr.open('GET', `../api/api_dennis.php?limit=${limit}&offset=${offset}`, true);
 
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 400) {
             try {
-                const response = JSON.parse(xhr.responseText);
+                const items = JSON.parse(xhr.responseText);
 
-                const mostPopularContainer = document.querySelector('#most-popular');
-                mostPopularContainer.innerHTML = '';
+                const itemsSection = document.querySelector('#draw-items');
+                itemsSection.innerHTML = '';
 
-                response.forEach(item => {
+                if (!items.length) {
+                    const paragraph = document.createElement('p')
+                    paragraph.id = 'not-found'
+                    paragraph.textContent = 'No items found'
+                    itemsSection.appendChild(paragraph)
+                }
+
+                for (const item of items) {
                     const itemElement = document.createElement('li');
                     itemElement.classList.add('item-card');
 
@@ -46,7 +57,7 @@ function fetchMostPopularItems(limit, offset) {
                     linkElement.href = `../pages/item.php?id=${item.itemId}`;
 
                     const imageElement = document.createElement('img');
-                    imageElement.src = item.imagePath;
+                    imageElement.src = '/' + item.imagePath;
                     imageElement.style.width = '100px';
                     imageElement.style.height = '100px';
 
@@ -67,8 +78,9 @@ function fetchMostPopularItems(limit, offset) {
 
                     itemElement.appendChild(linkElement);
 
-                    mostPopularContainer.appendChild(itemElement);
-                });
+                    itemsSection.appendChild(itemElement);
+                }
+
             } catch (error) {
                 console.error('Error parsing JSON:', error);
             }
@@ -83,3 +95,4 @@ function fetchMostPopularItems(limit, offset) {
 
     xhr.send();
 }
+

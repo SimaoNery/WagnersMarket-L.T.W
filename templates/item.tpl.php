@@ -7,14 +7,15 @@
   require_once(__DIR__ . '/../database/condition.class.php');
 ?>
 
-<?php function drawItems(array $items, PDO $db, int $pages, int $limit) { ?>
+<?php function drawItems(string $header, array $items): void
+{ ?>
   <section id="categories">
       <h2>
-          Most Popular
+          <?=$header?>
       </h2>
       <hr class="line-yellow">
   </section>
-  <ul class="most-popular" id="most-popular">
+  <ul class="draw-items" id="draw-items">
     <?php foreach($items as $item) { ?>
       <li class="item-card">
           <a href="../pages/item.php?id=<?=$item->itemId?>">
@@ -26,25 +27,26 @@
     <?php } ?>
   </ul>
 
-<div class="pagination-container">
-    <div class="pagination" id="pagination">
-        <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
-            <button id="pagination-button" class="pagination-button"><?= $i ?></button>
-        <?php } ?>
-        <?php if ($pages > 4) { ?>
-            <button id="pagination-button" class="pagination-button">&#8594;</button>
-        <?php } ?>
-    </div>
-
-    <select id="itemsPerPage" onchange="changeItemsPerPage()">
-        <option value="8">8 per page</option>
-        <option value="16">16 per page</option>
-        <option value="32">32 per page</option>
-    </select>
-</div>
-
-
 <?php }?>
+
+<?php function drawPagination(int $pages) { ?>
+    <div class="pagination-container">
+        <div class="pagination" id="pagination">
+            <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
+                <button id="pagination-button" class="pagination-button"><?= $i ?></button>
+            <?php } ?>
+            <?php if ($pages > 4) { ?>
+                <button id="pagination-button" class="pagination-button">&#8594;</button>
+            <?php } ?>
+        </div>
+
+        <select id="itemsPerPage" onchange="changeItemsPerPage()">
+            <option value="8">8 per page</option>
+            <option value="16">16 per page</option>
+            <option value="32">32 per page</option>
+        </select>
+    </div>
+<?php } ?>
 
 <?php function drawItem(Item $item, PDO $db) { ?>
     <section class="row">
@@ -126,38 +128,13 @@
 <?php } ?>
 
 
-<?php function drawSearchedItems(array $items) { ?>
-    <header>
-        <h2>Featured Items</h2>
-        <input id="searchitem" type="text" placeholder="What are you looking for?">
-    </header>
-    <section id="items">
-        <?php foreach($items as $item) { ?>
-            <article>
-                <a href="../pages/item.php?id=<?=$item->itemId?>"><?=$item->title?></a>
-                <img src="/<?=$item->imagePath?>" style="width: 100px; height: 100px;">
-            </article>
-        <?php } ?>
-    </section>
-<?php }?>
-
-<?php function shownItemsMaxPrice(array $items) {
-    $max = PHP_FLOAT_MIN;
-    foreach($items as $item) {
-        if ($max < $item->price) {
-            $max = $item->price;
-        }
-    }
-    return $max;
-}?>
 
 
-<?php function drawItemFilter(array $items) { ?>
+<?php function drawItemFilter(float $maxPrice, array $items) { ?>
         <form id="filters">
             <fieldset id="price-range">
-                <?php $maxPrice = shownItemsMaxPrice($items)?>
                 <legend>Price Range</legend>
-                <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?=$maxPrice?>"></label>
+                <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= $maxPrice?>"></label>
                 <label>Max: <input type="number" id="max-input" value = "<?=$maxPrice?>" min="0" max="<?=$maxPrice?>"></label>
                 <input type="range" id="min-range" min="0" max="<?=$maxPrice?>" value="0" step="1">
                 <input type="range" id="max-range" min="0" max="<?=$maxPrice?>" value="<?=$maxPrice?>" step="1">

@@ -8,14 +8,11 @@ const maxRange = document.querySelector('#max-range')
 const orderSelected = document.querySelector('#orderSelected')
 
 
-
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
-//categoria, condition. search também pode ser feito por item_description
-//size é do package, então não importa
+let currentOffset = 0
 
-//n da para filtrar por size ou brand
 if (categories) {
     categories.forEach(category => {
         category.addEventListener('change', async function() {
@@ -106,21 +103,19 @@ if(orderSelected) {
     });
 }
 
-
 async function getSearchResults() {
 
     let url = '../api/api_items.php?'
     let cat = selectedCategories.join(';');
     let cond = selectedConditions.join(';');
-    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value};
+    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: 16, offset: currentOffset};
     url += new URLSearchParams(params).toString()
 
     const response = await fetch(url)
 
     let items = await response.json()
 
-    const itemsSection = document.querySelector('#items')
-
+    const itemsSection = document.querySelector('#draw-items');
     itemsSection.innerHTML = ''
 
     if (!items.length) {
@@ -131,18 +126,39 @@ async function getSearchResults() {
     }
 
     for (const item of items) {
-        const article = document.createElement('article')
-        const img = document.createElement('img')
-        const link = document.createElement('a')
-        img.src = '/' + item.imagePath
-        img.style = "width: 100px; height: 100px;"
-        link.href = '../pages/item.php?id=' + item.itemId
-        link.textContent = item.title
-        article.appendChild(link)
-        article.appendChild(img)
-        itemsSection.appendChild(article)
+        const itemElement = document.createElement('li');
+        itemElement.classList.add('item-card');
+
+        const linkElement = document.createElement('a');
+        linkElement.href = `../pages/item.php?id=${item.itemId}`;
+
+        const imageElement = document.createElement('img');
+        imageElement.src = '/' + item.imagePath;
+        imageElement.style.width = '100px';
+        imageElement.style.height = '100px';
+
+        const titleElement = document.createElement('h4');
+        titleElement.textContent = item.title;
+
+        const priceElement = document.createElement('p');
+        const formattedPrice = new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(item.price);
+
+        priceElement.textContent = formattedPrice + '€';
+
+        linkElement.appendChild(imageElement);
+        linkElement.appendChild(titleElement);
+        linkElement.appendChild(priceElement);
+
+        itemElement.appendChild(linkElement);
+
+        itemsSection.appendChild(itemElement);
     }
 }
+
+
 
 
 

@@ -113,7 +113,7 @@
               $stmt->bindValue($paramIndex++, $search . '%');
           }
 
-          $stmt->bindValue($paramIndex, $limit, PDO::PARAM_INT);
+          $stmt->bindValue($paramIndex++, $limit, PDO::PARAM_INT);
           $stmt->bindValue($paramIndex, $offset, PDO::PARAM_INT);
 
           $stmt->execute();
@@ -154,6 +154,13 @@
             $item['ImagePath'],
             $item['WishlistCounter']
         );
+      }
+
+      static function getMaxPrice(PDO $db): float {
+          $stmt = $db->prepare('SELECT MAX(PRICE) AS MaxPrice FROM ITEM');
+          $stmt->execute();
+          return (float) $stmt->fetch(PDO::FETCH_ASSOC)['MaxPrice'];
+
       }
   }
 

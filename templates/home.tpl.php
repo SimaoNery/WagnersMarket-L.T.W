@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+
+require_once __DIR__ . '/common.tpl.php';
 ?>
 
 
@@ -15,7 +17,7 @@ declare(strict_types=1);
             <a href="" class="btn">Explore Now &#8594;</a>
         </section>
         <section class="col-2">
-
+            <?= drawSearchBar("search-bar") ?>
         </section>
     </section>
 <?php }?>
