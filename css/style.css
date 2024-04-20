@@ -431,3 +431,223 @@ footer ul li:last-child a{
     margin-top: 100px;
     align-items: center;
 }
+
+
+#images {
+    margin-top: 5%;
+    margin-left: 5%;
+
+    display: flex;
+}
+
+.main_image {
+    margin-left: 35px;
+}
+
+.main_image img {
+    width: 500px;
+    max-height: 600px;
+    height: auto;
+
+    cursor: pointer;
+}
+
+.sideImagesContainer {
+    overflow-y: auto;
+    width: 130px;
+    height: 580px;
+
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sideImage {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 15px;
+
+    cursor: pointer;
+}
+
+#information {
+    margin-left: 5%;
+
+    h3 {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700    ;
+        font-size: 30px;
+        margin-left: 35px;
+        margin-bottom: 10px;
+    }
+
+    p {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+
+        margin-left: 35px;
+    }
+
+    #brandName {
+        font-weight: 450;
+        font-size: 20px;
+    }
+
+    #conditionValue {
+        font-weight: 450;
+        font-size: 20px;
+    }
+}
+
+#mainInfo {
+    h1 {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 700;
+        font-size: 100px;
+        margin-bottom: 25px;
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-left: 31px;
+        margin-bottom: 60px;
+
+        font-size: 25px;
+        color: #333333;
+    }
+
+    ul li:first-child {
+        margin-right: 275px;
+    }
+
+    .add-to-wishlist-button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+
+    .add-to-wishlist-button i {
+        font-size: 27px;
+        color: rgba(255, 0, 0, 0.3);
+        transition: color 0.3s ease;
+        margin-right: 10px;
+    }
+
+    .add-to-wishlist-button:hover i {
+        color: rgba(255, 0, 0, 0.6);
+    }
+
+    .add-to-bag-button {
+        padding: 10px 20px;
+        background-color: rgba(253, 237, 132, 1);
+        color: #777777;
+        font-weight: 700;
+        font-size: 17px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .add-to-bag-button .fa-bag-shopping {
+        margin-right: 5px;
+        font-size: 20px;
+    }
+
+    .add-to-bag-button:hover {
+        color: black;
+    }
+
+    margin-bottom: 45px;
+}
+
+#description_seller {
+    h2 {
+        margin-top: 75px;
+        margin-bottom: 5px;
+        text-align: center;
+
+        font-family: 'Open Sans', sans-serif;
+        font-size: 27px;
+    }
+
+    hr{
+        margin-bottom: 15px;
+    }
+
+    .box_yellow {
+        background-color: rgba(253, 237, 132, 0.25);
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 95%;
+        margin: 25px auto;
+
+        font-family: 'Roboto', sans-serif;
+        font-size: 21px;
+    }
+
+    .description {
+        margin-left: 80px;
+    }
+
+    #sellerInfo {
+        display: flex;
+        align-items: center;
+
+        margin-left: 75px;
+    }
+
+    .profilePic {
+        width: 100px;
+        height: 100px;
+        border: 2px solid rgba(253, 237, 132, 1);
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 15px;
+    }
+
+    .profilePic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .username {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 35px;
+        font-weight: 500;
+    }
+
+    .name {
+        font-family: 'Roboto', sans-serif;
+        font-size: 25px;
+        font-weight: 200;
+    }
+
+    #itemsPerPage {
+        margin-right: 10px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+    .sendMessageButton {
+        padding: 30px 60px;
+        background-color: rgba(253, 237, 132, 1);
+        color: #777777;
+        font-weight: 700;
+        font-size: 21px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 75px;
+    }
+
+    .sendMessageButton:hover {
+        color: black;
+    }
+}
