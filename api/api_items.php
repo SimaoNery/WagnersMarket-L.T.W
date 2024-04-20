@@ -20,13 +20,26 @@ try {
 
     $items = Item::getItems($db, $limit, $offset);
 
+    $result = array();
+
     foreach ($items as $item) {
         $images = Image::getImages($db, $item->itemId);
-        $item->images = $images;
+        $itemWithImages = [
+            'itemId' => $item->itemId,
+            'userId' => $item->userId,
+            'title' => $item->title,
+            'price' => $item->price,
+            'description' => $item->description,
+            'condition' => $item->condition,
+            'size' => $item->size,
+            'brand' => $item->brand,
+            'images' => $images 
+        ];
+        $result[] = $itemWithImages;
     }
 
     header('Content-Type: application/json');
-    echo json_encode($items);
+    echo json_encode($result);
 } catch (Exception $e) {
     error_log('Error in api_items.php: ' . $e->getMessage());
     http_response_code(500);
