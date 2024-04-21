@@ -11,7 +11,7 @@ const orderSelected = document.querySelector('#orderSelected')
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
-let numberOfItems = 48
+let numberOfItems = 16
 
 if (categories) {
     categories.forEach(category => {
@@ -102,7 +102,7 @@ if(orderSelected) {
         await getSearchResults()
     });
 }
-
+//maybe change this
 window.addEventListener('scroll', async function () {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         numberOfItems += 8;

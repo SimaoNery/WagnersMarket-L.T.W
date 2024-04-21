@@ -16,10 +16,10 @@ $limit = 8;
 $offset = 0;
 $userId = intval($_GET['id']);
 $db = getDatabaseConnection();
-$items = Item::getWishlist($db, $userId, $limit, $offset);
+$items = Item::getAdds($db, $userId, $limit, $offset);
 
 drawHeader();
-drawProfileBody("wishlist", $userId);
+drawProfileBody("your-adds", $userId);
 drawItems("",$items);
 drawFooter();
 ?>
