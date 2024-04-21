@@ -11,12 +11,12 @@ const orderSelected = document.querySelector('#orderSelected')
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
-let currentOffset = 0
+let numberOfItems = 48
 
 if (categories) {
     categories.forEach(category => {
         category.addEventListener('change', async function() {
-            const categoryId = this.id;
+            const categoryId = this.id
             if (this.checked) {
 
                 if (!selectedCategories.includes(categoryId)) {
@@ -25,7 +25,7 @@ if (categories) {
             } else {
                 selectedCategories = selectedCategories.filter(catId => catId !== categoryId)
             }
-            await getSearchResults();
+            await getSearchResults()
         })
     })
 }
@@ -41,7 +41,7 @@ if (conditions) {
             } else {
                 selectedConditions = selectedConditions.filter(cId => cId !== conditionId);
             }
-            await getSearchResults();
+            await getSearchResults()
         })
     })
 }
@@ -49,7 +49,7 @@ if (conditions) {
 if (searchItem) {
     searchItem.addEventListener('input', async function() {
         searchedItem = this.value
-        await getSearchResults();
+        await getSearchResults()
     })
 }
 
@@ -57,10 +57,10 @@ if (minInput) {
     minInput.addEventListener('change', async function() {
         minRange.value = this.value;
         if (parseInt(maxInput.value) < parseInt(this.value)) {
-            maxInput.value = this.value;
-            maxRange.value = this.value;
+            maxInput.value = this.value
+            maxRange.value = this.value
         }
-        await getSearchResults();
+        await getSearchResults()
     });
 }
 
@@ -68,10 +68,10 @@ if (minRange) {
     minRange.addEventListener('change', async function() {
         minInput.value = this.value;
         if (parseInt(maxInput.value) < parseInt(this.value)) {
-            maxInput.value = this.value;
-            maxRange.value = this.value;
+            maxInput.value = this.value
+            maxRange.value = this.value
         }
-        await getSearchResults();
+        await getSearchResults()
     });
 }
 
@@ -93,22 +93,29 @@ if (maxRange) {
             minInput.value = this.value;
             minRange.value = this.value;
         }
-        await getSearchResults();
+        await getSearchResults()
     });
 }
 
 if(orderSelected) {
     orderSelected.addEventListener('change', async function () {
-        await getSearchResults();
+        await getSearchResults()
     });
 }
+
+window.addEventListener('scroll', async function () {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        numberOfItems += 8;
+        await getSearchResults()
+    }
+});
 
 async function getSearchResults() {
 
     let url = '../api/api_items.php?'
     let cat = selectedCategories.join(';');
     let cond = selectedConditions.join(';');
-    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: 16, offset: currentOffset};
+    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: numberOfItems};
     url += new URLSearchParams(params).toString()
 
     const response = await fetch(url)
@@ -151,9 +158,7 @@ async function getSearchResults() {
         linkElement.appendChild(imageElement);
         linkElement.appendChild(titleElement);
         linkElement.appendChild(priceElement);
-
         itemElement.appendChild(linkElement);
-
         itemsSection.appendChild(itemElement);
     }
 }
