@@ -138,7 +138,7 @@ require_once(__DIR__ . '/../database/category.class.php');
 
 
 
-<?php function drawItemFilter(PDO $db, float $maxPrice, array $items) { ?>
+<?php function drawItemFilter(PDO $db, float $maxPrice) { ?>
     <?php
     $categories = Category::getCategories($db);
     $conditions = Condition::getConditions($db);
