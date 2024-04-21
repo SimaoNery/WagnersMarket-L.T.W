@@ -41,11 +41,10 @@ function fetchMostPopularItems(limit, offset) {
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 400) {
             try {
-                console.log(xhr.responseText);
                 const response = JSON.parse(xhr.responseText);
 
                 const items = response.items;
-                const mostPopularContainer = document.querySelector('#most-popular');
+                const mostPopularContainer = document.querySelector('#draw-items');
                 mostPopularContainer.innerHTML = '';
                 items.forEach(item => {
                     const itemElement = document.createElement('li');
