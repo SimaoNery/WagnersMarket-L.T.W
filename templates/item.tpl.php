@@ -38,13 +38,13 @@
             <?php if ($pages > 4) { ?>
                 <button id="pagination-button" class="pagination-button">&#8594;</button>
             <?php } ?>
-        </div>
+    </div>
 
-        <select id="itemsPerPage">
-            <option value="8">8 per page</option>
-            <option value="16">16 per page</option>
-            <option value="32">32 per page</option>
-        </select>
+    <select id="itemsPerPage">
+        <option value="4">4 per page</option>
+        <option value="8">8 per page</option>
+        <option value="16">16 per page</option>
+    </select>
     </div>
 <?php } ?>
 
