@@ -6,7 +6,7 @@
 
     <section id="categories">
         <h2>Categories</h2>
-        <hr class="line-yellow"> <!-- Yellow line below the title -->
+        <hr class="line-yellow"> 
 
         <ul class="category-list">
             <?php foreach($categories as $category) { ?>

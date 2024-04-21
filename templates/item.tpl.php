@@ -40,7 +40,7 @@
             <?php } ?>
         </div>
 
-        <select id="itemsPerPage" onchange="changeItemsPerPage()">
+        <select id="itemsPerPage">
             <option value="8">8 per page</option>
             <option value="16">16 per page</option>
             <option value="32">32 per page</option>
