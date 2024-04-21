@@ -21,5 +21,6 @@ $items = Item::getWishlist($db, $userId, $limit, $offset);
 drawHeader();
 drawProfileBody("wishlist", $userId);
 drawItems("",$items);
+// add draw pagination
 drawFooter();
 ?>

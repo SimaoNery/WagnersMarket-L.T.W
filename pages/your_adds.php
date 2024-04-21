@@ -21,5 +21,6 @@ $items = Item::getAdds($db, $userId, $limit, $offset);
 drawHeader();
 drawProfileBody("your-adds", $userId);
 drawItems("",$items);
+// add draw pagination
 drawFooter();
 ?>
