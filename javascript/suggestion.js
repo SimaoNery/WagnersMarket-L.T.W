@@ -1,4 +1,5 @@
 let suggestionsContainer = document.querySelector("#suggestions");
+let searchBarContainer = document.querySelector("#search-bar");
 let inputText = "";
 
 document.addEventListener("input", function (event) {
@@ -30,8 +31,11 @@ function renderSuggestions(suggestions) {
                     fragment.appendChild(noSuggestions);
                 } else {
                     response.forEach(suggestion => {
+                        const listItem = document.createElement("li");
+                        listItem.classList.add("suggestionItem");
+
                         const suggestionLink = document.createElement("a");
-                        suggestionLink.href = `/item/${suggestion.itemId}`;
+                        suggestionLink.href = `../pages/item.php?id=${suggestion.itemId}`;
                         suggestionLink.classList.add("suggestion");
 
                         const image = document.createElement("img");
@@ -42,14 +46,16 @@ function renderSuggestions(suggestions) {
                         const title = document.createElement("span");
                         title.textContent = suggestion.title;
                         title.classList.add("suggestion-title");
-
+                        
                         suggestionLink.appendChild(image);
                         suggestionLink.appendChild(title);
-                        fragment.appendChild(suggestionLink);
+                        listItem.appendChild(suggestionLink);
+                        fragment.appendChild(listItem);
                     });
                 }
 
                 suggestionsContainer.appendChild(fragment);
+                suggestionsContainer.style.width = searchBarContainer.offsetWidth + 'px';
             } catch (error) {
                 console.error("Error parsing JSON:", error);
             }
