@@ -110,12 +110,19 @@
             <section id="sellerInfo">
                 <?php $user = User::getUser($db, $item->userId); ?>
                 <div class="profilePic">
-                    <img src= "/<?= $user->profilePic ?>">
+                    <a href="../pages/profile.php">
+                        <img src= "/<?= $user->profilePic ?>">
+                    </a>
                 </div>
 
                 <div class="sellerDetails">
-                    <p class="username"><?=$user->username?></p>
-                    <p class="name"><?=$user->name ?></p>
+                    <a href="../pages/profile.php">
+                        <p class="username"><?=$user->username?></p>
+                    </a>
+                    
+                    <a href="../pages/profile.php">
+                        <p class="name"><?=$user->name ?></p>
+                    </a>
                 </div>
 
                 <button class="sendMessageButton">
