@@ -18,11 +18,16 @@ try {
     $limit = isset($_GET['limit']) ? intval($_GET['limit']) : null;
     $offset = isset($_GET['offset']) ? intval($_GET['offset']) : null;
 
+    $numItems = Item::getNumItems($db);
     $items = Item::getItems($db, $limit, $offset);
 
+    $finalResponse = [
+        'items' => $items,
+        'totalCount' => $numItems
+    ];
 
     header('Content-Type: application/json');
-    echo json_encode($items);
+    echo json_encode($finalResponse);
 } catch (Exception $e) {
     error_log('Error in api_items.php: ' . $e->getMessage());
     http_response_code(500);

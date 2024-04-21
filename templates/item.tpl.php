@@ -38,13 +38,13 @@
             <?php if ($pages > 4) { ?>
                 <button id="pagination-button" class="pagination-button">&#8594;</button>
             <?php } ?>
-        </div>
+    </div>
 
-        <select id="itemsPerPage" onchange="changeItemsPerPage()">
-            <option value="8">8 per page</option>
-            <option value="16">16 per page</option>
-            <option value="32">32 per page</option>
-        </select>
+    <select id="itemsPerPage">
+        <option value="4">4 per page</option>
+        <option value="8">8 per page</option>
+        <option value="16">16 per page</option>
+    </select>
     </div>
 <?php } ?>
 
@@ -110,12 +110,19 @@
             <section id="sellerInfo">
                 <?php $user = User::getUser($db, $item->userId); ?>
                 <div class="profilePic">
-                    <img src= "/<?= $user->profilePic ?>">
+                    <a href="../pages/profile.php">
+                        <img src= "/<?= $user->profilePic ?>">
+                    </a>
                 </div>
 
                 <div class="sellerDetails">
-                    <p class="username"><?=$user->username?></p>
-                    <p class="name"><?=$user->name ?></p>
+                    <a href="../pages/profile.php">
+                        <p class="username"><?=$user->username?></p>
+                    </a>
+
+                    <a href="../pages/profile.php">
+                        <p class="name"><?=$user->name ?></p>
+                    </a>
                 </div>
 
                 <button class="sendMessageButton">
