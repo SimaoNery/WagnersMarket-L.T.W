@@ -239,8 +239,8 @@ section#categories {
     list-style: none;
     padding: 0;
     justify-content: space-between;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .category-item {
@@ -304,7 +304,6 @@ section#categories {
     text-align: center;
     margin-bottom: 10px;
     margin-right: 10px;
-    flex: 20%;
     list-style: none;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     background-color: rgba(253, 237, 132, 0.1);
@@ -314,6 +313,7 @@ section#categories {
     display: block;
     text-decoration: none;
     color: inherit;
+    z-index: -1;
 }
 
 .item-card img {
@@ -347,18 +347,17 @@ section#categories {
     color: #777;
 }
 
-@media (min-width: 768px) {
-    .draw-items {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-}
 
 .draw-items {
-    margin-left: 10px;
-    margin-right: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px; 
+    padding: 0;
+    list-style: none;
+    justify-content: center;
 }
+
+
 
 footer {
     font-family: 'Roboto', sans-serif;

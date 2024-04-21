@@ -25,7 +25,7 @@ $numItems = Item::getNumItems($db);
 drawHeader();
 drawHomeBody();
 drawCategories($categories);
-drawItems("Most popular",$items);
-drawPagination($numItems / $limit);
+drawItems("Most popular", $items);
+drawPagination(intval(ceil($numItems / $limit)));
 drawFooter();
 ?>
