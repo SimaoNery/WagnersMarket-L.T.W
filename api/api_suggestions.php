@@ -22,12 +22,10 @@ try {
     $result = array();
 
     foreach ($items as $item) {
-        $images = Image::getImages($db, $item->itemId);
-
         $itemSuggestions = [
             'itemId' => $item->itemId,
             'title' => $item->title,
-            'images' => $images 
+            'image' => $item->imagePath
         ];
 
         $result[] = $itemSuggestions;
