@@ -54,6 +54,7 @@
             <script src="../javascript/pagination.js"></script>
             <script src="../javascript/imagesLogic.js" defer></script>
             <script src="../javascript/script.js" defer></script>
+            <script src="../javascript/suggestion.js"></script>
         </body>
     </html>
 <?php } ?>

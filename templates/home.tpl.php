@@ -18,6 +18,7 @@ require_once __DIR__ . '/common.tpl.php';
         </section>
         <section class="col-2">
             <?= drawSearchBar("search-bar") ?>
+            <div class="suggestions" id="suggestions"></div>
         </section>
     </section>
 <?php }?>
