@@ -19,6 +19,7 @@ try {
     $offset = isset($_GET['offset']) ? intval($_GET['offset']) : null;
 
     $items = Item::getItems($db, $limit, $offset);
+    $numItems = Item::getNumItems($db);
 
     $result = array();
 
@@ -39,8 +40,13 @@ try {
         $result[] = $itemWithImages;
     }
 
+    $finalResponse = [
+        'items' => $result,
+        'totalCount' => $numItems
+    ];
+
     header('Content-Type: application/json');
-    echo json_encode($result);
+    echo json_encode($finalResponse);
 } catch (Exception $e) {
     error_log('Error in api_items.php: ' . $e->getMessage());
     http_response_code(500);

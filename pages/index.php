@@ -14,7 +14,7 @@ require_once(__DIR__ . '/../templates/category.tpl.php');
 require_once(__DIR__ . '/../templates/home.tpl.php');
 
 
-$limit = 8;
+$limit = 4;
 $offset = 0;
 $db = getDatabaseConnection();
 
