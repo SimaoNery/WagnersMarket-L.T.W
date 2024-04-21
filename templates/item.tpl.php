@@ -5,6 +5,7 @@
   require_once(__DIR__ . '/../database/image.class.php');
   require_once(__DIR__ . '/../database/user.class.php');
   require_once(__DIR__ . '/../database/condition.class.php');
+require_once(__DIR__ . '/../database/category.class.php');
 ?>
 
 <?php function drawItems(string $header, array $items): void
@@ -137,30 +138,31 @@
 
 
 
-<?php function drawItemFilter(float $maxPrice, array $items) { ?>
-        <form id="filters">
-            <fieldset id="price-range">
-                <legend>Price Range</legend>
-                <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= $maxPrice?>"></label>
-                <label>Max: <input type="number" id="max-input" value = "<?=$maxPrice?>" min="0" max="<?=$maxPrice?>"></label>
-                <input type="range" id="min-range" min="0" max="<?=$maxPrice?>" value="0" step="1">
-                <input type="range" id="max-range" min="0" max="<?=$maxPrice?>" value="<?=$maxPrice?>" step="1">
-            </fieldset>
-            <fieldset id="category">
-                <legend>Category</legend>
-                <label>Fashion <input type="checkbox" id="Fashion"></label>
-                <label>Technology <input type="checkbox" id="Technology"></label>
-                <label>Vehicles <input type="checkbox" id="Vehicles"></label>
-                <label>Sports <input type="checkbox" id="Sports"></label>
-                <label>Tools And Equipment <input type="checkbox" id="Tools And Equipment"></label>
-                <label>Furniture and Home <input type="checkbox" id="FurnitureAndHome"></label>
-                <label>Babies and Children <input type="checkbox" id="BabiesAndChildren"></label>
-            </fieldset>
-            <fieldset id="condition">
-                <legend>Condition</legend>
-                <label>New <input type="checkbox" id="New"></label>
-                <label>Used <input type="checkbox" id="Used"></label>
-            </fieldset>
+<?php function drawItemFilter(PDO $db, float $maxPrice) { ?>
+    <?php
+    $categories = Category::getCategories($db);
+    $conditions = Condition::getConditions($db);
+    ?>
+    <form id="filters">
+        <fieldset id="price-range">
+            <legend>Price Range</legend>
+            <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= $maxPrice?>"></label>
+            <label>Max: <input type="number" id="max-input" value = "<?=$maxPrice?>" min="0" max="<?=$maxPrice?>"></label>
+            <input type="range" id="min-range" min="0" max="<?=$maxPrice?>" value="0" step="1">
+            <input type="range" id="max-range" min="0" max="<?=$maxPrice?>" value="<?=$maxPrice?>" step="1">
+        </fieldset>
+        <fieldset id="category">
+            <legend>Category</legend>
+            <?php foreach($categories as $category) { ?>
+                <label><?= $category->categoryName ?></label><input type="checkbox" id="<?= $category->categoryName ?>"></label>
+            <?php } ?>
+        </fieldset>
+        <fieldset id="condition">
+            <legend>Condition</legend>
+            <?php foreach($conditions as $condition) { ?>
+                <label><?= $condition->condition ?></label><input type="checkbox" id="<?= $condition->condition ?>"></label>
+            <?php } ?>
+        </fieldset>
     </form>
 <?php } ?>
 
