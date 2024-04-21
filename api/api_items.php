@@ -22,9 +22,8 @@ try {
     $max = $_GET['max'];
     $order = $_GET['order'];
     $limit = isset($_GET['limit']) ? intval($_GET['limit']) : null;
-    $offset = isset($_GET['offset']) ? intval($_GET['offset']) : null;
 
-    $items = Item::searchItems($db, $search, $categories, $conditions, $min, $max, $order, $limit, $offset);
+    $items = Item::searchItems($db, $search, $categories, $conditions, $min, $max, $order, $limit);
 
     header('Content-Type: application/json');
     echo json_encode($items);
