@@ -9,14 +9,14 @@ require_once(__DIR__ . '/../database/user.class.php');
 
 $db = getDatabaseConnection();
 
-$customer = User::geUserWithPassword($db, $_POST['email'], $_POST['password']);
+$customer = User::getUserWithPassword($db, $_POST['email'], $_POST['password']);
 
 if ($customer) {
-    $session->setId($customer->id);
-    $session->setName($customer->name());
+    $session->setId($customer->userId);
+    $session->setName($customer->name);
     $session->addMessage('success', 'Login successful!');
 } else {
-    $session->addMessage('error', 'Wrong password!');
+    $session->addMessage('error', 'Wrong credentials!');
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);

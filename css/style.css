@@ -700,7 +700,7 @@ ul li:hover section.loginAndSignup {
 .loginAndSignup {
     overflow: hidden;
     width: 250px;
-    height: 300px;
+    height: 330px;
     border-radius: 10px;
     box-shadow: 5px 20px 20px #777;
     display: none;
@@ -720,13 +720,13 @@ ul li:hover section.loginAndSignup {
     height: 100%;
 }
 
-label {
+label#check {
     color: #777;
     font-size: 2em;
     justify-content: center;
     display: flex;
     font-weight: bold;
-    margin: 15px;
+    margin: 10px;
     cursor: pointer;
     transition: .5s ease-in-out;
 }
@@ -737,7 +737,7 @@ section.loginAndSignup input {
     background: rgb(254, 243, 167);
     justify-content: center;
     display: flex;
-    margin: 15px auto;
+    margin: 10px auto;
     padding: 10px;
     border: none;
     outline: none;
@@ -774,7 +774,7 @@ section.login button {
 }
 
 .login {
-    height: 300px;
+    height: 340px;
     background: rgb(255, 242, 159);
     border-radius: 60% / 10%;
     transform: translateY(-80px);
@@ -787,7 +787,7 @@ section.login button {
 }
 
 #chk:checked ~ .login{
-    transform: translateY(-310px);
+    transform: translateY(-300px);
 }
 
 #chk:checked ~ .login label{

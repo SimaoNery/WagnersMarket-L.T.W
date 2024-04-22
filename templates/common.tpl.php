@@ -57,21 +57,22 @@ declare(strict_types=1);
         <section class="loginAndSignup" id="loginAndSignup">
             <input type="checkbox" id="chk" aria-hidden="true">
             <section class="signup">
-                <form>
-                    <label for="chk" aria-hidden="true">Sign Up</label>
-                    <input type="text" name="txt" placeholder="User name" required="">
+                <form action="../actions/action_signup.php" method="post">
+                    <label id="check" for="chk" aria-hidden="true">Sign Up</label>
+                    <input type="text" name="name" placeholder="Name" required="">
+                    <input type="text" name="username" placeholder="User name" required="">
                     <input type="email" name="email" placeholder="Email" required="">
-                    <input type="password" name="pswd" placeholder="Password" required="">
+                    <input type="password" name="password" placeholder="Password" required="">
                     <button>Sign Up</button>
                 </form>
             </section>
 
             <section class="login">
-                <form>
-                    <label for="chk" aria-hidden="true">Login</label>
+                <form action="../actions/action_login.php" method="post">
+                    <label id="check" for="chk" aria-hidden="true">Login</label>
                     <input type="email" name="email" placeholder="Email" required="">
-                    <input type="password" name="pswd" placeholder="Password" required="">
-                    <button>Login</button>
+                    <input type="password" name="password" placeholder="Password" required="">
+                    <button type="submit">Login</button>
                 </form>
             </section>
 

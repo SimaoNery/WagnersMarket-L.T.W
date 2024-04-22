@@ -19,7 +19,7 @@ $numItems = Item::getNumItems($db);
 $maxPrice = Item::getMaxPrice($db);
 
 
-drawHeader();
+drawHeader($session);
 drawSearchBar("searchItems");
 drawItems("Featured Items",$items);
 drawItemFilter($db, $maxPrice);
