@@ -12,9 +12,10 @@
     public string $brand;
     public string $imagePath;
     public int $wishlistCounter;
+    public string $timestamp;
 
 
-    public function __construct(int $itemId, int $userId, string $title, float $price, string $description, string $condition, string $size, string $brand, string $imagePath, int $wishlistCounter)
+    public function __construct(int $itemId, int $userId, string $title, float $price, string $description, string $condition, string $size, string $brand, string $imagePath, int $wishlistCounter, string $timestamp)
     {
       $this->itemId = $itemId;
       $this->userId = $userId;
@@ -26,6 +27,7 @@
       $this->brand = $brand;
       $this->imagePath = $imagePath;
       $this->wishlistCounter = $wishlistCounter;
+      $this->timestamp = $timestamp;
 
     }
 
@@ -38,7 +40,7 @@
 
       static function getItems(PDO $db, int $count,int $offset) : array {
           $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, 
-            Size, Brand, ImagePath, WishlistCounter FROM ITEM ORDER BY WishlistCounter DESC LIMIT ? OFFSET ?');
+            Size, Brand, ImagePath, WishlistCounter, Timestamp FROM ITEM ORDER BY WishlistCounter DESC LIMIT ? OFFSET ?');
           $stmt->execute(array($count, $offset));
 
           $items = array();
@@ -53,7 +55,8 @@
                   $item['Size'],
                   $item['Brand'],
                   $item['ImagePath'],
-                  $item['WishlistCounter']
+                  $item['WishlistCounter'],
+                  $item['Timestamp']
               );
           }
 
@@ -62,7 +65,7 @@
 
       static function searchItems(PDO $db, string $search, array $categories, array $conditions, string $min, string $max, string $order, int $limit): array {
           $sql = 'SELECT DISTINCT ITEM.ItemId, UserId, Title, Price, Description, Condition, 
-            Size, Brand, ImagePath, WishlistCounter
+            Size, Brand, ImagePath, WishlistCounter, Timestamp
             FROM ITEM';
 
           if (!empty($categories)) {
@@ -129,14 +132,15 @@
                   $item['Size'],
                   $item['Brand'],
                   $item['ImagePath'],
-                  $item['WishlistCounter']
+                  $item['WishlistCounter'],
+                  $item['Timestamp']
               );
           }
           return $items;
       }
 
       static function getItem(PDO $db, int $id) : Item {
-        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter FROM ITEM WHERE ItemId = ?');
+        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter, Timestamp ITEM WHERE ItemId = ?');
         $stmt->execute(array($id));
 
         $item = $stmt->fetch();
@@ -151,7 +155,8 @@
             $item['Size'],
             $item['Brand'],
             $item['ImagePath'],
-            $item['WishlistCounter']
+            $item['WishlistCounter'],
+            $item['Timestamp']
         );
       }
 
@@ -164,7 +169,7 @@
 
       static function getItemSuggestions(PDO $db, string $text) {
         $searchTerm = "%$text%";
-        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter FROM ITEM WHERE Title LIKE ? OR Description LIKE ? OR Brand LIKE ? LIMIT 5');
+        $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter, Timestamp FROM ITEM WHERE Title LIKE ? OR Description LIKE ? OR Brand LIKE ? LIMIT 5');
         $stmt->execute(array($searchTerm, $searchTerm, $searchTerm));
 
         $items = array();
@@ -179,7 +184,8 @@
                 $item['Size'],
                 $item['Brand'],
                 $item['ImagePath'],
-                $item['WishlistCounter']
+                $item['WishlistCounter'],
+                $item['Timestamp']
               );
           }
 
@@ -188,7 +194,7 @@
 
       static function getAdds(PDO $db, int $userId,int $count,int $offset) : array {
           $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, 
-            Size, Brand, ImagePath, WishlistCounter FROM ITEM WHERE UserId = ? LIMIT ? OFFSET ?');
+            Size, Brand, ImagePath, WishlistCounter, Timestamp FROM ITEM WHERE UserId = ? ORDER BY Timestamp LIMIT ? OFFSET ?');
           $stmt->execute(array($userId, $count, $offset));
 
           $items = array();
@@ -203,7 +209,8 @@
                   $item['Size'],
                   $item['Brand'],
                   $item['ImagePath'],
-                  $item['WishlistCounter']
+                  $item['WishlistCounter'],
+                  $item['Timestamp']
               );
           }
 
@@ -212,7 +219,7 @@
 
       static function getWishlist(PDO $db, int $userId,int $count,int $offset) : array {
           $stmt = $db->prepare('SELECT ITEM.ItemId, ITEM.UserId, Title, Price, Description, Condition, 
-            Size, Brand, ImagePath, WishlistCounter FROM ITEM JOIN WISHLIST ON ITEM.ItemId = WISHLIST.ItemId 
+            Size, Brand, ImagePath, WishlistCounter, Timestamp FROM ITEM JOIN WISHLIST ON ITEM.ItemId = WISHLIST.ItemId 
             WHERE WISHLIST.UserId = ? LIMIT ? OFFSET ?');
           $stmt->execute(array($userId, $count, $offset));
 
@@ -228,13 +235,13 @@
                   $item['Size'],
                   $item['Brand'],
                   $item['ImagePath'],
-                  $item['WishlistCounter']
+                  $item['WishlistCounter'],
+                  $item['Timestamp']
               );
           }
 
           return $items;
       }
-
 
   }
 

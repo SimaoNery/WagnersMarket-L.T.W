@@ -7,10 +7,10 @@ class Review {
     public int $sellerId;
     public int $rating;
     public string $review;
-    public DateTime $timestamp;
+    public string $timestamp;
 
 
-    public function __construct(int $reviewId, int $buyerId, int $sellerId, int $rating, string $review, DateTime $timestamp)
+    public function __construct(int $reviewId, int $buyerId, int $sellerId, int $rating, string $review, string $timestamp)
     {
        $this->reviewId = $reviewId;
        $this->buyerId = $buyerId;

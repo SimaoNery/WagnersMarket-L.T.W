@@ -12,15 +12,16 @@ require_once(__DIR__ . '/../templates/item.tpl.php');
 require_once(__DIR__ . '/../templates/profile.tpl.php');
 
 
-$limit = 8;
+$limit = 4;
 $offset = 0;
 $userId = intval($_GET['id']);
 $db = getDatabaseConnection();
 $items = Item::getAdds($db, $userId, $limit, $offset);
+$numItems = Item::getNumItems($db);
 
 drawHeader();
 drawProfileBody("your-adds", $userId);
 drawItems("",$items);
-// add draw pagination
+drawPagination(intval(ceil($numItems / $limit)));
 drawFooter();
 ?>

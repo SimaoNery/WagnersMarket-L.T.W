@@ -146,10 +146,10 @@ require_once(__DIR__ . '/../database/category.class.php');
     <form id="filters">
         <fieldset id="price-range">
             <legend>Price Range</legend>
-            <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= $maxPrice?>"></label>
-            <label>Max: <input type="number" id="max-input" value = "<?=$maxPrice?>" min="0" max="<?=$maxPrice?>"></label>
-            <input type="range" id="min-range" min="0" max="<?=$maxPrice?>" value="0" step="1">
-            <input type="range" id="max-range" min="0" max="<?=$maxPrice?>" value="<?=$maxPrice?>" step="1">
+            <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= intval(ceil($maxPrice))?>"></label>
+            <label>Max: <input type="number" id="max-input" value = "<?=intval(ceil($maxPrice))?>" min="0" max="<?=intval(ceil($maxPrice))?>"></label>
+            <input type="range" id="min-range" min="0" max="<?=intval(ceil($maxPrice))?>" value="0" step="1">
+            <input type="range" id="max-range" min="0" max="<?=intval(ceil($maxPrice))?>" value="<?=intval(ceil($maxPrice))?>" step="1">
         </fieldset>
         <fieldset id="category">
             <legend>Category</legend>
