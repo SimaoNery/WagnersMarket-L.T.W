@@ -4,6 +4,7 @@ const itemsPerPageContainer = document.querySelector('#itemsPerPage');
 let limit = 4;
 let offset = 0;
 
+
 if (paginationContainer) {
     paginationContainer.addEventListener('click', function(event) {
         if (event.target.tagName === 'BUTTON') {

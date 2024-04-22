@@ -1,16 +1,20 @@
 let suggestionsContainer = document.querySelector("#suggestions");
 let searchBarContainer = document.querySelector("#search-bar");
+let inputSearch = document.querySelector("#searchitem");
 let inputText = "";
 
-document.addEventListener("input", function (event) {
-    inputText = event.target.value.trim();
-    if (inputText.length == 0) {
-        suggestionsContainer.innerHTML = "";
-        return;
-    }
 
-    renderSuggestions(inputText);
-});
+if (inputSearch) {
+    inputSearch.addEventListener("input", function (event) {
+        inputText = event.target.value.trim();
+        if (inputText.length == 0) {
+            suggestionsContainer.innerHTML = "";
+            return;
+        }
+    
+        renderSuggestions(inputText);
+    });
+}
 
 function renderSuggestions(suggestions) {
     const xhr = new XMLHttpRequest();
