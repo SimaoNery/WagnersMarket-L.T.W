@@ -166,7 +166,7 @@
         $searchTerm = "%$text%";
         $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, Size, Brand, ImagePath, WishlistCounter FROM ITEM WHERE Title LIKE ? OR Description LIKE ? OR Brand LIKE ? LIMIT 5');
         $stmt->execute(array($searchTerm, $searchTerm, $searchTerm));
-        
+
         $items = array();
           while ($item = $stmt->fetch()) {
               $items[] = new Item(
@@ -185,6 +185,57 @@
 
           return $items;
       }
+
+      static function getAdds(PDO $db, int $userId,int $count,int $offset) : array {
+          $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, 
+            Size, Brand, ImagePath, WishlistCounter FROM ITEM WHERE UserId = ? LIMIT ? OFFSET ?');
+          $stmt->execute(array($userId, $count, $offset));
+
+          $items = array();
+          while ($item = $stmt->fetch()) {
+              $items[] = new Item(
+                  $item['ItemId'],
+                  $item['UserId'],
+                  $item['Title'],
+                  $item['Price'],
+                  $item['Description'],
+                  $item['Condition'],
+                  $item['Size'],
+                  $item['Brand'],
+                  $item['ImagePath'],
+                  $item['WishlistCounter']
+              );
+          }
+
+          return $items;
+      }
+
+      static function getWishlist(PDO $db, int $userId,int $count,int $offset) : array {
+          $stmt = $db->prepare('SELECT ITEM.ItemId, ITEM.UserId, Title, Price, Description, Condition, 
+            Size, Brand, ImagePath, WishlistCounter FROM ITEM JOIN WISHLIST ON ITEM.ItemId = WISHLIST.ItemId 
+            WHERE WISHLIST.UserId = ? LIMIT ? OFFSET ?');
+          $stmt->execute(array($userId, $count, $offset));
+
+          $items = array();
+          while ($item = $stmt->fetch()) {
+              $items[] = new Item(
+                  $item['ItemId'],
+                  $item['UserId'],
+                  $item['Title'],
+                  $item['Price'],
+                  $item['Description'],
+                  $item['Condition'],
+                  $item['Size'],
+                  $item['Brand'],
+                  $item['ImagePath'],
+                  $item['WishlistCounter']
+              );
+          }
+
+          return $items;
+      }
+
+
   }
 
 ?>
