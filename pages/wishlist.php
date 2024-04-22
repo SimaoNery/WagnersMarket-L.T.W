@@ -18,7 +18,7 @@ $userId = intval($_GET['id']);
 $db = getDatabaseConnection();
 $items = Item::getWishlist($db, $userId, $limit, $offset);
 
-drawHeader();
+drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
 drawItems("",$items);
 // add draw pagination

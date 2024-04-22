@@ -18,7 +18,7 @@ $userId = intval($_GET['id']);
 $db = getDatabaseConnection();
 $items = Item::getAdds($db, $userId, $limit, $offset);
 
-drawHeader();
+drawHeader($db, $session);
 drawProfileBody("your-adds", $userId);
 drawItems("",$items);
 // add draw pagination

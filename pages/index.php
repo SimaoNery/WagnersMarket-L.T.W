@@ -22,7 +22,7 @@ $categories = Category::getCategories($db);
 $items = Item::getItems($db, $limit, $offset);
 $numItems = Item::getNumItems($db);
 
-drawHeader($session);
+drawHeader($db, $session);
 drawHomeBody();
 drawCategories($categories);
 drawItems("Most popular", $items);

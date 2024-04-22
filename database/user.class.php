@@ -119,6 +119,13 @@
     return $stmt->rowCount() == 1;
   } 
 
+  static function getImgPath(PDO $db, int $id) : string {
+    $stmt = $db->prepare('SELECT ProfilePic FROM USER WHERE UserId = ?');
+    $stmt->execute(array($id));
+
+    return $stmt->fetchColumn();
   }
+
+}
 ?>
 

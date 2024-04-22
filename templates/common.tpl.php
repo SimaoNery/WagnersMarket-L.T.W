@@ -2,7 +2,7 @@
 declare(strict_types=1);
 ?>
 
-<?php function drawHeader(Session $session)
+<?php function drawHeader(PDO $db, Session $session)
 { ?>
     <!DOCTYPE html>
     <html lang="en-US">
@@ -37,7 +37,7 @@ declare(strict_types=1);
                         <a href="profile.php">Profile</a>
                         <?php
                         if ($session->isLoggedIn())
-                            drawProfileForm($session);
+                            drawProfileForm($db, $session);
                         else
                             drawLoginAndSignUpForm();
                         ?>
@@ -79,10 +79,26 @@ declare(strict_types=1);
         </section>
     <?php } ?>
 
-    <?php function drawProfileForm(Session $session)
-    { ?>
-    
-    <?php } ?>
+    <?php
+function drawProfileForm(PDO $db, Session $session)
+{ ?>
+    <section class="profile" id="profile">
+        <section id="user_logged">
+            <img src="<?= User::getImgPath($db, $session->getId()) ?>" style="width: 50px; height: 50px;">
+            <h4><?= $session->getName()?></h4>
+        </section>
+        <nav class="signup">
+            <a>Your Adds</a>
+            <a>Messages</a>
+            <a>Personal Information</a>
+            <a>Reviews</a>
+        </nav>
+        <form action="../actions/action_logout.php" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </section>
+<?php } ?>
+
 
     <?php function drawFooter()
     { ?>
