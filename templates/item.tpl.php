@@ -77,24 +77,20 @@ require_once(__DIR__ . '/../database/category.class.php');
                     </li>
 
                     <li id="wishlist">
-                            <?php if (Item::isInWishlist($db, $session->getId(), $item->itemId)) : ?>
-                        <form id="removeFromWishlist" action="../actions/action_remove_from_wishlist.php?id=<?= $item->itemId ?>" method="post">
-                                <button id="wishlistButton" class="add-to-wishlist-button">
-                                    <i class="fa-solid fa-heart"></i>
-                                </button>
-                        </form>
-                            <?php else : ?>
-                        <form id="addToWishlist" action="../actions/action_add_to_wishlist.php?id=<?= $item->itemId ?>" method="post">
-                                <button class="add-to-wishlist-button">
-                                    <i id="wishlistIcon" class="fa-regular fa-heart"></i>
-                                </button>
-                        </form>
-                            <?php endif; ?>
+                        <?php if (Item::isInWishlist($db, $session->getId(), $item->itemId)) : ?>
+                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>)">
+                                <i id="wishlistIcon" class="fa-solid fa-heart"></i>
+                            </button>
+                        <?php else : ?>
+                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>)">
+                                <i id="wishlistIcon" class="fa-regular fa-heart"></i>
+                            </button>
+                        <?php endif; ?>
                     </li>
 
                     <li id="bag">
                         <button class="add-to-bag-button">
-                            <i class="fa-solid fa-bag-shopping"></i> Add To Bag
+                            <i id="wishlistIcon" class="fa-solid fa-bag-shopping"></i> Add To Bag
                         </button>
                     </li>
                 </ul>

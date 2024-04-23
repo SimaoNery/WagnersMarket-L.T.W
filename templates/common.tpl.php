@@ -115,6 +115,7 @@ function drawProfileForm(PDO $db, Session $session)
         <script src="../javascript/imagesLogic.js" defer></script>
         <script src="../javascript/script.js" defer></script>
         <script src="../javascript/suggestion.js"></script>
+        <script src="../javascript/wishlistButton.js"></script>
     </body>
 
     </html>

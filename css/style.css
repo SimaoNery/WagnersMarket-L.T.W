@@ -524,21 +524,21 @@ footer ul li:last-child a{
         margin-right: 275px;
     }
 
-    .add-to-wishlist-button {
+    .wishlist-button {
         background: none;
         border: none;
         padding: 0;
         cursor: pointer;
     }
 
-    .add-to-wishlist-button i {
+    .wishlist-button i {
         font-size: 27px;
         color: rgba(255, 0, 0, 0.3);
         transition: color 0.3s ease;
         margin-right: 10px;
     }
 
-    .add-to-wishlist-button:hover i {
+    .wishlist-button:hover i {
         color: rgba(255, 0, 0, 0.6);
     }
 
