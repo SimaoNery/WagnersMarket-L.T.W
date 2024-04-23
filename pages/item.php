@@ -14,7 +14,7 @@ $db = getDatabaseConnection();
 
 $item = Item::getItem($db, intval($_GET['id']));
 
-drawHeader();
+drawHeader($session);
 drawItem($item, $db);
 drawFooter();
 ?>

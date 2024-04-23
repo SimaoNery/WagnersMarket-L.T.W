@@ -75,11 +75,15 @@ require_once(__DIR__ . '/../database/category.class.php');
                     <li>
                         <?=number_format($item->price, 2)?>€
                     </li>
+
                     <li id="wishlist">
-                        <button class="add-to-wishlist-button">
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
+                        <form action="../actions/action_add_to_wishlist.php" method="post">
+                            <button class="add-to-wishlist-button">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        </form>
                     </li>
+
                     <li id="bag">
                         <button class="add-to-bag-button">
                             <i class="fa-solid fa-bag-shopping"></i> Add To Bag

@@ -12,4 +12,8 @@
         }
     }
 
+    static function addToWishlist(PDO $db, int $userId, int $itemId) {
+        $stmt = $db->prepare("INSERT INTO WISHLIST (userId, itemId) VALUES (?, ?)");
+    }
+
 ?>

@@ -797,3 +797,8 @@ section.login button {
 #chk:checked ~ .signup label{
     transform: scale(.6);
 }
+
+nav#profile-pages {
+    margin-top: 5%;
+    position: relative;
+}

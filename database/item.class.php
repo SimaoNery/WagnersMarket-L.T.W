@@ -34,6 +34,12 @@
           $stmt->execute();
           return (int) $stmt->fetch(PDO::FETCH_COLUMN, 0);
       }
+
+      static function getNumItemsWishlist(PDO $db, int $userId): int {
+        $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM JOIN WISHLIST ON ITEM.ItemId = WISHLIST.ItemId WHERE WISHLIST.UserId = ? ');
+        $stmt->execute(array($userId));
+        return (int) $stmt->fetch(PDO::FETCH_COLUMN, 0);
+      }
   
 
       static function getItems(PDO $db, int $count,int $offset) : array {

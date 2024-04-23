@@ -34,7 +34,7 @@ declare(strict_types=1);
 
                     <li><a href="#">Sell</a></li>
                     <li>
-                        <a href="profile.php">Profile</a>
+                        <a href="../pages/profile.php?id=<?= $user ?>">Profile</a>
                         <?php
                         if ($session->isLoggedIn())
                             drawProfileForm($session);
@@ -42,9 +42,9 @@ declare(strict_types=1);
                             drawLoginAndSignUpForm();
                         ?>
                     </li>
-                    <li><a href="messages.php">Messages</a></li>
-                    <li><a href="wishlist.php"><i class="fas fa-heart"></i></a></li>
-                    <li><a href="shopping-bag.php"><i class="fas fa-shopping-bag"></i></a></li>
+                    <li><a href="../pages/messages.php?id=<?= $user ?>">Messages</a></li>
+                    <li><a href="../pages/wishlist.php?id=<?= $user ?>"><i class="fas fa-heart"></i></a></li>
+                    <li><a href="../pages/shopping-bag.php?id=<?= $user ?>"><i class="fas fa-shopping-bag"></i></a></li>
 
                 </ul>
             </section>

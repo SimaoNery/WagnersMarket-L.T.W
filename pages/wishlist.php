@@ -4,6 +4,10 @@ declare(strict_types = 1);
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
+if(!$session->isLoggedIn()) {
+    //SENDS A POPUP -> PAULO IS DOING
+}
+
 require_once(__DIR__ . '/../database/connection.db.php');
 require_once(__DIR__ . '/../database/item.class.php');
 
@@ -12,15 +16,17 @@ require_once(__DIR__ . '/../templates/item.tpl.php');
 require_once(__DIR__ . '/../templates/profile.tpl.php');
 
 
-$limit = 8;
+$limit = 4;
 $offset = 0;
-$userId = intval($_GET['id']);
 $db = getDatabaseConnection();
-$items = Item::getWishlist($db, $userId, $limit, $offset);
 
-drawHeader();
+$userId = $session->getId();
+$items = Item::getWishlist($db, $userId, $limit, $offset);
+$numItems = Item::getNumItemsWishlist($db, $userId);
+
+drawHeader($session);
 drawProfileBody("wishlist", $userId);
-drawItems("",$items);
-// add draw pagination
+drawItems("Wishlist",$items);
+drawPagination(intval(ceil($numItems / $limit))); //PAGINATION SEARCHING FOR MOST POPULAR
 drawFooter();
 ?>
