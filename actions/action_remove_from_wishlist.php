@@ -1,10 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
-if(!$session->isLoggedIn()) {
+if (!$session->isLoggedIn()) {
     //SENDS A POPUP -> PAULO IS DOING
 }
 
@@ -17,18 +17,14 @@ $userId = $session->getId();
 $limit = 4;
 $offset = 0;
 
-$newItem = Item::getItem($db, intval($_GET['id']));
+$chosenItem = Item::getItem($db, intval($_GET['id']));
 
 
-if(Wishlist::addToWishlist($db, $userId, $newItem->itemId)) {
-    $session->addMessage('success', 'Item Added Successfully To Wishlist!');
+if (Wishlist::removeFromWishlist($db, $userId, $chosenItem->itemId)) {
+    $session->addMessage('success', 'Item Removed Successfully From Wishlist!');
+} else {
+    $session->addMessage('error', 'Item Not Removed From Wishlist!');
 }
 
-else {
-    $session->addMessage('error', 'Item Not Added To Wishlist!');
-}
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
-
-?>

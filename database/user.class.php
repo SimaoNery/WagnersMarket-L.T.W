@@ -42,7 +42,6 @@
       $stmt = $db->prepare('SELECT UserId, Name, Username, ProfilePic, Password, Email, Admin FROM USER WHERE Username = ?');
 
       $stmt->execute(array($username));
-      $user = $stmt->fetch();
 
       if ($user = $stmt->fetch()) {
         $admin = $user['Admin'] == 1 ? true : false;

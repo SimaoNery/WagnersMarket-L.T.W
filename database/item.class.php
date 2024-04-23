@@ -241,7 +241,14 @@
           return $items;
       }
 
+      static function isInWishlist(PDO $db, int $userId, int $itemId) : bool {
+        $stmt = $db->prepare('SELECT COUNT(*) FROM WISHLIST WHERE UserId = ? AND ItemId = ?');
+        $stmt->execute(array($userId, $itemId));
 
+        $count = $stmt->fetchColumn();
+
+        return $count > 0;
+      }
   }
 
 ?>

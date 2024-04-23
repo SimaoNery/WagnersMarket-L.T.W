@@ -49,7 +49,7 @@ require_once(__DIR__ . '/../database/category.class.php');
     </div>
 <?php } ?>
 
-<?php function drawItem(Item $item, PDO $db) { ?>
+<?php function drawItem(Item $item, PDO $db, Session $session) { ?>
     <section class="row">
         <section id="images" class="col-2">
             <?php
@@ -77,11 +77,19 @@ require_once(__DIR__ . '/../database/category.class.php');
                     </li>
 
                     <li id="wishlist">
-                        <form action="../actions/action_add_to_wishlist.php" method="post">
-                            <button class="add-to-wishlist-button">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
+                            <?php if (Item::isInWishlist($db, $session->getId(), $item->itemId)) : ?>
+                        <form id="removeFromWishlist" action="../actions/action_remove_from_wishlist.php?id=<?= $item->itemId ?>" method="post">
+                                <button id="wishlistButton" class="add-to-wishlist-button">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
                         </form>
+                            <?php else : ?>
+                        <form id="addToWishlist" action="../actions/action_add_to_wishlist.php?id=<?= $item->itemId ?>" method="post">
+                                <button class="add-to-wishlist-button">
+                                    <i id="wishlistIcon" class="fa-regular fa-heart"></i>
+                                </button>
+                        </form>
+                            <?php endif; ?>
                     </li>
 
                     <li id="bag">
