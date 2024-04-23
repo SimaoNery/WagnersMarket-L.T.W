@@ -16,7 +16,7 @@ require_once(__DIR__ . '/../templates/item.tpl.php');
 require_once(__DIR__ . '/../templates/profile.tpl.php');
 
 
-$limit = 4;
+$limit = 8;
 $offset = 0;
 $db = getDatabaseConnection();
 
@@ -24,7 +24,7 @@ $userId = $session->getId();
 $items = Item::getWishlist($db, $userId, $limit, $offset);
 $numItems = Item::getNumItemsWishlist($db, $userId);
 
-drawHeader($session);
+drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
 drawItems("Wishlist",$items);
 drawPagination(intval(ceil($numItems / $limit))); //PAGINATION SEARCHING FOR MOST POPULAR
