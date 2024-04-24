@@ -23,7 +23,7 @@ class User
 
     static function getUser(PDO $db, int $id): User
     {
-        $stmt = $db->prepare('SELECT UserId, Name, Username, ProfilePic, Password, Email, Admin FROM USER WHERE UserId = ?');
+        $stmt = $db->prepare('SELECT * FROM USER WHERE UserId = ?');
 
         $stmt->execute(array($id));
         $user = $stmt->fetch();
@@ -42,7 +42,7 @@ class User
 
     static function getUserByUsername(PDO $db, string $username): ?User
     {
-        $stmt = $db->prepare('SELECT UserId, Name, Username, ProfilePic, Password, Email, Admin FROM USER WHERE Username = ?');
+        $stmt = $db->prepare('SELECT * FROM USER WHERE Username = ?');
 
         $stmt->execute(array($username));
 
@@ -54,7 +54,6 @@ class User
                 $user['Name'],
                 $user['Username'],
                 $user['ProfilePic'],
-                $user['Password'],
                 $user['Email'],
                 $admin
             );
@@ -76,7 +75,6 @@ class User
                 $user['Name'],
                 $user['Username'],
                 $user['ProfilePic'],
-                $user['Password'],
                 $user['Email'],
                 $admin
             );
@@ -95,14 +93,16 @@ class User
     static function getUserWithPassword(PDO $db, string $email, string $password): ?User
     {
         $stmt = $db->prepare('
-            SELECT UserId, Name, Username, ProfilePic, Email, Admin 
+            SELECT * 
             FROM USER 
-            WHERE lower(email) = ? AND password = ?
+            WHERE email = ?
           ');
 
-        $stmt->execute(array(strtolower($email), sha1($password)));
+        $stmt->execute(array(strtolower($email)));
 
-        if ($user = $stmt->fetch()) {
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($password, $user['password'])) {
             $admin = $user['Admin'] == 1 ? true : false;
             return new User(
                 $user['UserId'],
@@ -117,9 +117,10 @@ class User
 
     static function addUser(PDO $db, int $id, string $name, string $username, string $email, string $password): bool
     {
+        $options = $options = ['cost' => 12];
         $stmt = $db->prepare('INSERT INTO USER (UserId, Name, Username, ProfilePic, Password, Email) VALUES (?, ?, ?, ?, ?, ?)');
 
-        $stmt->execute(array($id, $name, $username, '../profile_pictures/profile_pic1.png', sha1($password), strtolower($email)));
+        $stmt->execute(array($id, $name, $username, '../profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
 
         return $stmt->rowCount() == 1;
     }

@@ -50,6 +50,13 @@ class Session
     {
         return $this->messages;
     }
+
+    public function setToken()
+    {
+        if (!isset($_SESSION['csrf'])) {
+            $_SESSION['csrf'] = openssl_random_pseudo_bytes(32);
+        }
+    }
 }
 
 ?>

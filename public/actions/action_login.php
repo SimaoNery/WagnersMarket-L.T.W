@@ -14,6 +14,7 @@ $customer = User::getUserWithPassword($db, $_POST['email'], $_POST['password']);
 if ($customer) {
     $session->setId($customer->userId);
     $session->setName($customer->name);
+    $session->setToken();
     $session->addMessage('success', 'Login successful!');
 } else {
     $session->addMessage('error', 'Wrong credentials!');
