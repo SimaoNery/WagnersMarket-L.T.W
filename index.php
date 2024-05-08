@@ -1,4 +1,3 @@
 <?php
-    header('Location: pages');
-
+    header('Location: public/pages');
 ?>
