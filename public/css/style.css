@@ -874,9 +874,21 @@ button[type="submit"]:hover {
     background-color: rgb(255, 224, 23);
 }
 
-nav#profile-pages {
-    margin-top: 5%;
+.profile-pages {
+    margin-top: 7%;
     position: relative;
+
+    a {
+        margin-left: 2%;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        font-size: 20px;
+        margin-right: 7%;
+    }
+
+    .highlighted {
+        color: #100c1e;
+    }
 }
 
 body:has(#filters) {
@@ -950,5 +962,19 @@ body:has(#filters) {
         outline: none;
         padding-bottom: 6px;
     }
-
 }
+
+#emptyWishlist{
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#emptyYourAdds{
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+

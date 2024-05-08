@@ -46,6 +46,12 @@ class Item
         return (int)$stmt->fetch(PDO::FETCH_COLUMN, 0);
     }
 
+    static function getNumAdds(PDO $db, int $userId): int
+    {
+        $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM WHERE UserId = ?');
+        $stmt->execute(array($userId));
+        return (int)$stmt->fetch(PDO::FETCH_COLUMN, 0);
+    }
 
     static function getMostPopularItems(PDO $db, int $count, int $offset): array
     {
@@ -209,7 +215,8 @@ class Item
     static function getAdds(PDO $db, int $userId, int $count, int $offset): array
     {
         $stmt = $db->prepare('SELECT ItemId, UserId, Title, Price, Description, Condition, 
-            Size, Brand, ImagePath, WishlistCounter, Timestamp FROM ITEM WHERE UserId = ? LIMIT ? OFFSET ?');
+            Size, Brand, ImagePath, WishlistCounter, Timestamp FROM ITEM WHERE UserId = ? 
+            ORDER BY ITEM.Timestamp DESC LIMIT ? OFFSET ?');
         $stmt->execute(array($userId, $count, $offset));
 
         $items = array();
@@ -268,6 +275,18 @@ class Item
         $count = $stmt->fetchColumn();
 
         return $count > 0;
+    }
+
+    static function incrementWishlistCounter(PDO $db, int $itemId): void
+    {
+        $stmt = $db->prepare('UPDATE ITEM SET WishlistCounter = WishlistCounter + 1 WHERE ItemId = ?');
+        $stmt->execute(array($itemId));
+    }
+
+    static function decrementWishlistCounter(PDO $db, int $itemId): bool
+    {
+        $stmt = $db->prepare('UPDATE ITEM SET WishlistCounter = WishlistCounter - 1 WHERE ItemId = ? AND WishlistCounter > 0');
+        return $stmt->execute([$itemId]);
     }
 }
 

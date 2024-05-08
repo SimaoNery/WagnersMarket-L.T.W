@@ -21,10 +21,9 @@ $newItem = Item::getItem($db, intval($_GET['id']));
 
 
 if(Wishlist::addToWishlist($db, $userId, $newItem->itemId)) {
+    Item::incrementWishlistCounter($db, $newItem->itemId);
     $session->addMessage('success', 'Item Added Successfully To Wishlist!');
-}
-
-else {
+} else {
     $session->addMessage('error', 'Item Not Added To Wishlist!');
 }
 
