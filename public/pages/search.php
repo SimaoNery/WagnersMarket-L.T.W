@@ -14,7 +14,7 @@ $limit = 16;
 $offset = 0;
 
 $db = getDatabaseConnection();
-$items = Item::getItems($db, $limit, $offset);
+$items = Item::getMostPopularItems($db, $limit, $offset);
 $numItems = Item::getNumItems($db);
 $maxPrice = Item::getMaxPrice($db);
 

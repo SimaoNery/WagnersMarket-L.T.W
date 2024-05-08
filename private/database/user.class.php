@@ -102,25 +102,29 @@ class User
 
         $user = $stmt->fetch();
 
-        if ($user && password_verify($password, $user['password'])) {
-            $admin = $user['Admin'] == 1 ? true : false;
-            return new User(
-                $user['UserId'],
-                $user['Name'],
-                $user['Username'],
-                $user['ProfilePic'],
-                $user['Email'],
-                $admin
-            );
-        } else return null;
+        if ($user != null) {
+            if (password_verify($password, $user['Password'])) {
+                $admin = $user['Admin'] == 1 ? true : false;
+
+                return new User(
+                    $user['UserId'],
+                    $user['Name'],
+                    $user['Username'],
+                    $user['ProfilePic'],
+                    $user['Email'],
+                    $admin
+                );
+            }
+        }
+        return null;
     }
 
     static function addUser(PDO $db, int $id, string $name, string $username, string $email, string $password): bool
     {
-        $options = $options = ['cost' => 12];
+        $options = ['cost' => 12];
         $stmt = $db->prepare('INSERT INTO USER (UserId, Name, Username, ProfilePic, Password, Email) VALUES (?, ?, ?, ?, ?, ?)');
 
-        $stmt->execute(array($id, $name, $username, '../profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
+        $stmt->execute(array($id, $name, $username, '../../public/profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
 
         return $stmt->rowCount() == 1;
     }

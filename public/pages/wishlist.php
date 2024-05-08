@@ -33,7 +33,7 @@ if($numItems === 0) { ?>
 <?php } ?>
 
 <?php
-drawPagination(intval(ceil($numItems / $limit))); //PAGINATION SEARCHING FOR MOST POPULAR
+drawPagination(intval(ceil($numItems / $limit)), "wishlist");
 drawFooter();
 ?>
 

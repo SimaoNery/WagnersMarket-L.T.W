@@ -18,8 +18,8 @@ try {
     $limit = isset($_GET['limit']) ? intval($_GET['limit']) : null;
     $offset = isset($_GET['offset']) ? intval($_GET['offset']) : null;
 
-    $numItems = Item::getNumItems($db);
-    $items = Item::getMostPopularItems($db, $limit, $offset);
+    $numItems = Item::getNumItemsWishlist($db, $session->getId());
+    $items = Item::getWishlist($db, $session->getId() ,$limit, $offset);
 
     $finalResponse = [
         'items' => $items,

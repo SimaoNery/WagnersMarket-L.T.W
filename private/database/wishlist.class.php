@@ -17,7 +17,8 @@ class Wishlist
         $stmt = $db->prepare("INSERT INTO WISHLIST (userId, itemId) VALUES (?, ?)");
         $stmt->execute(array($userId, $itemId));
 
-        return $stmt->rowCount() > 0; //Just to see if the item is added or not
+
+        return $stmt->rowCount() > 0;
     }
 
     static function removeFromWishlist(PDO $db, int $userId, int $itemId)

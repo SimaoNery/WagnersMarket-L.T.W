@@ -1,4 +1,4 @@
-const paginationContainer = document.querySelector('#pagination');
+const paginationContainer = document.querySelector('.pagination');
 const itemsPerPageContainer = document.querySelector('#itemsPerPage');
 
 let limit = 4;
@@ -20,24 +20,31 @@ if (paginationContainer) {
     
             offset = (pageNumber - 1) * limit;
     
-            fetchMostPopularItems(limit, offset);
+            fetchItems(limit, offset, paginationContainer.id);
         }
     });
 }
 
 if (itemsPerPageContainer) {
     itemsPerPageContainer.addEventListener('change', function(event) {
+        let selectedPage = offset / limit;
         limit = parseInt(itemsPerPageContainer.value);
 
-        fetchMostPopularItems(limit, offset);
+        fetchItems(limit, offset, paginationContainer.id);
     });
 }
 
 
 
-function fetchMostPopularItems(limit, offset) {
+function fetchItems(limit, offset, searchType) {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', `../api/api_dennis.php?limit=${limit}&offset=${offset}`, true);
+    switch(searchType) {
+        case "most_popular":
+            xhr.open('GET', `../api/api_dennis.php?limit=${limit}&offset=${offset}`, true);
+            break;
+        case "wishlist":
+            xhr.open('GET', `../api/api_wishlist.php?limit=${limit}&offset=${offset}`, true);
+    }
 
     xhr.onload = function() {
         if (xhr.status >= 200 && xhr.status < 400) {

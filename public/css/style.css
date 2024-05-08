@@ -878,3 +878,77 @@ nav#profile-pages {
     margin-top: 5%;
     position: relative;
 }
+
+body:has(#filters) {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-template-areas: "header header"
+                         "searchbar searchbar"
+                         "order order"
+                         "filters items"
+                         "footer footer";
+
+    header {
+        grid-area: header;
+    }
+
+    #filters {
+        grid-area: filters;
+    }
+    #order {
+        grid-area: order;
+    }
+    #searchItems {
+        grid-area: searchbar;
+    }
+    #it {
+        grid-area: items;
+    }
+
+    footer {
+        grid-area: footer;
+    }
+
+}
+
+#filters {
+    font-family: 'Open Sans', sans-serif;
+    background: rgb(255, 242, 159);;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%;
+
+    legend {
+        font-size: 1.3em;
+    }
+
+    label:has(input[type="checkbox"]){
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #555;
+        border-radius: 4px;
+        background-color: #fff;
+        outline: none;
+        cursor: pointer;
+    }
+
+    fieldset {
+        display: grid;
+        margin: 10px;
+        border: none;
+        border-bottom: 2px solid #ccc;
+        box-shadow: none;
+        outline: none;
+        padding-bottom: 6px;
+    }
+
+}

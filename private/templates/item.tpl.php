@@ -10,43 +10,44 @@ require_once(__DIR__ . '/../database/category.class.php');
 
 <?php function drawItems(string $header, array $items): void
 { ?>
-  <section id="categories">
-      <h2>
-          <?=$header?>
-      </h2>
-      <hr class="line-yellow">
-  </section>
-  <ul class="draw-items" id="draw-items">
-    <?php foreach($items as $item) { ?>
-      <li class="item-card">
-          <a href="../../public/pages/item.php?id=<?=$item->itemId?>">
-          <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
-          <h4><?=$item->title?></h4>
-              <p><?=number_format($item->price, 2)?>€</p>
-          </a>
-      </li>
-    <?php } ?>
-  </ul>
-
+        <section id="it">
+            <section id="categories">
+                <h2>
+                    <?=$header?>
+                </h2>
+                <hr class="line-yellow">
+            </section>
+            <ul class="draw-items" id="draw-items">
+                <?php foreach($items as $item) { ?>
+                    <li class="item-card">
+                        <a href="../../public/pages/item.php?id=<?=$item->itemId?>">
+                            <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
+                            <h4><?=$item->title?></h4>
+                            <p><?=number_format($item->price, 2)?>€</p>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </section>
 <?php }?>
 
-<?php function drawPagination(int $pages) { ?>
-    <div class="pagination-container">
-        <div class="pagination" id="pagination">
+<?php function drawPagination(int $pages, string $id) { ?>
+    <section class="pagination-container">
+        <section class="pagination" id="<?= $id ?>">
             <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
                 <button id="pagination-button" class="pagination-button"><?= $i ?></button>
             <?php } ?>
             <?php if ($pages > 4) { ?>
                 <button id="pagination-button" class="pagination-button">&#8594;</button>
             <?php } ?>
-    </div>
+        </section>
 
-    <select id="itemsPerPage">
-        <option value="4">4 per page</option>
-        <option value="8">8 per page</option>
-        <option value="16">16 per page</option>
-    </select>
-    </div>
+        <select id="itemsPerPage">
+            <option value="4">4 per page</option>
+            <option value="8">8 per page</option>
+            <option value="16">16 per page</option>
+        </select>
+    </section>
 <?php } ?>
 
 <?php function drawItem(Item $item, PDO $db, Session $session) { ?>
@@ -167,20 +168,20 @@ require_once(__DIR__ . '/../database/category.class.php');
         <fieldset id="category">
             <legend>Category</legend>
             <?php foreach($categories as $category) { ?>
-                <label><?= $category->categoryName ?></label><input type="checkbox" id="<?= $category->categoryName ?>"></label>
+                <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>"></label>
             <?php } ?>
         </fieldset>
         <fieldset id="condition">
             <legend>Condition</legend>
             <?php foreach($conditions as $condition) { ?>
-                <label><?= $condition->condition ?></label><input type="checkbox" id="<?= $condition->condition ?>"></label>
+                <label><?= $condition->condition ?><input type="checkbox" id="<?= $condition->condition ?>"></label>
             <?php } ?>
         </fieldset>
     </form>
 <?php } ?>
 
 <?php function drawItemSorter() { ?>
-    <label> Order By:
+    <label id="order"> Order By:
         <select id="orderSelected">
             <option value="popular" selected>Most Popular</option>
             <option value="asc">Price: Ascending</option>

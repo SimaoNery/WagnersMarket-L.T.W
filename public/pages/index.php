@@ -20,13 +20,13 @@ $offset = 0;
 $db = getDatabaseConnection();
 
 $categories = Category::getCategories($db);
-$items = Item::getItems($db, $limit, $offset);
+$items = Item::getMostPopularItems($db, $limit, $offset);
 $numItems = Item::getNumItems($db);
 
 drawHeader($db, $session);
 drawHomeBody();
 drawCategories($categories);
 drawItems("Most popular", $items);
-drawPagination(intval(ceil($numItems / $limit)));
+drawPagination(intval(ceil($numItems / $limit)), "most_popular");
 drawFooter();
 ?>
