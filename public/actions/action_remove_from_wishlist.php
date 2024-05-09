@@ -21,6 +21,7 @@ $chosenItem = Item::getItem($db, intval($_GET['id']));
 
 
 if (Wishlist::removeFromWishlist($db, $userId, $chosenItem->itemId)) {
+    Item::decrementWishlistCounter($db, $chosenItem->itemId);
     $session->addMessage('success', 'Item Removed Successfully From Wishlist!');
 } else {
     $session->addMessage('error', 'Item Not Removed From Wishlist!');

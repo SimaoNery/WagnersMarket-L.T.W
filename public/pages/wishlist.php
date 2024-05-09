@@ -26,14 +26,16 @@ $numItems = Item::getNumItemsWishlist($db, $userId);
 
 drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
-drawItems("Wishlist", $items);
+drawItems("Wishlist", $items, false);
 
 if($numItems === 0) { ?>
     <p id="emptyWishlist"> Your wishlist is empty!</p>
 <?php } ?>
 
 <?php
-drawPagination(intval(ceil($numItems / $limit)), "wishlist");
+if($numItems != 0) {
+    drawPagination(intval(ceil($numItems / $limit)), "wishlist");
+}
 drawFooter();
 ?>
 

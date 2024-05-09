@@ -27,7 +27,6 @@ if (paginationContainer) {
 
 if (itemsPerPageContainer) {
     itemsPerPageContainer.addEventListener('change', function(event) {
-        let selectedPage = offset / limit;
         limit = parseInt(itemsPerPageContainer.value);
 
         fetchItems(limit, offset, paginationContainer.id);
@@ -44,6 +43,10 @@ function fetchItems(limit, offset, searchType) {
             break;
         case "wishlist":
             xhr.open('GET', `../api/api_wishlist.php?limit=${limit}&offset=${offset}`, true);
+            break;
+        case "your_adds":
+            xhr.open('GET', `../api/api_yourAdds.php?limit=${limit}&offset=${offset}`, true);
+            break;
     }
 
     xhr.onload = function() {
