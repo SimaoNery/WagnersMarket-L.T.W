@@ -5,7 +5,7 @@
 ?>
 <?php function drawCategories(array $categories) { ?>
 
-    <section id="categories">
+    <section id="title">
         <h2>Categories</h2>
         <hr class="line-yellow"> 
 

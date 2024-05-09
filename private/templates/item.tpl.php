@@ -10,25 +10,23 @@ require_once(__DIR__ . '/../database/category.class.php');
 
 <?php function drawItems(string $header, array $items): void
 { ?>
-        <section id="it">
-            <section id="categories">
-                <h2>
-                    <?=$header?>
-                </h2>
-                <hr class="line-yellow">
-            </section>
-            <ul class="draw-items" id="draw-items">
-                <?php foreach($items as $item) { ?>
-                    <li class="item-card">
-                        <a href="../../public/pages/item.php?id=<?=$item->itemId?>">
-                            <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
-                            <h4><?=$item->title?></h4>
-                            <p><?=number_format($item->price, 2)?>€</p>
-                        </a>
-                    </li>
-                <?php } ?>
-            </ul>
+        <section id="title">
+            <h2>
+                <?=$header?>
+            </h2>
+            <hr class="line-yellow">
         </section>
+        <ul class="draw-items" id="draw-items">
+            <?php foreach($items as $item) { ?>
+                <li class="item-card">
+                    <a href="../../public/pages/item.php?id=<?=$item->itemId?>">
+                        <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
+                        <h4><?=$item->title?></h4>
+                        <p><?=number_format($item->price, 2)?>€</p>
+                    </a>
+                </li>
+            <?php } ?>
+        </ul>
 <?php }?>
 
 <?php function drawPagination(int $pages, string $id) { ?>
@@ -158,12 +156,22 @@ require_once(__DIR__ . '/../database/category.class.php');
     $conditions = Condition::getConditions($db);
     ?>
     <form id="filters">
-        <fieldset id="price-range">
+        <fieldset id="price">
             <legend>Price Range</legend>
-            <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= intval(ceil($maxPrice))?>"></label>
-            <label>Max: <input type="number" id="max-input" value = "<?=intval(ceil($maxPrice))?>" min="0" max="<?=intval(ceil($maxPrice))?>"></label>
-            <input type="range" id="min-range" min="0" max="<?=intval(ceil($maxPrice))?>" value="0" step="1">
-            <input type="range" id="max-range" min="0" max="<?=intval(ceil($maxPrice))?>" value="<?=intval(ceil($maxPrice))?>" step="1">
+            <section id ="number-input">
+                <label>Min: <input type="number" id="min-input" value = "0" min="0" max="<?= intval(ceil($maxPrice))?>"></label>
+                <label>Max: <input type="number" id="max-input" value = "<?=intval(ceil($maxPrice))?>" min="0" max="<?=intval(ceil($maxPrice))?>"></label>
+            </section>
+            <section id="price-range">
+                <section id="slider">
+                    <section id="progress"></section>
+                </section>
+
+                <section id="range-input">
+                    <input type="range" id="min-range" min="0" max="<?=intval(ceil($maxPrice))?>" value="0" step="1">
+                    <input type="range" id="max-range" min="0" max="<?=intval(ceil($maxPrice))?>" value="<?=intval(ceil($maxPrice))?>" step="1">
+                </section>
+            </section>
         </fieldset>
         <fieldset id="category">
             <legend>Category</legend>

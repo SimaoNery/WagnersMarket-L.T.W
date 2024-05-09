@@ -7,6 +7,8 @@ const minRange = document.querySelector('#min-range')
 const maxRange = document.querySelector('#max-range')
 const orderSelected = document.querySelector('#orderSelected')
 
+const range = document.querySelector("#slider #progress");
+
 
 let selectedCategories = []
 let selectedConditions = []
@@ -56,6 +58,7 @@ if (searchItem) {
 if (minInput) {
     minInput.addEventListener('change', async function() {
         minRange.value = this.value;
+        range.style.left = (this.value / this.max) * 100 + '%'
         if (parseInt(maxInput.value) < parseInt(this.value)) {
             maxInput.value = this.value
             maxRange.value = this.value
@@ -67,6 +70,7 @@ if (minInput) {
 if (minRange) {
     minRange.addEventListener('change', async function() {
         minInput.value = this.value;
+        range.style.left = (this.value / this.max) * 100 + '%'
         if (parseInt(maxInput.value) < parseInt(this.value)) {
             maxInput.value = this.value
             maxRange.value = this.value
@@ -78,6 +82,7 @@ if (minRange) {
 if (maxInput) {
     maxInput.addEventListener('change', async function() {
         maxRange.value = this.value;
+        range.style.right = 100 - (this.value / this.max) * 100 + '%'
         if (parseInt(minInput.value) > parseInt(this.value)) {
             minInput.value = this.value;
             minRange.value = this.value;
@@ -89,9 +94,11 @@ if (maxInput) {
 if (maxRange) {
     maxRange.addEventListener('change', async function() {
         maxInput.value = this.value;
+        range.style.right = 100 - (this.value / this.max) * 100 + '%'
         if (parseInt(minInput.value) > parseInt(this.value)) {
             minInput.value = this.value;
             minRange.value = this.value;
+
         }
         await getSearchResults()
     });
