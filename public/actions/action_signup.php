@@ -26,9 +26,7 @@ if (User::getUserByEmail($db, $email)) {
     return;
 }
 
-$maxId = User::getMaxId($db);
-
-if (User::addUser($db, $maxId + 1, $name, $username, $email, $password)) {
+if (User::addUser($db, $name, $username, $email, $password)) {
     $session->addMessage('success','Account created');
 }
 else {

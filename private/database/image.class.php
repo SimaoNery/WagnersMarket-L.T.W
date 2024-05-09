@@ -35,6 +35,15 @@ class Image
 
         return $images;
     }
+
+    static function addImage(PDO $db, int $itemId, string $imagePath): bool
+    {
+        $stmt = $db->prepare('INSERT INTO IMAGE (Path, ItemId) VALUES (?, ?)');
+
+        $stmt->execute(array($imagePath, $itemId));
+
+        return $stmt->rowCount() == 1;
+    }
 }
 
 ?>

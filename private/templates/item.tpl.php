@@ -48,22 +48,18 @@ require_once(__DIR__ . '/../database/category.class.php');
     </section>
 <?php } ?>
 
-<?php function drawItem(Item $item, PDO $db, Session $session) { ?>
+<?php function drawItem(Item $item, array $images, bool $loggedIn, bool $inWishList, $user) { ?>
     <section class="row">
         <section id="images" class="col-2">
-            <?php
-                $images = Image::getImages($db, $item->itemId);
-                $mainImage = $images[0];
-            ?>
 
             <div class="sideImagesContainer">
                     <?php foreach($images as $image) { ?>
-                        <img src="/<?= $image->path ?>" id="<?= $image->imageId ?>" class="sideImage">
+                        <img src="/<?= $image->path ?>" class="sideImage">
                     <?php } ?>
             </div>
 
             <div class="main_image">
-                <img src="/<?= $mainImage->path ?>" id="mainImage" data-id="<?= $mainImage->imageId ?>">
+                <img src="/<?= $item->imagePath ?>" id="mainImage">
             </div>
         </section>
 
@@ -76,12 +72,12 @@ require_once(__DIR__ . '/../database/category.class.php');
                     </li>
 
                     <li id="wishlist">
-                        <?php if(!$session->isLoggedIn()) : ?>
+                        <?php if($loggedIn) : ?>
                             <button type="button" class="wishlist-button" disabled>
                                 <i class="fa-regular fa-heart"></i>
                             </button>
 
-                        <?php elseif (Item::isInWishlist($db, $session->getId(), $item->itemId)) : ?>
+                        <?php elseif ($inWishList) : ?>
                             <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>)">
                                 <i id="wishlistIcon" class="fa-solid fa-heart"></i>
                             </button>
@@ -121,7 +117,6 @@ require_once(__DIR__ . '/../database/category.class.php');
 
         <div class="box_yellow">
             <section id="sellerInfo">
-                <?php $user = User::getUser($db, $item->userId); ?>
                 <div class="profilePic">
                     <a href="../../public/pages/profile.php">
                         <img src= "/<?= $user->profilePic ?>">

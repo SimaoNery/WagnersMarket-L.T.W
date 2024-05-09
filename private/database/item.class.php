@@ -260,15 +260,15 @@ class Item
         return $items;
     }
 
-    static function isInWishlist(PDO $db, int $userId, int $itemId): bool
+    static function addItem(PDO $db, int $userId, string $title, float $price, string $description, string $condition, string $size, string $brand, string $imagePath)
     {
-        $stmt = $db->prepare('SELECT COUNT(*) FROM WISHLIST WHERE UserId = ? AND ItemId = ?');
-        $stmt->execute(array($userId, $itemId));
+        $stmt = $db->prepare('INSERT INTO ITEM (UserId, Title, Price, Description, Condition, Size, Brand, ImagePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->execute(array($userId, $title, $price, $description, $condition, $size, $brand, $imagePath));
 
-        $count = $stmt->fetchColumn();
 
-        return $count > 0;
+        return $stmt->rowCount() == 1;
     }
+
 }
 
 ?>

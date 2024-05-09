@@ -440,15 +440,11 @@ select {
     display: flex;
 }
 
-.main_image {
-    margin-left: 35px;
-}
-
-.main_image img {
+#mainImage {
     width: 500px;
     max-height: 600px;
     height: auto;
-
+    margin-left: 35px;
     cursor: pointer;
 }
 

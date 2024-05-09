@@ -82,13 +82,6 @@ class User
         return null;
     }
 
-    static function getMaxId(PDO $db): int
-    {
-        $stmt = $db->prepare('SELECT MAX(UserId) FROM USER');
-        $stmt->execute();
-        return (int)$stmt->fetchColumn();
-    }
-
 
     static function getUserWithPassword(PDO $db, string $email, string $password): ?User
     {
@@ -119,12 +112,12 @@ class User
         return null;
     }
 
-    static function addUser(PDO $db, int $id, string $name, string $username, string $email, string $password): bool
+    static function addUser(PDO $db, string $name, string $username, string $email, string $password): bool
     {
         $options = ['cost' => 12];
-        $stmt = $db->prepare('INSERT INTO USER (UserId, Name, Username, ProfilePic, Password, Email) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt = $db->prepare('INSERT INTO USER (Name, Username, ProfilePic, Password, Email) VALUES (?, ?, ?, ?, ?)');
 
-        $stmt->execute(array($id, $name, $username, '../../public/profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
+        $stmt->execute(array($name, $username, '../../public/profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
 
         return $stmt->rowCount() == 1;
     }
