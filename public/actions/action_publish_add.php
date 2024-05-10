@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
+    exitWithError($session, "User not logged in");
 }
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
@@ -14,13 +15,13 @@ require_once(__DIR__ . '/../../private/database/image.class.php');
 $db = getDatabaseConnection();
 $userId = $session->getId();
 
-$title = $_POST['title'];
-$price = floatval($_POST['price']);
-$description = $_POST['description'];
-$condition = $_POST['condition'];
-$size = $_POST['size'];
-$brand = $_POST['brand'];
-$images = $_FILES['images'];
+$title = htmlspecialchars($_POST['title']) ?? exitWithError($session, "Title not provided");
+$price = floatval($_POST['price'] ?? 0) ?? exitWithError($session, "Price not provided");
+$description = htmlspecialchars($_POST['description']) ?? exitWithError($session, "Description not provided");
+$condition = htmlspecialchars($_POST['condition']) ?? exitWithError($session, "Condition not provided");
+$size = htmlspecialchars($_POST['size']) ?? exitWithError($session, "Size not provided");
+$brand = htmlspecialchars($_POST['brand']) ?? exitWithError($session, "Brand not provided");
+$images = $_FILES['images'] ?? exitWithError($session, "No cover image provided");
 
 $imagePaths = [];
 foreach ($images['tmp_name'] as $index => $tmpName) {
@@ -30,10 +31,10 @@ foreach ($images['tmp_name'] as $index => $tmpName) {
         if (move_uploaded_file($tmpName, $targetPath)) {
             $imagePaths[] = $targetPath;
         } else {
-            $session->addMessage('error', 'Error moving uploaded file.');
+            exitWithError($session, "Failed to move uploaded file");
         }
     } else {
-        $session->addMessage('error', 'Error uploading file.');
+        exitWithError($session, "Failed to upload file");
     }
 }
 
@@ -48,23 +49,31 @@ try {
             $imagePath = $imagePaths[$i];
 
             if (!Image::addImage($db, (int)$itemId, $imagePath)) {
-                $session->addMessage('error', 'Error adding images');
+                exitWithError($session, "Failed to add image");
             };
         }
+
+        header('Location: ../pages/item.php?id=' . $itemId);
+        exit();
+
     } else {
         $db->rollBack();
-
-        $session->addMessage('error', 'Item Not Added!');
+        exitWithError($session, "Failed to add item");
     }
 
 }catch (Exception $e) {
         $db->rollBack();
-
-        $session->addMessage('error', 'An error occurred: ' . $e->getMessage());
+        exitWithError($session, "An error occurred: " . $e->getMessage());
 }
-
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
 exit();
+
+function exitWithError($session, string $error): void
+{
+    $session->addMessage('error', $error);
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 
 ?>

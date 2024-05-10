@@ -8,14 +8,8 @@ require_once(__DIR__ . '/../database/item.class.php');
 require_once(__DIR__ . '/../database/category.class.php');
 ?>
 
-<?php function drawItems(string $header, array $items): void
+<?php function drawItems(array $items): void
 { ?>
-        <section id="title">
-            <h2>
-                <?=$header?>
-            </h2>
-            <hr class="line-yellow">
-        </section>
         <ul class="draw-items" id="draw-items">
             <?php foreach($items as $item) { ?>
                 <li class="item-card">

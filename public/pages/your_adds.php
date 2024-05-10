@@ -26,7 +26,8 @@ $numItems = Item::getNumAdds($db, $userId);
 
 drawHeader($db, $session);
 drawProfileBody("your_adds", $userId);
-drawItems("Your Adds", $items, false);
+drawTitle("Your Adds");
+drawItems($items);
 
 if($numItems === 0) { ?>
     <p id="emptyYourAdds"> You are not selling any item!</p>

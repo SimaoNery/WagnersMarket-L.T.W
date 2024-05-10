@@ -132,3 +132,13 @@ function drawProfileForm(PDO $db, Session $session)
         <button><i class="fa fa-search"></i></button>
     </section>
 <?php } ?>
+<?php function drawTitle(string $title): void
+{ ?>
+    <section id="title">
+        <h2>
+            <?=$title?>
+        </h2>
+        <hr class="line-yellow">
+    </section>
+<?php }?>
+

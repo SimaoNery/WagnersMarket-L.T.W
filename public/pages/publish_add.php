@@ -22,7 +22,8 @@ $categories = Category::getCategories($db);
 $sizes = Size::getSizes($db);
 $conditions = Condition::getConditions($db);
 
-/*drawHeader($db, $session);*/
+drawHeader($db, $session);
+drawTitle("Publish Add");
 drawPublishForm($categories, $sizes, $conditions);
 drawFooter();
 ?>
