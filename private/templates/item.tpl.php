@@ -26,11 +26,11 @@ require_once(__DIR__ . '/../database/category.class.php');
 <?php function drawPagination(int $pages, string $id) { ?>
     <section class="pagination-container">
         <section class="pagination" id="<?= $id ?>">
-            <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
+            <?php for ($i = 1; $i <= min(3, $pages); $i++) { ?>
                 <button id="pagination-button" class="pagination-button"><?= $i ?></button>
             <?php } ?>
             <?php if ($pages > 4) { ?>
-                <button id="pagination-button" class="pagination-button">&#8594;</button>
+                <button id="next-button" class="pagination-button">&#8594;</button>
             <?php } ?>
         </section>
 

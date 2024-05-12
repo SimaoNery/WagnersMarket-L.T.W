@@ -3,19 +3,26 @@ const itemsPerPageContainer = document.querySelector('#itemsPerPage');
 
 let limit = 4;
 let offset = 0;
+let pageNumber = 1;
+let firstButtonValue = 1;
 
 
 if (paginationContainer) {
     paginationContainer.addEventListener('click', function(event) {
         if (event.target.tagName === 'BUTTON') {
             const buttonId = event.target.id;
-            let pageNumber = 1;
     
             if (buttonId === 'pagination-button') {
                 pageNumber = parseInt(event.target.textContent);
             } else if (buttonId === 'next-button') {
                 console.log('Clicked on Next button');
-                pageNumber += 1;
+                pageNumber = firstButtonValue === 1 ? 4 : pageNumber + 2;
+                firstButtonValue = pageNumber;
+            }
+            else if (buttonId === 'previous-button') {
+                console.log('Clicked on previous button');
+                pageNumber = firstButtonValue === 4 ? 1 : pageNumber - 2;
+                firstButtonValue = pageNumber;
             }
     
             offset = (pageNumber - 1) * limit;
@@ -27,13 +34,19 @@ if (paginationContainer) {
 
 if (itemsPerPageContainer) {
     itemsPerPageContainer.addEventListener('change', function(event) {
-        limit = parseInt(itemsPerPageContainer.value);
+        let lastLimit = limit;
 
+        limit = parseInt(itemsPerPageContainer.value);
+        
+        const conversationFactor = lastLimit / limit;
+
+        pageNumber = pageNumber * conversationFactor;
+
+        offset = (pageNumber - 1) * limit;
+        
         fetchItems(limit, offset, paginationContainer.id);
     });
 }
-
-
 
 function fetchItems(limit, offset, searchType) {
     const xhr = new XMLHttpRequest();
@@ -92,14 +105,57 @@ function fetchItems(limit, offset, searchType) {
                 paginationContainer.innerHTML = "";
                 let numPages = Math.ceil(response.totalCount / limit);
                 
-                for (let i = 1; i <= Math.min(4, numPages); i++) {
+                if (pageNumber > 3) {
+                    
                     const button = document.createElement('button');
-                    button.setAttribute('class', 'pagination-button');
-                    button.setAttribute('id', 'pagination-button');
-                    button.textContent = i;
-                    paginationContainer.appendChild(button);
-                }
+                        button.setAttribute('class', 'pagination-button');
+                        button.setAttribute('id', 'previous-button');
+                        button.innerHTML = '&#8592;';
+                        paginationContainer.appendChild(button);
 
+                    for (let i = 1; i <= Math.min(2, numPages - pageNumber + 1); i++) {
+                        const button = document.createElement('button');
+                        button.setAttribute('class', 'pagination-button');
+                        button.setAttribute('id', 'pagination-button');
+
+                        if (pageNumber % 2 === 0 && i === 2) {
+                            button.textContent = pageNumber + 1;
+                        }
+                        else if (pageNumber % 2 !== 0 && i === 1) {
+                            button.textContent = pageNumber - 1;
+                        }
+                        else {
+                            button.textContent = pageNumber;
+                        }
+                        
+                        paginationContainer.appendChild(button);
+                    }
+
+                    if (numPages - pageNumber >= 2) {
+                        const button = document.createElement('button');
+                        button.setAttribute('class', 'pagination-button');
+                        button.setAttribute('id', 'next-button');
+                        button.innerHTML = '&#8594;';
+                        paginationContainer.appendChild(button);
+                    }
+                }
+                else {
+                    for (let i = 1; i <= Math.min(3, numPages); i++) {
+                        const button = document.createElement('button');
+                        button.setAttribute('class', 'pagination-button');
+                        button.setAttribute('id', 'pagination-button');
+                        button.textContent = i;
+                        paginationContainer.appendChild(button);
+                    }
+                    if (numPages > 3) {
+                        const button = document.createElement('button');
+                        button.setAttribute('class', 'pagination-button');
+                        button.setAttribute('id', 'next-button');
+                        button.innerHTML = '&#8594;';
+                        paginationContainer.appendChild(button);
+                    }
+                }
+            
 
             } catch (error) {
                 console.error('Error parsing JSON:', error);
