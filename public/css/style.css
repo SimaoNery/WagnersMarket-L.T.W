@@ -689,48 +689,60 @@ ul#suggestions.suggestions {
     font-size: 16px;
 }
 
-ul li:hover section.loginAndSignup {
+ul li:hover section#loginAndSignup {
     display: block;
 }
 
-.loginAndSignup {
+section#loginAndSignup {
     overflow: hidden;
     width: 250px;
-    height: 330px;
+    height: 310px;
     border-radius: 10px;
     box-shadow: 5px 20px 20px #777;
-    display: none;
     position: absolute;
+    display: none;
     top: 100%;
     z-index: 1000;
     background: #fff;
+}
+
+section#popup-form {
+    border-radius: 10px;
+    z-index: 10000;
+    background: #fff;
+    display: block;
 }
 
 #chk {
     display: none;
 }
 
-.signup {
+#popup-chk {
+    display: none;
+}
+
+section.login {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 200px;
 }
+
 
 label#check {
     color: #777;
     font-size: 2em;
     justify-content: center;
     display: flex;
-    font-weight: bold;
-    margin: 10px;
+    font-weight: bold;    
     cursor: pointer;
     transition: .5s ease-in-out;
+    margin-top: 15px;
 }
 
 section.loginAndSignup input {
     width: 70%;
     height: 30px;
-    background: rgb(254, 243, 167);
+    background: #fff;
     justify-content: center;
     display: flex;
     margin: 10px auto;
@@ -746,7 +758,7 @@ section.loginAndSignup button {
     margin: 0 auto;
     display: block;
     color: #fff;
-    background: rgb(255, 224, 23);
+    background: #ff9837;
     font-size: 1em;
     font-weight: bold;
     margin-top: 10px;
@@ -757,40 +769,63 @@ section.loginAndSignup button {
     cursor: pointer;
 }
 
-section.login input {
-    background: #fff;
+section.loginAndSignup section.login input {
     margin-top: 20px;
     height: 35px;
+    background: rgb(254, 243, 167);
 }
 
-section.login button {
-    margin-top: 30px;
-    height: 40px;
-    background: #ff9837;
+section.loginAndSignup section.login button {
+    margin-top: 25px;
+    height: 35px;
+    background: rgb(255, 224, 23);
 }
 
-.login {
-    height: 340px;
-    background: rgb(255, 242, 159);
+section.loginAndSignup section.login {
+    margin-top: 10px;
+    height: 230px;
     border-radius: 60% / 10%;
-    transform: translateY(-80px);
     transition: .8s ease-in-out;
 }
 
-.login label {
+section.loginAndSignup section.signup {
+    height: 300px;
+    background: rgb(255, 242, 159);
+    border-radius: 60% / 10%;
+    transition: .8s ease-in-out;
+}
+
+section#loginAndSignup section.signup label {
     color: #777;
     transform: scale(.6);
 }
 
-#chk:checked ~ .login{
-    transform: translateY(-300px);
+section#popup-form section.signup label {
+    color: #777;
+    transform: scale(.6);
 }
 
-#chk:checked ~ .login label{
+section#loginAndSignup #chk:checked ~ .signup {
+    transform: translateY(-200px);
+}
+
+section#loginAndSignup #chk:checked ~ .signup label{
     transform: scale(1);
 }
 
-#chk:checked ~ .signup label{
+section#loginAndSignup  #chk:checked ~ .login label{
+    transform: scale(.6);
+}
+
+section#popup-form #popup-chk:checked ~ .signup {
+    transform: translateY(-200px);
+}
+
+section#popup-form #popup-chk:checked ~ .signup label {
+    transform: scale(1);
+}
+
+section#popup-form #popup-chk:checked  ~ .login label {
     transform: scale(.6);
 }
 
@@ -1041,15 +1076,15 @@ input[type="checkbox"] {
 }
 
 .container {
-    text-align: center; /* Center its children horizontally */
+    text-align: center; 
 }
 
-/* Style for form */
+
 #publish {
     font-family: 'Open Sans', sans-serif;
-    display: inline-block; /* Override block behavior */
-    width: 80%; /* Set maximum width */
-    text-align: left; /* Reset text alignment */
+    display: inline-block; 
+    width: 80%; 
+    text-align: left; 
 }
 
 #publish h3 {
@@ -1085,3 +1120,54 @@ input[type="checkbox"] {
     display: flex;
     justify-content: space-between;
 }
+
+.popup-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+    position: fixed;
+    overflow: hidden;
+    top: 30%;
+    left: 40%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    height: 360px;
+}
+
+.popup-content {
+    text-align: center;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    cursor: pointer;
+    right: -10px;
+    top: -15px;
+}
+
+.message {
+    margin-bottom: 20px;
+}
+
+.popup-form {
+    position: relative;
+    overflow: hidden;
+}
+
+

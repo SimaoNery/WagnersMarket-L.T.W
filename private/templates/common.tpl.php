@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require_once(__DIR__ . '/../database/user.class.php');
-require_once(__DIR__ . '/../../public/utils/session.php');
+require_once (__DIR__ . '/../database/user.class.php');
+require_once (__DIR__ . '/../../public/utils/session.php');
 
 ?>
 
@@ -15,7 +15,7 @@ require_once(__DIR__ . '/../../public/utils/session.php');
         <title>Wagner's Market</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../../public/css/style.css">
+        <link rel="stylesheet" href="../css/style.css">
         <script src="https://kit.fontawesome.com/8c148179b8.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
     </head>
@@ -38,31 +38,54 @@ require_once(__DIR__ . '/../../public/utils/session.php');
 
                     <li><a href="#">Sell</a></li>
                     <li>
-                        <a href="../../public/pages/profile.php?id=<?= $session->getId() ?>">Profile</a>
+                        <a href="../../public/pages/profile.php?id=<?= $session->getId() ?>"
+                        onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Profile</a>
                         <?php
                         if ($session->isLoggedIn())
                             drawProfileForm($db, $session);
                         else
-                            drawLoginAndSignUpForm();
+                            drawLoginAndSignUpForm('loginAndSignup', 'chk');
                         ?>
                     </li>
-                    <li><a href="../../public/pages/messages.php?id=<?= $session->getId() ?>">Messages</a></li>
-                    <li><a href="../../public/pages/wishlist.php?id=<?= $session->getId() ?>"><i class="fas fa-heart"></i></a></li>
-                    <li><a href="../../public/pages/shopping-bag.php?id=<?= $session->getId() ?>"><i class="fas fa-shopping-bag"></i></a></li>
+                    <li>
+                        <a href="../../public/pages/messages.php?id=<?= $session->getId() ?>"
+                            onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Messages</a>
+                    </li>
+
+
+                    <li>
+                        <a href="../../public/pages/wishlist.php?id=<?= $session->getId() ?>"
+                            onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                    </li>
+                    <li><a href="../../public/pages/shopping-bag.php?id=<?= $session->getId() ?>"
+                            onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)"><i
+                                class="fas fa-shopping-bag"></i></a></li>
 
                 </ul>
             </section>
+            <?php drawLoginPopUp() ?>
         </header>
 
     <?php } ?>
 
-    <?php function drawLoginAndSignUpForm()
+    <?php function drawLoginAndSignUpForm(string $class, string $check)
     { ?>
-        <section class="loginAndSignup" id="loginAndSignup">
-            <input type="checkbox" id="chk" aria-hidden="true">
+        <section class="loginAndSignup" id="<?= $class ?>">
+            <input type="checkbox" id="<?= $check ?>" aria-hidden="true">
+            <section class="login">
+                <form action="../../public/actions/action_login.php" method="post">
+                    <label id="check" for="<?= $check ?>" aria-hidden="true">Login</label>
+                    <input type="email" name="email" placeholder="Email" required="">
+                    <input type="password" name="password" placeholder="Password" required="">
+                    <button type="submit">Login</button>
+                </form>
+            </section>
+
             <section class="signup">
                 <form action="../../public/actions/action_signup.php" method="post">
-                    <label id="check" for="chk" aria-hidden="true">Sign Up</label>
+                    <label id="check" for="<?= $check ?>" aria-hidden="true">Sign Up</label>
                     <input type="text" name="name" placeholder="Name" required="">
                     <input type="text" name="username" placeholder="User name" required="">
                     <input type="email" name="email" placeholder="Email" required="">
@@ -70,38 +93,29 @@ require_once(__DIR__ . '/../../public/utils/session.php');
                     <button>Sign Up</button>
                 </form>
             </section>
-
-            <section class="login">
-                <form action="../../public/actions/action_login.php" method="post">
-                    <label id="check" for="chk" aria-hidden="true">Login</label>
-                    <input type="email" name="email" placeholder="Email" required="">
-                    <input type="password" name="password" placeholder="Password" required="">
-                    <button type="submit">Login</button>
-                </form>
-            </section>
-
         </section>
     <?php } ?>
 
+
     <?php
-function drawProfileForm(PDO $db, Session $session)
-{ ?>
-    <section class="profile" id="profile">
-        <section id="user_logged">
-            <img src="<?= User::getImgPath($db, $session->getId()) ?>" style="width: 50px; height: 50px;">
-            <h4><?= $session->getName()?></h4>
+    function drawProfileForm(PDO $db, Session $session)
+    { ?>
+        <section class="profile" id="profile">
+            <section id="user_logged">
+                <img src="<?= User::getImgPath($db, $session->getId()) ?>" style="width: 50px; height: 50px;">
+                <h4><?= $session->getName() ?></h4>
+            </section>
+            <nav class="signup">
+                <a>Your Adds</a>
+                <a>Messages</a>
+                <a>Personal Information</a>
+                <a>Reviews</a>
+            </nav>
+            <form action="../../public/actions/action_logout.php" method="post">
+                <button type="submit">Logout</button>
+            </form>
         </section>
-        <nav class="signup">
-            <a>Your Adds</a>
-            <a>Messages</a>
-            <a>Personal Information</a>
-            <a>Reviews</a>
-        </nav>
-        <form action="../../public/actions/action_logout.php" method="post">
-            <button type="submit">Logout</button>
-        </form>
-    </section>
-<?php } ?>
+    <?php } ?>
 
 
     <?php function drawFooter()
@@ -115,11 +129,12 @@ function drawProfileForm(PDO $db, Session $session)
             </ul>
             <p>LTW Wagner's Market &copy; 2024</p>
         </footer>
-        <script src="../../public/javascript/pagination.js"></script>
-        <script src="../../public/javascript/imagesLogic.js" defer></script>
-        <script src="../../public/javascript/script.js" defer></script>
-        <script src="../../public/javascript/suggestion.js"></script>
-        <script src="../../public/javascript/wishlistButton.js"></script>
+        <script src="../javascript/pagination.js"></script>
+        <script src="../javascript/imagesLogic.js" defer></script>
+        <script src="../javascript/script.js" defer></script>
+        <script src="../javascript/suggestion.js"></script>
+        <script src="../javascript/wishlistButton.js"></script>
+        <script src="../javascript/loginPopUp.js"></script>
     </body>
 
     </html>
@@ -136,9 +151,22 @@ function drawProfileForm(PDO $db, Session $session)
 { ?>
     <section id="title">
         <h2>
-            <?=$title?>
+            <?= $title ?>
         </h2>
         <hr class="line-yellow">
     </section>
-<?php }?>
+<?php } ?>
 
+
+<?php function drawLoginPopUp()
+{ ?>
+    <section id="popup-wrapper" class="popup-wrapper">
+        <section id="popup" class="popup">
+            <section class="popup-content">
+                <span class="close" onclick="closeLoginPopUp()">&times;</span>
+                <p class="message">You have to login to access this feature</p>
+                <?php drawLoginAndSignUpForm('popup-form', 'popup-chk') ?>
+            </section>
+        </section>
+    </section>
+<?php } ?>
