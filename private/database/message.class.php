@@ -73,7 +73,16 @@ class Message
         $stmt = $db->prepare('INSERT INTO MESSAGE (AuthorId, ReceiverId, Content) VALUES (?,?,?)');
         $stmt->execute(array($userId, $otherUserId, $message));
 
-        return $stmt->rowCount() == 1;
+        if ($stmt->rowCount() == 1) {
+            // Get the timestamp of the added message
+            $lastInsertId = $db->lastInsertId();
+            $timestampStmt = $db->prepare('SELECT Timestamp FROM MESSAGE WHERE MessageId = ?');
+            $timestampStmt->execute(array($lastInsertId));
+            $timestamp = $timestampStmt->fetchColumn();
+            return $timestamp;
+        } else {
+            return false; // Message not added
+        }
     }
 
 }

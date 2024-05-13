@@ -71,10 +71,10 @@ require_once(__DIR__ . '/../database/category.class.php');
                         </section>
                     <?php } ?>
                 </section>
-                    <form id="send_message" action="../../public/actions/action_send_message.php" method="post" enctype="multipart/form-data">
-                        <input id="otherUser" type="hidden" name="otherUserId" value="<?= $otherUserId ?>">
-                        <textarea name="message" placeholder="Write a message" maxlength="9000" rows="1" required="required"></textarea>
-                        <input type="submit" value="Send">
+                    <form id="send_message">
+                        <input id="otherUser" type="hidden" value="<?= $otherUserId ?>">
+                        <textarea id="content" placeholder="Write a message" maxlength="9000" rows="1" required="required"></textarea>
+                        <button id="sendButton" type="button">Send</button>
                     </form>
                 <?php }
                 else { ?>
