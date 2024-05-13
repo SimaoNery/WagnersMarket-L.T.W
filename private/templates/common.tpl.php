@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once (__DIR__ . '/../database/user.class.php');
 require_once (__DIR__ . '/../../public/utils/session.php');
+require_once (__DIR__ . '/../database/category.class.php');
 
 ?>
 
@@ -23,22 +24,22 @@ require_once (__DIR__ . '/../../public/utils/session.php');
     <body>
         <header>
             <section class="header-left">
-                <a class="logo" href="../../public/pages/index.php">Logo</a>
+                <a class="logo" href="index.php">Logo</a>
             </section>
             <section class="header-right">
                 <ul>
                     <li>
-                        <a href="#">Products</a>
+                        <a href="search.php">Products</a>
                         <ul class="dropdown">
-                            <li><a href="#">Random 1</a></li>
-                            <li><a href="#">Random 2</a></li>
-                            <li><a href="#">Random 3</a></li>
+                            <?php $categories = Category::getCategories($db);
+                            foreach ($categories as $category) { ?>
+                                <li><a href="search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a></li>
+                            <?php } ?>
                         </ul>
                     </li>
-
-                    <li><a href="#">Sell</a></li>
+                    <li><a href="#" onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Sell</a></li>
                     <li>
-                        <a href="../../public/pages/profile.php?id=<?= $session->getId() ?>"
+                        <a href="../pages/profile.php?id=<?= $session->getId() ?>"
                         onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Profile</a>
                         <?php
                         if ($session->isLoggedIn())
@@ -48,18 +49,18 @@ require_once (__DIR__ . '/../../public/utils/session.php');
                         ?>
                     </li>
                     <li>
-                        <a href="../../public/pages/messages.php?id=<?= $session->getId() ?>"
+                        <a href="messages.php?id=<?= $session->getId() ?>"
                             onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Messages</a>
                     </li>
 
 
                     <li>
-                        <a href="../../public/pages/wishlist.php?id=<?= $session->getId() ?>"
+                        <a href="wishlist.php?id=<?= $session->getId() ?>"
                             onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">
                             <i class="fas fa-heart"></i>
                         </a>
                     </li>
-                    <li><a href="../../public/pages/shopping-bag.php?id=<?= $session->getId() ?>"
+                    <li><a href="shopping-bag.php?id=<?= $session->getId() ?>"
                             onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)"><i
                                 class="fas fa-shopping-bag"></i></a></li>
 
@@ -75,7 +76,7 @@ require_once (__DIR__ . '/../../public/utils/session.php');
         <section class="loginAndSignup" id="<?= $class ?>">
             <input type="checkbox" id="<?= $check ?>" aria-hidden="true">
             <section class="login">
-                <form action="../../public/actions/action_login.php" method="post">
+                <form action="../actions/action_login.php" method="post">
                     <label id="check" for="<?= $check ?>" aria-hidden="true">Login</label>
                     <input type="email" name="email" placeholder="Email" required="">
                     <input type="password" name="password" placeholder="Password" required="">
@@ -84,7 +85,7 @@ require_once (__DIR__ . '/../../public/utils/session.php');
             </section>
 
             <section class="signup">
-                <form action="../../public/actions/action_signup.php" method="post">
+                <form action="../actions/action_signup.php" method="post">
                     <label id="check" for="<?= $check ?>" aria-hidden="true">Sign Up</label>
                     <input type="text" name="name" placeholder="Name" required="">
                     <input type="text" name="username" placeholder="User name" required="">
@@ -111,7 +112,7 @@ require_once (__DIR__ . '/../../public/utils/session.php');
                 <a>Personal Information</a>
                 <a>Reviews</a>
             </nav>
-            <form action="../../public/actions/action_logout.php" method="post">
+            <form action="../actions/action_logout.php" method="post">
                 <button type="submit">Logout</button>
             </form>
         </section>
@@ -135,6 +136,7 @@ require_once (__DIR__ . '/../../public/utils/session.php');
         <script src="../javascript/suggestion.js"></script>
         <script src="../javascript/wishlistButton.js"></script>
         <script src="../javascript/loginPopUp.js"></script>
+        <script src="../javascript/profileChanges.js"></script>
     </body>
 
     </html>

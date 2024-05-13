@@ -2,9 +2,9 @@
   declare(strict_types = 1);
 
 require_once(__DIR__ . '/../database/item.class.php');
-  require_once(__DIR__ . '/../database/image.class.php');
-  require_once(__DIR__ . '/../database/user.class.php');
-  require_once(__DIR__ . '/../database/condition.class.php');
+require_once(__DIR__ . '/../database/image.class.php');
+require_once(__DIR__ . '/../database/user.class.php');
+require_once(__DIR__ . '/../database/condition.class.php');
 require_once(__DIR__ . '/../database/category.class.php');
 ?>
 
@@ -13,7 +13,7 @@ require_once(__DIR__ . '/../database/category.class.php');
         <ul class="draw-items" id="draw-items">
             <?php foreach($items as $item) { ?>
                 <li class="item-card">
-                    <a href="../../public/pages/item.php?id=<?=$item->itemId?>">
+                    <a href="item.php?id=<?=$item->itemId?>">
                         <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
                         <h4><?=$item->title?></h4>
                         <p><?=number_format($item->price, 2)?>€</p>
@@ -112,17 +112,17 @@ require_once(__DIR__ . '/../database/category.class.php');
         <div class="box_yellow">
             <section id="sellerInfo">
                 <div class="profilePic">
-                    <a href="../../public/pages/profile.php">
+                    <a href="profile.php">
                         <img src= "/<?= $user->profilePic ?>">
                     </a>
                 </div>
 
                 <div class="sellerDetails">
-                    <a href="../../public/pages/profile.php">
+                    <a href="profile.php">
                         <p class="username"><?=$user->username?></p>
                     </a>
 
-                    <a href="../../public/pages/profile.php">
+                    <a href="profile.php">
                         <p class="name"><?=$user->name ?></p>
                     </a>
                 </div>
@@ -139,7 +139,7 @@ require_once(__DIR__ . '/../database/category.class.php');
 
 
 
-<?php function drawItemFilter(PDO $db, float $maxPrice) { ?>
+<?php function drawItemFilter(PDO $db, float $maxPrice, ?string $selectedCategory = null) { ?>
     <?php
     $categories = Category::getCategories($db);
     $conditions = Condition::getConditions($db);
@@ -165,8 +165,14 @@ require_once(__DIR__ . '/../database/category.class.php');
         <fieldset id="category">
             <legend>Category</legend>
             <?php foreach($categories as $category) { ?>
+                <?php if ($selectedCategory != null) {
+                    if ($selectedCategory === $category->categoryName) { ?>
+                       <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>" checked></label> 
+                <?php } else { ?>
                 <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>"></label>
-            <?php } ?>
+                <?php } } else { ?>
+                    <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>"></label>
+                    <?php } } ?>
         </fieldset>
         <fieldset id="condition">
             <legend>Condition</legend>

@@ -67,7 +67,7 @@ try {
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
+exit;
 
 function exitWithError($session, string $error): void
 {

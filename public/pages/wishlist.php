@@ -5,7 +5,7 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
-    //SENDS A POPUP -> PAULO IS DOING
+    
 }
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');

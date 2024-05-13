@@ -12,7 +12,7 @@
         <ul class="category-list">
             <?php foreach($categories as $category) { ?>
                 <li class="category-item">
-                    <a href="../../public/pages/search.php?category=<?=$category->categoryName?>">
+                    <a href="search.php?category=<?=$category->categoryName?>">
                         <img src="<?=$category->categoryImage?>" alt="<?=$category->categoryName?>">
                         <span><?=$category->categoryName?></span>
                     </a>
