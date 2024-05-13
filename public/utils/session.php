@@ -16,7 +16,7 @@ class Session
         return isset($_SESSION['id']);
     }
 
-    public function logout()
+    public function logout(): void
     {
         session_destroy();
     }

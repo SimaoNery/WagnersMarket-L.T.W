@@ -46,7 +46,7 @@ require_once(__DIR__ . '/../../public/utils/session.php');
                             drawLoginAndSignUpForm();
                         ?>
                     </li>
-                    <li><a href="../../public/pages/messages.php?id=<?= $session->getId() ?>">Messages</a></li>
+                    <li><a href="../../public/pages/messages.php">Messages</a></li>
                     <li><a href="../../public/pages/wishlist.php?id=<?= $session->getId() ?>"><i class="fas fa-heart"></i></a></li>
                     <li><a href="../../public/pages/shopping-bag.php?id=<?= $session->getId() ?>"><i class="fas fa-shopping-bag"></i></a></li>
 
@@ -116,6 +116,7 @@ function drawProfileForm(PDO $db, Session $session)
             <p>LTW Wagner's Market &copy; 2024</p>
         </footer>
         <script src="../../public/javascript/pagination.js"></script>
+        <script src="../../public/javascript/messages.js"></script>
         <script src="../../public/javascript/imagesLogic.js" defer></script>
         <script src="../../public/javascript/script.js" defer></script>
         <script src="../../public/javascript/suggestion.js"></script>

@@ -127,9 +127,7 @@ require_once(__DIR__ . '/../database/category.class.php');
                     </a>
                 </div>
 
-                <button class="sendMessageButton">
-                    <p>Send Message</p>
-                </button>
+                <a href="../../public/pages/messages.php?otherUserId=<?=$user->userId?>" class="sendMessageButton">Send Message</a>
 
             </section>
         </div>

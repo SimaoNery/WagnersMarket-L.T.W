@@ -20,7 +20,7 @@ $item = Item::getItem($db, intval($_GET['id']));
 $images = Image::getImages($db, $item->itemId);
 $loggedIn = $session->isLoggedIn();
 $inWishList = Wishlist::isInWishlist($db, $session->getId(),$item->itemId);
-$user = User::getUser($db, $session->getId());
+$user = User::getUser($db, $item->userId);
 
 drawHeader($db, $session);
 drawItem($item, $images, $loggedIn, $inWishList, $user);
