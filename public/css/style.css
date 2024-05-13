@@ -1110,11 +1110,17 @@ body {display: grid}
     max-height: 40em;
 }
 
+
+
 #contacts {
     overflow-y: auto;
 }
 
-#contacts_container h3 {
+#contacts:has(#noOpenConversations) {
+    display: grid;
+}
+
+#contacts_header {
     padding: 5px;
     align-content: center;
     background-color: rgba(253, 237, 132, 0.5);
@@ -1154,10 +1160,15 @@ body {display: grid}
 
 #conversation_container {
     display: grid;
+
+}
+
+#conversation_container:has(#conversation_header) {
     grid-template-rows: 4em 23em 3em;
 }
 
 #conversation_header {
+    background-color: rgba(253, 237, 132, 0.5);
     grid-row: 1;
     border-bottom: 2px solid #FDD184;
     padding: 5px;
@@ -1166,7 +1177,7 @@ body {display: grid}
     grid-template-columns: 60px 1fr;
 }
 
-#conversation_header h3 {
+#contacts_container {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -1181,11 +1192,12 @@ body {display: grid}
 }
 
 .messageDate {
-    border-radius: 20%;
+    border-radius: 20px;
     justify-self: center;
     background-color: rgba(253, 237, 132, 0.5);
     border: 1px solid #FDD184;
     padding: 5px;
+    height: fit-content;
 }
 
 
@@ -1221,7 +1233,7 @@ body {display: grid}
     max-width: 15em;
     word-break: break-all;
     white-space: normal;
-
+    height: fit-content;
 }
 
 #send_message {
@@ -1242,7 +1254,10 @@ body {display: grid}
     resize: none;
 }
 
-#noMessagesSent, #neverSentAMessage {
-    justify-self: center;
+
+#noMessagesSent, #noOpenConversations, #neverSentAMessage {
+    font-size: 1em;
     align-self: center;
+    justify-self: center;
 }
+

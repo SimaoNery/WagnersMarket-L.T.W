@@ -22,7 +22,7 @@ if (paginationContainer) {
     
             fetchItems(limit, offset, paginationContainer.id);
         }
-    });
+    })
 }
 
 if (itemsPerPageContainer) {

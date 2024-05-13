@@ -11,6 +11,7 @@ $session = new Session();
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/message.class.php');
+require_once(__DIR__ . '/../../private/database/user.class.php');
 
 try {
     $db = getDatabaseConnection();
@@ -21,20 +22,23 @@ try {
     $contacts = Message::getLastMessages($db, $userId, $limit, $offset);
     $profilePics = [];
     $usernames = [];
+    $otherIds = [];
     foreach ($contacts as $contact) {
         $user = $contact->receiverId === $userId ? User::getUser($db, $contact->authorId) : User::getUser($db, $contact->receiverId);
         $profilePics[] = $user->profilePic;
         $usernames[] = $user->username;
+        $otherIds[] = $user->userId;
     }
 
     $finalResponse = [
         'contacts' => $contacts,
         'profilePics' => $profilePics,
-        'usernames' => $usernames
+        'usernames' => $usernames,
+        'otherIds' => $otherIds
     ];
 
     header('Content-Type: application/json');
-    echo json_encode($usernames);
+    echo json_encode($finalResponse);
 } catch (Exception $e) {
     error_log('Error in api_contacts.php: ' . $e->getMessage());
     http_response_code(500);

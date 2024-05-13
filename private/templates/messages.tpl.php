@@ -12,12 +12,11 @@ require_once(__DIR__ . '/../database/category.class.php');
 
     <section id="messages_container">
         <section id="contacts_container">
-            <?php if (empty($lastMessages)) { ?>
-                <h3>You have no open conversations.</h3>
-            <?php }
-            else { ?>
-                    <h3>Contacts</h3>
-                <section id="contacts">
+            <h3 id="contacts_header">Contacts</h3>
+            <section id="contacts">
+                <?php if (empty($lastMessages)) {?>
+                        <h3 id="noOpenConversations">You have no open conversations!</h3>
+                <?php } ?>
                 <?php foreach ($lastMessages as $message) {
                     $user = $message->receiverId === $userId ? User::getUser($db, $message->authorId) : User::getUser($db, $message->receiverId); ?>
                     <a href="../../public/pages/messages.php?otherUserId=<?= $user->userId ?>">
@@ -32,11 +31,10 @@ require_once(__DIR__ . '/../database/category.class.php');
                             <time datetime="<?= $message->timestamp ?>"><?= $displayDate ?></time>
                         </section>
                     </a>
-                <?php }
-            } ?>
-                    </section>
-
+                <?php } ?>
+            </section>
         </section>
+
 
         <section id="conversation_container">
             <?php {

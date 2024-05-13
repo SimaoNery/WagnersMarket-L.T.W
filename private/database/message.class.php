@@ -22,8 +22,8 @@ class Message
     public static function getLastMessages(PDO $db, int $userId, int $limit, int $offset) : array
     {
         $stmt = $db->prepare('
-                SELECT * FROM (SELECT * FROM MESSAGE WHERE AuthorId = ? OR ReceiverId = ? ORDER BY TIMESTAMP DESC)
-                GROUP BY MIN(AuthorId, ReceiverId),MAX(AuthorId,ReceiverId) LIMIT ? OFFSET ?
+                SELECT * FROM(SELECT * FROM (SELECT * FROM MESSAGE WHERE AuthorId = ? OR ReceiverId = ? ORDER BY TIMESTAMP DESC)
+                GROUP BY MIN(AuthorId, ReceiverId),MAX(AuthorId,ReceiverId) LIMIT ? OFFSET ?) ORDER BY TIMESTAMP DESC
             ');
         $stmt->execute(array($userId, $userId, $limit, $offset));
 

@@ -77,8 +77,6 @@ async function getMoreMessages() {
             need = true
         }
 
-
-
         for (const msg of msgs) {
             let date = new Date(msg.timestamp)
 
@@ -122,6 +120,7 @@ async function getMoreMessages() {
             message.append(time)
             messages.append(message)
         }
+
         if (need && copy) {
             messages.prepend(copy)
             need = false
@@ -135,10 +134,11 @@ async function getMoreMessages() {
 
 
 if (contacts) {
+
     contacts.addEventListener("scroll", async function() {
-        if (contacts.scrollTop + contacts.clientHeight === contacts.scrollHeight) {
-            limitContacts += 20
-            offsetContacts += 20
+        if (contacts.scrollHeight - contacts.scrollTop <= contacts.clientHeight+ 20) {
+            limitContacts += 6
+            offsetContacts += 6
             await getMoreContacts();
         }
     })
@@ -147,15 +147,14 @@ if (contacts) {
 
 async function getMoreContacts() {
     let url = '../api/api_contacts.php?'
-    let params = {limit: limitMessages, offset: offsetMessages}
+    let params = {limit: limitContacts, offset: offsetContacts}
     url += new URLSearchParams(params).toString()
 
     const response = await fetch(url)
     const finalResponse = await response.json()
 
 
-    for (let i = 0; i < finalResponse.length; i++) {
-
+    for (let i = 0; i < finalResponse.contacts.length; i++) {
         let currentDate = new Date();
         let currentYear = currentDate.getFullYear();
         let currentMonth = currentDate.getMonth() + 1;
@@ -175,34 +174,34 @@ async function getMoreContacts() {
         let formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
         let formattedTime = paddedHour + ':' + paddedMinute;
 
+        const link = document.createElement('a')
         const username = document.createElement('span')
         const contact = document.createElement('section')
         const image = document.createElement('img')
         const time = document.createElement('time')
         const content = document.createElement('p')
 
+        link.href = "../../public/pages/messages.php?otherUserId=" + finalResponse.otherIds[i]
         content.innerHTML = finalResponse.contacts[i].content
         username.innerHTML = finalResponse.usernames[i]
         image.src = finalResponse.profilePics[i]
         image.classList.add('little')
+        contact.classList.add('contact')
         time.dateTime = contact.timestamp
-
-
-        if (formattedDate !== formattedCurrentDate) {
-            time.innerHTML = formattedDate;
-            formattedCurrentDate = formattedDate;
-        } else {
-            time.innerHTML = formattedTime;
-        }
+        time.innerHTML = formattedDate !== formattedCurrentDate ? formattedDate : formattedTime
 
 
         contact.append(username)
         contact.append(image)
         contact.append(content)
         contact.append(time)
-        contacts.append(contact)
+        link.append(contact)
+        contacts.append(link)
     }
 }
 
-
-//ARRANJAR MAINEIRA DE NAO CARREGAR
+//ver a query again
+//METER PREPEND EM TUDO
+//ARRANJAR MANEIRA DE NAO TAR SEMPRE A CARREGAR NOVOS CONTACTOS
+//ARRANJAR MANEIRA DO SCROLL CHECK FUNCIONAR
+//ARRANJAR MANEIRA DE MANTER A POSIÇAO DE SCROLL DA PAGINA SEMPRE QUE MENSAGENS SAO CARREGADAS
