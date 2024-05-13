@@ -92,7 +92,7 @@ require_once (__DIR__ . '/../database/category.class.php');
                     <input type="email" name="email" placeholder="Email" required="">
                     <input type="password" name="password" placeholder="Password" required="">
                     <button>Sign Up</button>
-                </form>
+                </form> 
             </section>
         </section>
     <?php } ?>
@@ -107,9 +107,10 @@ require_once (__DIR__ . '/../database/category.class.php');
                 <h4><?= $session->getName() ?></h4>
             </section>
             <nav class="signup">
-                <a>Your Adds</a>
-                <a>Messages</a>
-                <a>Personal Information</a>
+                <a href="../pages/your_adds.php?id=<?= $session->getId() ?>">Your Adds</a>
+                <a href="../pages/wishlist.php?id=<?= $session->getId() ?>">Your Adds</a>
+                <a href="../pages/messages.php?id=<?= $session->getId() ?>">Messages</a>
+                <a href="../pages/profile.php?id=<?= $session->getId() ?>">Personal Information</a>
                 <a>Reviews</a>
             </nav>
             <form action="../actions/action_logout.php" method="post">
