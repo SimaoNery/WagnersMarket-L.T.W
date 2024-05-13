@@ -22,9 +22,10 @@ $offset = 0;
 $db = getDatabaseConnection();
 
 $userId = $session->getId();
-$lastMessages = Message::getLastMessages($db, $userId, 6, $offset);
+$lastMessages = Message::getLastMessages($db, $userId, $limit, $offset);
 
-$otherUserId = $_GET['otherUserId'] ?? intval(-1);
+$otherUserId = $_GET['otherUserId'] ?? -1;
+
 $otherUserId = intval($otherUserId);
 $messages = ($otherUserId === -1) ?  [] : Message::getConversation($db, $userId, $otherUserId, $limit, $offset);
 

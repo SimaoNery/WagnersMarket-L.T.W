@@ -201,24 +201,27 @@ async function getMoreContacts() {
 }
 
 
-const sendButton = document.querySelector("#sendButton");
+const form = document.querySelector("#send_message");
 
-if (sendButton) {
-    sendButton.addEventListener('click', async function() {
+if (form) {
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault()
         const otherUserId = document.getElementById('otherUser').value
-        const message = document.querySelector("#content").value
+        const message = document.querySelector("#content")
 
         if (message) {
-            await sendMessage(otherUserId, message)
+            await sendMessage(otherUserId, message.value)
+            message.value = ""
         }
 
     })
+
 }
 
-const allTimeElements = document.querySelectorAll('#messages > time');
-let lastTimeElement = allTimeElements.length ? allTimeElements[allTimeElements.length - 1] : false;
-
 async function sendMessage(otherUserId, message) {
+    if(document.querySelector('#noMessagesSent')) messages.innerHTML = ''
+    const allTimeElements = document.querySelectorAll('#messages > time');
+    let lastTimeElement = allTimeElements.length ? allTimeElements[allTimeElements.length - 1].innerHTML : false;
 
     const params = new URLSearchParams()
     params.append('otherUserId', otherUserId.toString())
@@ -240,6 +243,7 @@ async function sendMessage(otherUserId, message) {
             msg.append(content)
 
             let date = new Date(messageTime)
+
             let year = date.getFullYear()
             let month = date.getMonth() + 1
 
@@ -252,8 +256,9 @@ async function sendMessage(otherUserId, message) {
             let formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
             let formattedTime = paddedHour + ':' + paddedMinute;
 
+
             if (lastTimeElement) {
-                let currentDate = new Date(lastTimeElement.innerHTML)
+                let currentDate = new Date(lastTimeElement)
                 let currentYear = currentDate.getFullYear()
                 let currentMonth = currentDate.getMonth() + 1
                 let currentDay = currentDate.getDate()
@@ -270,10 +275,9 @@ async function sendMessage(otherUserId, message) {
                 const dateOfMessage = document.createElement('time')
                 dateOfMessage.classList.add('messageDate')
                 dateOfMessage.dateTime = formattedDate
-                dateOfMessage.innerHTML = formattedTime
+                dateOfMessage.innerHTML = formattedDate
                 messages.append(dateOfMessage)
             }
-            lastTimeElement = messageTime
 
             const time = document.createElement('time')
             time.classList.add('messageTime')
@@ -284,47 +288,49 @@ async function sendMessage(otherUserId, message) {
             msg.append(time)
             messages.append(msg)
 
-            let newContact;
             const username = document.querySelector('#conversation_header h3').innerHTML
-            const img = document.querySelector('#conversation_header img')
+            const img = document.querySelector('#conversation_header img').cloneNode(true);
             const contactArray = contacts.querySelectorAll('#contacts a')
 
+            const newContact = document.createElement('a')
+            newContact.href = "../../public/pages/messages.php?otherUserId=" + otherUserId.toString()
+            const contactSection = document.createElement('section')
+            contactSection.classList.add('contact')
+
+            const span = document.createElement('span')
+            span.innerHTML = username
+
+            const contactTime = document.createElement('time')
+            contactTime.dateTime = messageTime
+            contactTime.innerHTML = formattedTime
+
+            contactSection.append(span)
+            contactSection.append(message)
+            contactSection.append(img)
+            contactSection.append(contactTime)
+            newContact.append(contactSection)
+
             if (contactArray && username) {
+
                 contactArray.forEach(contact => {
-                    const span = contact.querySelector("span")
-                    const paragraph = contact.querySelector("p")
-                    if (span && span.innerHTML === username) {
-                        paragraph.innerHTML = message
-                        newContact = contact;
+                    const sp = contact.querySelector("span");
+                    if (sp && sp.innerHTML === username) {
                         contact.remove()
                     }
                 })
-            } else {
-
-                newContact = document.createElement('section')
-                newContact.classList.add('contact')
-
-                const span = document.createElement('span')
-                newContact.append(span)
-                newContact.append(msg)
-                newContact.append(img)
-                newContact.append(time)
             }
 
             contacts.prepend(newContact)
 
+            messages.scrollTop = messages.scrollHeight
         } catch (error) {
             console.error('Error parsing JSON:', error);
         }
     }
     request.send(params.toString());
+
 }
 
-//falta ver a o preventdefault behaviour, descer a scroll height quando se manda uma msg e ver dos limits (a query dos contacts pode ser o problem)
 
-
-//ver a query again
 //METER PREPEND EM TUDO
-//ARRANJAR MANEIRA DE NAO TAR SEMPRE A CARREGAR NOVOS CONTACTOS
-//ARRANJAR MANEIRA DO SCROLL CHECK FUNCIONAR
-//ARRANJAR MANEIRA DE MANTER A POSIÇAO DE SCROLL DA PAGINA SEMPRE QUE MENSAGENS SAO CARREGADAS
+
