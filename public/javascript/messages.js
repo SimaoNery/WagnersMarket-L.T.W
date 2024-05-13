@@ -2,9 +2,9 @@ const messages = document.getElementById("messages")
 const contacts = document.getElementById("contacts")
 const otherUser = document.getElementById("otherUser")
 
+let copy
 
 let needMoreMessages = true
-
 let limitMessages = 20
 let offsetMessages = 0
 
@@ -33,7 +33,7 @@ if (messages) {
 
 
 async function getMoreMessages() {
-    
+    let need = false
 
     const lastDate = document.getElementById("lastDate")
 
@@ -57,8 +57,10 @@ async function getMoreMessages() {
         let current_date = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
         let newElements = document.createDocumentFragment();
-        newElements.innerHtml = messages.innerHTML
+
+
         if(lastDate.innerHTML !== current_date) {
+            newElements.innerHtml = messages.innerHTML
             messages.innerHTML = ''
             const firstTimestamp = document.createElement('time');
             firstTimestamp.innerHTML = current_date
@@ -67,8 +69,13 @@ async function getMoreMessages() {
             lastDate.removeAttribute('id')
             messages.append(firstTimestamp)
         }
-
-        messages.innerHTML = ''
+        else {
+            messages.removeChild(lastDate)
+            newElements.innerHtml = messages.innerHTML
+            messages.innerHTML = ''
+            copy = lastDate
+            need = true
+        }
 
 
 
@@ -89,6 +96,7 @@ async function getMoreMessages() {
 
 
             if (formattedDate !== current_date) {
+                need = false;
                 const timestamp = document.createElement('time');
                 timestamp.innerHTML = formattedDate
                 timestamp.classList.add('messageDate')
@@ -114,7 +122,10 @@ async function getMoreMessages() {
             message.append(time)
             messages.append(message)
         }
-
+        if (need && copy) {
+            messages.prepend(copy)
+            need = false
+        }
         messages.innerHTML += newElements.innerHtml
         messages.scrollTop = currentScrollTop + (messages.scrollHeight - currentScrollHeight);
     }
