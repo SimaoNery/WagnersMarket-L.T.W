@@ -14,7 +14,6 @@ require_once(__DIR__ . '/../../private/templates/category.tpl.php');
 require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 require_once(__DIR__ . '/../../private/templates/home.tpl.php');
 
-
 $limit = 4;
 $offset = 0;
 $db = getDatabaseConnection();
@@ -22,13 +21,14 @@ $db = getDatabaseConnection();
 $categories = Category::getCategories($db);
 $items = Item::getMostPopularItems($db, $limit, $offset);
 $numItems = Item::getNumItems($db);
+$loggedIn = $session->isLoggedIn();
 
 drawHeader($db, $session);
 drawHomeBody();
 drawTitle("Categories");
 drawCategories($categories);
 drawTitle("Most popular");
-drawItems($items);
+drawItems($db, $items, $loggedIn, $session);
 drawPagination(intval(ceil($numItems / $limit)), "most_popular");
 drawFooter();
 ?>

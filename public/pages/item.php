@@ -10,6 +10,8 @@ require_once(__DIR__ . '/../../private/database/item.class.php');
 require_once(__DIR__ . '/../../private/database/image.class.php');
 require_once(__DIR__ . '/../../private/database/wishlist.class.php');
 require_once(__DIR__ . '/../../private/database/user.class.php');
+require_once(__DIR__ . '/../../private/database/cart.class.php');
+
 
 require_once(__DIR__ . '/../../private/templates/common.tpl.php');
 require_once(__DIR__ . '/../../private/templates/item.tpl.php');
@@ -18,11 +20,19 @@ $db = getDatabaseConnection();
 
 $item = Item::getItem($db, intval($_GET['id']));
 $images = Image::getImages($db, $item->itemId);
+
 $loggedIn = $session->isLoggedIn();
-$inWishList = Wishlist::isInWishlist($db, $session->getId(),$item->itemId);
+if($loggedIn) {
+    $inWishList = Wishlist::isInWishlist($db, $session->getId(),$item->itemId);
+    $inShoppingBag = Cart::isInShoppingBag($db, $session->getId(),$item->itemId);
+} else {
+    $inWishList = false;
+    $inShoppingBag = false;
+}
+
 $user = User::getUser($db, $item->userId);
 
 drawHeader($db, $session);
-drawItem($item, $images, $loggedIn, $inWishList, $user);
+drawItem($item, $images, $loggedIn, $inWishList, $inShoppingBag, $user);
 drawFooter();
 ?>

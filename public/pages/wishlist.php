@@ -5,7 +5,8 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
-    //SENDS A POPUP -> PAULO IS DOING
+    header("Location: index.php");
+    exit;
 }
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
@@ -26,7 +27,8 @@ $numItems = Item::getNumItemsWishlist($db, $userId);
 
 drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
-drawItems($items);
+drawTitle("Wishlist");
+drawItems($db, $items, $session->isLoggedIn(), $session);
 
 if($numItems === 0) { ?>
     <p id="emptyWishlist"> Your wishlist is empty!</p>

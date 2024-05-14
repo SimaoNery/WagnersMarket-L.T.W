@@ -61,6 +61,40 @@ class User
         return null;
     }
 
+    static function changePassword(PDO $db, int $id, string $newPassword) : bool {
+        $options = ['cost' => 12];
+        $stmt = $db->prepare('UPDATE USER SET Password = ? WHERE UserId = ?');
+
+        $stmt->execute(array(password_hash($newPassword, PASSWORD_DEFAULT, $options), $id));
+
+        return $stmt->rowCount() == 1;
+    }
+
+    static function changeName(PDO $db, int $id, string $name) : bool {
+        $stmt = $db->prepare('UPDATE USER SET Name = ? WHERE UserId = ?');
+
+        $stmt->execute(array($name, $id));
+
+        return $stmt->rowCount() == 1;
+    }
+
+
+    static function changeEmail(PDO $db, int $id, string $email) : bool {
+        $stmt = $db->prepare('UPDATE USER SET Email = ? WHERE UserId = ?');
+
+        $stmt->execute(array($email, $id));
+
+        return $stmt->rowCount() == 1;
+    }
+
+    static function changeProfilePic(PDO $db, int $id, string $profilePic) {
+        $stmt = $db->prepare('UPDATE USER SET ProfilePic = ? WHERE UserId = ?');
+
+        $stmt->execute(array('../profile_pictures/' . $profilePic, $id));
+
+        return $stmt->rowCount() == 1;
+    }
+
     static function getUserByEmail(PDO $db, string $email): ?User
     {
         $stmt = $db->prepare('SELECT UserId, Name, Username, ProfilePic, Password, Email, Admin FROM USER WHERE Email = ?');
@@ -136,12 +170,41 @@ class User
         return null;
     }
 
+    static function getUserWithIdAndPassword(PDO $db, int $id, string $password): ?User
+    {
+        $stmt = $db->prepare('
+            SELECT * 
+            FROM USER 
+            WHERE UserId = ?
+          ');
+
+        $stmt->execute(array($id));
+
+        $user = $stmt->fetch();
+
+        if ($user != null) {
+            if (password_verify($password, $user['Password'])) {
+                $admin = $user['Admin'] == 1 ? true : false;
+
+                return new User(
+                    $user['UserId'],
+                    $user['Name'],
+                    $user['Username'],
+                    $user['ProfilePic'],
+                    $user['Email'],
+                    $admin
+                );
+            }
+        }
+        return null;
+    }
+
     static function addUser(PDO $db, string $name, string $username, string $email, string $password): bool
     {
         $options = ['cost' => 12];
         $stmt = $db->prepare('INSERT INTO USER (Name, Username, ProfilePic, Password, Email) VALUES (?, ?, ?, ?, ?)');
 
-        $stmt->execute(array($name, $username, '../../public/profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
+        $stmt->execute(array($name, $username, '../profile_pictures/profile_pic1.png', password_hash($password, PASSWORD_DEFAULT, $options), strtolower($email)));
 
         return $stmt->rowCount() == 1;
     }

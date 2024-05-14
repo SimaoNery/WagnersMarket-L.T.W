@@ -2,19 +2,40 @@
   declare(strict_types = 1);
 
 require_once(__DIR__ . '/../database/item.class.php');
-  require_once(__DIR__ . '/../database/image.class.php');
-  require_once(__DIR__ . '/../database/user.class.php');
-  require_once(__DIR__ . '/../database/condition.class.php');
+require_once(__DIR__ . '/../database/image.class.php');
+require_once(__DIR__ . '/../database/user.class.php');
+require_once(__DIR__ . '/../database/condition.class.php');
 require_once(__DIR__ . '/../database/category.class.php');
+require_once(__DIR__ . '/../database/wishlist.class.php');
+require_once(__DIR__ . '/../database/cart.class.php');
 ?>
 
-<?php function drawItems(array $items): void
+<?php function drawItems(PDO $db, array $items, bool $loggedIn, Session $session): void
 { ?>
         <ul class="draw-items" id="draw-items">
             <?php foreach($items as $item) { ?>
                 <li class="item-card">
-                    <a href="../../public/pages/item.php?id=<?=$item->itemId?>">
+                    <a href="../pages/item.php?id=<?=$item->itemId?>">
                         <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
+                    </a>
+
+                    <section class="wishlistIcon">
+                        <?php if(!$loggedIn) : ?>
+                            <button type="button" class="wishlist-button" disabled>
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        <?php elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) :?>
+                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                        <?php else : ?>
+                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        <?php endif; ?>
+                    </section>
+
+                    <a href="../pages/item.php?id=<?=$item->itemId?>">
                         <h4><?=$item->title?></h4>
                         <p><?=number_format($item->price, 2)?>€</p>
                     </a>
@@ -26,11 +47,11 @@ require_once(__DIR__ . '/../database/category.class.php');
 <?php function drawPagination(int $pages, string $id) { ?>
     <section class="pagination-container">
         <section class="pagination" id="<?= $id ?>">
-            <?php for ($i = 1; $i <= min($pages, 3); $i++) { ?>
+            <?php for ($i = 1; $i <= min(3, $pages); $i++) { ?>
                 <button id="pagination-button" class="pagination-button"><?= $i ?></button>
             <?php } ?>
             <?php if ($pages > 4) { ?>
-                <button id="pagination-button" class="pagination-button">&#8594;</button>
+                <button id="next-button" class="pagination-button">&#8594;</button>
             <?php } ?>
         </section>
 
@@ -42,7 +63,7 @@ require_once(__DIR__ . '/../database/category.class.php');
     </section>
 <?php } ?>
 
-<?php function drawItem(Item $item, array $images, bool $loggedIn, bool $inWishList, $user) { ?>
+<?php function drawItem(Item $item, array $images, bool $loggedIn, bool $inWishList, bool $inShoppingBag, $user) { ?>
     <section class="row">
         <section id="images" class="col-2">
 
@@ -66,26 +87,37 @@ require_once(__DIR__ . '/../database/category.class.php');
                     </li>
 
                     <li id="wishlist">
-                        <?php if($loggedIn) : ?>
+                        <?php if(!$loggedIn) : ?>
                             <button type="button" class="wishlist-button" disabled>
                                 <i class="fa-regular fa-heart"></i>
                             </button>
 
-                        <?php elseif ($inWishList) : ?>
-                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>)">
-                                <i id="wishlistIcon" class="fa-solid fa-heart"></i>
+                        <?php elseif ($inWishList) :?>
+                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                                <i class="fa-solid fa-heart"></i>
                             </button>
                         <?php else : ?>
-                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>)">
-                                <i id="wishlistIcon" class="fa-regular fa-heart"></i>
+                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                                <i class="fa-regular fa-heart"></i>
                             </button>
                         <?php endif; ?>
                     </li>
 
                     <li id="bag">
-                        <button class="add-to-bag-button">
-                            <i id="wishlistIcon" class="fa-solid fa-bag-shopping"></i> Add To Bag
+                        <?php if(!$loggedIn) : ?>
+                        <button type="button" class="bag-button" disabled>
+                            <i class="fa-solid fa-bag-shopping"></i> Add To Bag
                         </button>
+
+                        <?php elseif ($inShoppingBag) : ?>
+                            <button type="button" class="bag-button" onclick="removeFromShoppingBag(<?= $item->itemId ?>)">
+                                <i id="bagIcon" class="fa-solid fa-bag-shopping"></i> Remove From Bag
+                            </button>
+                        <?php else : ?>
+                            <button type="button" class="bag-button" onclick="addToShoppingBag(<?= $item->itemId ?>)">
+                                <i id="bagIcon" class="fa-solid fa-bag-shopping"></i> Add To Bag
+                            </button>
+                        <?php endif; ?>
                     </li>
                 </ul>
             </article>
@@ -112,17 +144,17 @@ require_once(__DIR__ . '/../database/category.class.php');
         <div class="box_yellow">
             <section id="sellerInfo">
                 <div class="profilePic">
-                    <a href="../../public/pages/profile.php">
+                    <a href="../pages/profile.php">
                         <img src= "/<?= $user->profilePic ?>">
                     </a>
                 </div>
 
                 <div class="sellerDetails">
-                    <a href="../../public/pages/profile.php">
+                    <a href="../pages/profile.php">
                         <p class="username"><?=$user->username?></p>
                     </a>
 
-                    <a href="../../public/pages/profile.php">
+                    <a href="../pages/profile.php">
                         <p class="name"><?=$user->name ?></p>
                     </a>
                 </div>
@@ -134,13 +166,58 @@ require_once(__DIR__ . '/../database/category.class.php');
     </section>
 <?php } ?>
 
+<?php function drawBag(PDO $db, int $user, array $items) { ?>
+    <section class="shopping-bag-page">
+        <section id="ShoppingBagItems">
 
+            <h2 id="bag-title">
+                Shopping Bag
+            </h2>
 
+            <ul class="draw-bag" id="draw-bag">
+                <?php foreach($items as $item) { ?>
+                    <li class="bag-card">
+                        <a href="../pages/item.php?id=<?=$item->itemId?>">
+                            <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bagItemImage">
+                        </a>
 
-<?php function drawItemFilter(PDO $db, float $maxPrice) { ?>
+                        <section class="bagItemButtons">
+                            <section class="wishlistIcon">
+                                <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) :?>
+                                    <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </button>
+                                <?php else : ?>
+                                    <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                                        <i class="fa-regular fa-heart"></i>
+                                    </button>
+                                <?php endif; ?>
+                            </section>
+
+                            <section class="trashIcon">
+                                <button type="button" class="trash-button" onclick="trashBagItem(<?= $item->itemId ?>)">
+                                    <i id="trashIcon" class="fa-solid fa-trash"></i>
+                                </button>
+                            </section>
+                        </section>
+
+                        <a href="../pages/item.php?id=<?=$item->itemId?>">
+                            <h4 class="bagItemTitle"><?=$item->title?></h4>
+                            <p class="bagItemPrice"><?=number_format($item->price, 2)?>€</p>
+                            <p class="bagItemBrand">Brand: <span id="brandName"><?=$item->brand?></span></p>
+                            <p class="bagItemCondition">Condition: <span id="conditionValue"><?=$item->condition?></span></p>
+                        </a>
+                    </li>
+                <?php } ?>
+            </ul>
+        </section>
+    </section>
+<?php } ?>
+
+<?php function drawItemFilter(PDO $db, float $maxPrice, ?string $selectedCategory = null) { ?>
     <?php
-    $categories = Category::getCategories($db);
-    $conditions = Condition::getConditions($db);
+        $categories = Category::getCategories($db);
+        $conditions = Condition::getConditions($db);
     ?>
     <form id="filters">
         <fieldset id="price">
@@ -163,8 +240,14 @@ require_once(__DIR__ . '/../database/category.class.php');
         <fieldset id="category">
             <legend>Category</legend>
             <?php foreach($categories as $category) { ?>
+                <?php if ($selectedCategory != null) {
+                    if ($selectedCategory === $category->categoryName) { ?>
+                       <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>" checked></label>
+                <?php } else { ?>
                 <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>"></label>
-            <?php } ?>
+                <?php } } else { ?>
+                    <label><?= $category->categoryName ?><input type="checkbox" id="<?= $category->categoryName ?>"></label>
+                    <?php } } ?>
         </fieldset>
         <fieldset id="condition">
             <legend>Condition</legend>

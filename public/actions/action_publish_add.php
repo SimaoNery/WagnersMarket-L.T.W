@@ -5,7 +5,8 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
-    exitWithError($session, "User not logged in");
+    header("Location: index.php");
+    exit;
 }
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
@@ -67,7 +68,7 @@ try {
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
+exit;
 
 function exitWithError($session, string $error): void
 {

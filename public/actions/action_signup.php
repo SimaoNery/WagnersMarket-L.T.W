@@ -17,13 +17,14 @@ $password = $_POST['password'];
 
 if (User::getUserByUsername($db, $username)) {
     $session->addMessage('error', 'Username already in use');
-    return;
+    header('Location: ../index.php');
+    exit;
 }
-
 
 if (User::getUserByEmail($db, $email)) {
     $session->addMessage('error', 'Email already in use');
-    return;
+    header('Location: ../index.php');
+    exit;
 }
 
 if (User::addUser($db, $name, $username, $email, $password)) {

@@ -5,7 +5,8 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
-    //SENDS A POPUP -> PAULO IS DOING
+    header("Location: index.php");
+    exit;
 }
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
@@ -27,7 +28,7 @@ $numItems = Item::getNumAdds($db, $userId);
 drawHeader($db, $session);
 drawProfileBody("your_adds", $userId);
 drawTitle("Your Adds");
-drawItems($items);
+drawItems($db, $items, $session->isLoggedIn(), $session);
 
 if($numItems === 0) { ?>
     <p id="emptyYourAdds"> You are not selling any item!</p>

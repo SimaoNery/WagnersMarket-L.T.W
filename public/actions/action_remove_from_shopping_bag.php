@@ -10,7 +10,7 @@ if(!$session->isLoggedIn()) {
 }
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
-require_once(__DIR__ . '/../../private/database/wishlist.class.php');
+require_once(__DIR__ . '/../../private/database/cart.class.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
 
 $db = getDatabaseConnection();
@@ -21,11 +21,10 @@ $offset = 0;
 $chosenItem = Item::getItem($db, intval($_GET['id']));
 
 
-if (Wishlist::removeFromWishlist($db, $userId, $chosenItem->itemId)) {
-    Item::decrementWishlistCounter($db, $chosenItem->itemId);
-    $session->addMessage('success', 'Item Removed Successfully From Wishlist!');
+if (Cart::removeFromShoppingBag($db, $userId, $chosenItem->itemId)) {
+    $session->addMessage('success', 'Item Removed Successfully From Shopping Bag!');
 } else {
-    $session->addMessage('error', 'Item Not Removed From Wishlist!');
+    $session->addMessage('error', 'Item Not Removed From Shopping Bag!');
 }
 
 
