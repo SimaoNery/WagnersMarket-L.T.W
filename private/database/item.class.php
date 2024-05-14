@@ -288,6 +288,13 @@ class Item
         $stmt = $db->prepare('UPDATE ITEM SET WishlistCounter = WishlistCounter - 1 WHERE ItemId = ? AND WishlistCounter > 0');
         return $stmt->execute([$itemId]);
     }
+
+
+    static function deleteItem(PDO $db, int $itemId): bool
+    {
+        $stmt = $db->prepare('DELETE FROM ITEM WHERE ItemId = ?');
+        return $stmt->execute([$itemId]);
+    }
 }
 
 ?>

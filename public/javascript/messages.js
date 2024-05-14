@@ -220,6 +220,7 @@ if (form) {
 
 async function sendMessage(otherUserId, message) {
     if(document.querySelector('#noMessagesSent')) messages.innerHTML = ''
+    if(document.querySelector('#noOpenConversations')) contacts.innerHTML = ''
     const allTimeElements = document.querySelectorAll('#messages > time');
     let lastTimeElement = allTimeElements.length ? allTimeElements[allTimeElements.length - 1].innerHTML : false;
 

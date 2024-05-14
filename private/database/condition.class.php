@@ -25,6 +25,19 @@ class Condition
 
         return $conditions;
     }
+
+    static function addCondition(PDO $db, string $condition): bool
+    {
+        $stmt = $db->prepare('INSERT INTO CONDITION (Condition) VALUES (?)');
+        $stmt->execute(array($condition));
+        return $stmt->rowCount() == 1;
+    }
+
+    static function deleteCategories(PDO $db, string $condition): bool
+    {
+        $stmt = $db->prepare('DELETE FROM CONDITION WHERE Condition = ?');
+        return $stmt->execute(array($condition));
+    }
 }
 
 ?>

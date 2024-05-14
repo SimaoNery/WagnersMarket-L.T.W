@@ -28,7 +28,7 @@ class User
         $stmt->execute(array($id));
         $user = $stmt->fetch();
 
-        $admin = $user['Admin'] == 1 ? true : false;
+        $admin = $user['Admin'] == 1;
 
         return new User(
             $user['UserId'],
@@ -82,6 +82,30 @@ class User
         return null;
     }
 
+    static function getUserByAnything(PDO $db, string $anything, int $limit, int $offset): array
+    {
+        $searchString = "%" . $anything . "%";
+        $stmt = $db->prepare('SELECT UserId, Name, Username, ProfilePic, Password, Email, Admin FROM USER WHERE UserId LIKE ? OR NAME LIKE ? OR Username LIKE ? OR SUBSTR(Email, 1, INSTR(Email, "@") - 1) LIKE ? LIMIT ? OFFSET ?');
+
+        $stmt->execute(array($searchString, $searchString, $searchString, $searchString, $limit, $offset));
+
+        $users = [];
+
+        while ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $admin = $user['Admin'] == 1 ? true : false;
+            $users[] = new User(
+                $user['UserId'],
+                $user['Name'],
+                $user['Username'],
+                $user['ProfilePic'],
+                $user['Email'],
+                $admin
+            );
+        }
+
+        return $users;
+    }
+
 
     static function getUserWithPassword(PDO $db, string $email, string $password): ?User
     {
@@ -128,6 +152,18 @@ class User
         $stmt->execute(array($id));
 
         return $stmt->fetchColumn();
+    }
+
+    static function deleteUser(PDO $db, int $userId): bool
+    {
+        $stmt = $db->prepare('DELETE FROM USER WHERE UserId = ?');
+        return $stmt->execute(array($userId));
+    }
+
+    static function changeAdminStatus(PDO $db, int $userId, bool $admin): bool
+    {
+        $stmt = $db->prepare('UPDATE USER SET Admin = ? WHERE UserId = ?;');
+        return $stmt->execute(array($admin, $userId));
     }
 
 }

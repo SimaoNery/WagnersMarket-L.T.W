@@ -14,7 +14,7 @@ require_once(__DIR__ . '/../database/category.class.php');
         <section id="contacts_container">
             <h3 id="contacts_header">Contacts</h3>
             <section id="contacts">
-                <?php if (empty($lastMessages)) {?>
+                <?php if (empty($lastMessages)) { ?>
                         <h3 id="noOpenConversations">You have no open conversations!</h3>
                 <?php } ?>
                 <?php foreach ($lastMessages as $message) {

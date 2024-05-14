@@ -25,6 +25,7 @@ $numItems = Item::getNumItems($db);
 
 drawHeader($db, $session);
 drawHomeBody();
+drawTitle("Categories");
 drawCategories($categories);
 drawTitle("Most popular");
 drawItems($items);

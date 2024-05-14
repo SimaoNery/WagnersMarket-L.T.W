@@ -25,8 +25,8 @@ $userId = $session->getId();
 $lastMessages = Message::getLastMessages($db, $userId, $limit, $offset);
 
 $otherUserId = $_GET['otherUserId'] ?? -1;
-
 $otherUserId = intval($otherUserId);
+
 $messages = ($otherUserId === -1) ?  [] : Message::getConversation($db, $userId, $otherUserId, $limit, $offset);
 
 if ($otherUserId === -1 && !empty($lastMessages)) {

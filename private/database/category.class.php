@@ -26,6 +26,25 @@ class Category
 
         return $categories;
     }
+
+    static function addCategory(PDO $db, string $categoryName, string $categoryImage): bool
+    {
+        $stmt = $db->prepare('INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES (?, ?)');
+        $stmt->execute(array($categoryName, $categoryImage));
+        return $stmt->rowCount() == 1;
+    }
+
+    static function deleteCategory(PDO $db, string $categoryName): bool
+    {
+        $stmt = $db->prepare('DELETE FROM CATEGORY WHERE CategoryName = ?');
+        return $stmt->execute(array($categoryName));
+    }
+
+    static function updateCategoryImage(PDO $db, string $categoryName, string $categoryImage): bool
+    {
+        $stmt = $db->prepare('UPDATE CATEGORY SET CategoryImage = ? WHERE CategoryName = ?;');
+        return $stmt->execute(array($categoryImage, $categoryName));
+    }
 }
 
 ?>

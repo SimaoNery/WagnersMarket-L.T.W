@@ -121,15 +121,16 @@ function drawProfileForm(PDO $db, Session $session)
         <script src="../../public/javascript/script.js" defer></script>
         <script src="../../public/javascript/suggestion.js"></script>
         <script src="../../public/javascript/wishlistButton.js"></script>
+        <script src="../../public/javascript/searchUsers.js"></script>
     </body>
 
     </html>
 <?php } ?>
 
-<?php function drawSearchBar(string $id)
-{ ?>
-    <section id="<?= $id ?>" class="search-bar">
-        <input id="searchitem" type="text" placeholder="What are you looking for?">
+<?php function drawSearchBar(string $id, string $placeholder)
+{?>
+    <section id="search-bar" class="search-bar">
+        <input id="<?= $id ?>" type="text" placeholder="<?= $placeholder ?>">
         <button><i class="fa fa-search"></i></button>
     </section>
 <?php } ?>
