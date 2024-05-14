@@ -5,11 +5,11 @@ declare(strict_types=1);
 <?php function drawProfileBody(string $page, int $userId)
 { ?>
     <nav class="profile-pages" id="<?= $page ?>>">
-        <a href="your_adds.php?id=<?= $userId ?>" <?= $page === "your_adds" ? 'class="highlighted"' : '' ?>>Your Adds</a>
-        <a href="wishlist.php?id=<?= $userId ?>" <?= $page === "wishlist" ? 'class="highlighted"' : '' ?>>Wishlist</a>
-        <a href="messages.php?id=<?= $userId ?>" <?= $page === "messages" ? 'class="highlighted"' : '' ?>>Messages</a>
-        <a href="personal_information.php?id=<?= $userId ?>" <?= $page === "personal_information" ? 'class="highlighted"' : '' ?>>Personal Information</a>
-        <a href="reviews.php?id=<?= $userId ?>" <?= $page === "reviews" ? 'class="highlighted"' : '' ?>>Reviews</a>
+        <a href="../pages/your_adds.php?id=<?=$userId?>" <?= $page === "your_adds" ? 'class="highlighted"' : '' ?>>Your Adds</a>
+        <a href="../pages/wishlist.php?id=<?=$userId?>" <?= $page === "wishlist" ? 'class="highlighted"' : '' ?>>Wishlist</a>
+        <a href="../pages/messages.php?id=<?=$userId?>" <?= $page === "messages" ? 'class="highlighted"' : '' ?>>Messages</a>
+        <a href="../pages/personal_information.php?id=<?=$userId?>" <?= $page === "personal_information" ? 'class="highlighted"' : '' ?>>Personal Information</a>
+        <a href="../pages/reviews.php?id=<?=$userId?>" <?= $page === "reviews" ? 'class="highlighted"' : '' ?>>Reviews</a>
     </nav>
 <?php } ?>
 

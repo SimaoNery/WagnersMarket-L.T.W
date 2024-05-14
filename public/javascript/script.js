@@ -9,7 +9,6 @@ const orderSelected = document.querySelector('#orderSelected')
 
 const range = document.querySelector("#slider #progress");
 
-
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
@@ -160,13 +159,53 @@ async function getSearchResults() {
             maximumFractionDigits: 2
         }).format(item.price);
 
+        const wishlistIcon = document.createElement('section');
+        wishlistIcon.classList.add('wishlistIcon');
+
+        const wishlistButton = document.createElement('button');
+        wishlistButton.setAttribute('type', 'button');
+        wishlistButton.setAttribute('class', 'wishlist-button');
+
+        if (await inWishlist(item.itemId)) {
+            wishlistButton.innerHTML = '<i class="fa-solid fa-heart"></i>';
+            wishlistButton.addEventListener('click', () => removeFromWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
+        }
+        else {
+            wishlistButton.innerHTML = '<i class="fa-regular fa-heart"></i>';
+            wishlistButton.addEventListener('click', () => addToWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
+        }
+        wishlistIcon.appendChild(wishlistButton);
+
         priceElement.textContent = formattedPrice + '€';
 
         linkElement.appendChild(imageElement);
         linkElement.appendChild(titleElement);
         linkElement.appendChild(priceElement);
+
         itemElement.appendChild(linkElement);
         itemsSection.appendChild(itemElement);
+        itemElement.appendChild(wishlistIcon);
+    }
+}
+
+async function inWishlist(itemId) {
+    try {
+        const response = await fetch(`../api/api_is_in_wishlist.php?itemId=${itemId}`, {
+            method: 'GET',
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            return data
+        } else {
+            console.error('Failed to check wishlist status for item with ID:', itemId);
+            return false;
+        }
+    }
+    catch (error) {
+        console.error('Error checking if item is in wishlist!', error);
+        return false;
     }
 }
 

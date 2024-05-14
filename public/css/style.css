@@ -45,13 +45,10 @@ ul li {
 }
 
 ul li a {
-    display: flex;
     color: #777;
-    text-align: center;
+    text-align: left;
     font-size: 20px;
-    align-items: center;
     padding: 10px;
-    justify-content: center;
 }
 
 .header-right ul:last-child {
@@ -347,6 +344,17 @@ section#title {
     color: #777;
 }
 
+.wishlistIcon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.trashIcon {
+    position: absolute;
+    top: 175px;
+    right: 5px;
+}
 
 .draw-items {
     display: grid;
@@ -357,6 +365,196 @@ section#title {
     justify-content: center;
 }
 
+.shopping-bag-page {
+    display: inline-block;
+    width: 69%;
+}
+
+.shopping-bag-page2 {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 15%;
+    width: 25%;
+
+    position: sticky;
+    top: 15%;
+    z-index: 1000;
+}
+
+#ShoppingBagItems {
+    margin-top: 15%;
+    margin-left: 7%;
+}
+
+#shoppingbag-info {
+    grid-column: 2;
+    margin-left: 25%;
+    width: 75%;
+}
+
+#bag-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.3em;
+}
+
+#summary-title {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.7em;
+}
+
+#money-information {
+    background-color: #fded84;
+    text-align: center;
+
+    margin-top: 1.5em;
+    margin-bottom: 3em;
+    padding-top: 1em;
+    padding-bottom: 5em;
+
+    border-radius: 10px;
+}
+
+.subtotal {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#subtotal-span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+.shipping-cost {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#shippingcost-span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+.total {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+
+    border-top: 3px solid #333333;
+    border-bottom: 3px solid #333333;
+
+    margin-bottom: 3em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#total-span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+.checkout-button {
+    margin-top: 1em;
+}
+
+.bag-card {
+    display: grid;
+    grid-template-columns: 30% 25% 25%;
+    grid-template-rows: 20% 40% 35%;
+
+    gap: 5px;
+    padding: 10px;
+    margin-bottom: 2%;
+
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    background-color: rgba(253, 237, 132, 0.1);
+}
+
+.bagItemImage {
+    grid-column: 1;
+    grid-row: 1 /span 3;
+    grid-area: image;
+}
+
+.bagItemTitle {
+    grid-column: 2;
+    grid-row: 1;
+
+    font-size: 30px;
+}
+
+.bagItemPrice {
+    grid-column: 3;
+    grid-row: 1;
+
+    font-weight: bold;
+    font-size: 25px;
+
+    margin-bottom: 1.5em;
+}
+
+.bagItemBrand {
+    grid-column: 2;
+    grid-row: 2;
+
+    grid-area: brand;
+}
+
+.bagItemCondition {
+    grid-column: 2;
+    grid-row: 3;
+
+    grid-area: condition;
+}
+
+.bagItemButtons {
+    grid-column: 3;
+    grid-row: 3;
+
+    grid-area: buttons;
+}
+
+.checkout-button {
+    background: white;
+    padding: 5% 20% 5% 20%;
+    cursor: pointer;
+    border: none;
+    border-radius: 30px;
+    font-size: 21px;
+    font-weight: bolder;
+}
+
+.checkout-button:hover {
+    color: rgba(0, 0, 0, 1); /
+}
+
+.trash-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.trash-button i {
+    font-size: 27px;
+    color: rgba(100, 100, 100, 0.5);
+    transition: color 0.3s ease;
+    margin-right: 10px;
+}
+
+.trash-button:hover i {
+    color: rgba(64, 64, 64, 0.6); /
+}
 
 
 footer {
@@ -500,6 +698,24 @@ select {
     }
 }
 
+.wishlist-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.wishlist-button i {
+    font-size: 27px;
+    color: rgba(255, 0, 0, 0.3);
+    transition: color 0.3s ease;
+    margin-right: 10px;
+}
+
+.wishlist-button:hover i {
+    color: rgba(255, 0, 0, 0.6);
+}
+
 #mainInfo {
     h1 {
         font-family: 'Open Sans', sans-serif;
@@ -523,25 +739,7 @@ select {
         margin-right: 275px;
     }
 
-    .wishlist-button {
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-    }
-
-    .wishlist-button i {
-        font-size: 27px;
-        color: rgba(255, 0, 0, 0.3);
-        transition: color 0.3s ease;
-        margin-right: 10px;
-    }
-
-    .wishlist-button:hover i {
-        color: rgba(255, 0, 0, 0.6);
-    }
-
-    .add-to-bag-button {
+    .bag-button {
         padding: 10px 20px;
         background-color: rgba(253, 237, 132, 1);
         color: #777777;
@@ -552,12 +750,12 @@ select {
         cursor: pointer;
     }
 
-    .add-to-bag-button .fa-bag-shopping {
+    .bag-button .fa-bag-shopping {
         margin-right: 5px;
         font-size: 20px;
     }
 
-    .add-to-bag-button:hover {
+    .bag-button:hover {
         color: black;
     }
 
@@ -736,7 +934,7 @@ label#check {
     font-size: 2em;
     justify-content: center;
     display: flex;
-    font-weight: bold;    
+    font-weight: bold;
     cursor: pointer;
     transition: .5s ease-in-out;
     margin-top: 15px;
@@ -1071,6 +1269,15 @@ input[type="checkbox"] {
     font-size: 20px;
 }
 
+#emptyShoppingBag {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+
+    margin-top: 7%;
+}
+
 #emptyYourAdds{
     text-align: center;
     font-family: 'Open Sans', sans-serif;
@@ -1079,15 +1286,15 @@ input[type="checkbox"] {
 }
 
 .container {
-    text-align: center; 
+    text-align: center;
 }
 
 
 #publish {
     font-family: 'Open Sans', sans-serif;
-    display: inline-block; 
-    width: 80%; 
-    text-align: left; 
+    display: inline-block;
+    width: 80%;
+    text-align: left;
 }
 
 #publish h3 {
@@ -1166,6 +1373,17 @@ input[type="checkbox"] {
 
 .message {
     margin-bottom: 20px;
+}.total {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+
+    border-top: 3px solid #333333;
+    border-bottom: 3px solid #333333;
+
+    margin-bottom: 3em;
+    text-align: left;
+
 }
 
 .popup-form {
@@ -1215,7 +1433,7 @@ section.left-side {
 
         button:hover {
             color: #000;
-            background: #ff9837; 
+            background: #ff9837;
         }
     }
 
@@ -1288,12 +1506,385 @@ section.right-side {
         grid-template-areas: "label text button";
         height: 1.5em;
         margin-bottom: 2em;
+#delivery-information {
+    display: inline-block;
+
+    width: 45%;
+    margin-left: 5%;
+}
+
+.delivery-information-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.3em;
+    font-weight: bolder;
+
+    grid-column: 1;
+
+    margin-bottom: 0.7em;
+}
+
+.delivery-information-inputs {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto auto;
+
+    gap: 1em;
+}
+
+#first-name {
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+
+    grid-column: 1 /span 3;
+    grid-row: 1;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+#last-name {
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+
+    grid-column: 4 / span 3;
+    grid-row: 1;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+#address {
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+
+    grid-column: 1 / span 4;
+    grid-row: 2;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+#postal-code {
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+
+    grid-column: 5 /span 2;
+    grid-row: 2;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+#payment-options {
+    display: inline-block;
+    margin-top: 3.5em;
+
+    width: 45%;
+    margin-left: 5%;
+}
+
+.payment-options-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.3em;
+    font-weight: bolder;
+
+    grid-column: 1;
+
+    margin-bottom: 0.7em;
+}
+
+.payment-options-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+
+    gap: 0.3em;
+}
 
         button {
             grid-area: button;
             background: none;
             border: none;
         }
+.card {
+    grid-row: 1;
+    grid-column: 1;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: lighter;
+    font-size: 1.1em;
+}
+
+.mb-ways {
+    grid-row: 2;
+    grid-column: 1;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: lighter;
+    font-size: 1.1em;
+}
+
+.card-info {
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+
+    gap: 0.5em;
+}
+
+.mbway-info {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+#confirm-order {
+    background-color: #ffde00;
+    border-radius: 20px;
+    padding: 0.8em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+
+    grid-row: 4;
+    grid-column: 2;
+
+    margin-top: 2em;
+}
+
+.cancel-button {
+    text-align: center;
+    background-color: #fded84;
+    border-radius: 20px;
+    padding: 0.8em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+
+    grid-row: 4;
+    grid-column: 3;
+}
+
+.cancel-button:hover {
+    opacity: 0.8;
+}
+
+#card-number {
+    grid-row: 1;
+    grid-column: 1 / span 3;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+}
+
+#card-date {
+    grid-row: 1;
+    grid-column: 4 / span 3;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+}
+
+#cvv {
+    grid-row: 2;
+    grid-column: 1 / span 1;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+}
+
+#phone-number {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    font-size: 1em;
+
+    padding: 1em 3em;
+    text-align: center;
+    border-radius: 10px;
+    border-style: ridge;
+
+    grid-column: 1 / span 3;
+}
+
+#inyourbag-info {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 15em;
+
+    width: 30%;
+
+    position: sticky;
+    top: 15%;
+    z-index: 1000;
+}
+
+#inyourbag-header {
+    display: grid;
+    grid-template-columns: repeat(2, 3fr);
+}
+
+#inyourbag-title {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.3em;
+    font-weight: bolder;
+
+    grid-column: 1 / span 2;
+
+    margin-left: 0.7em;
+}
+
+.shoppingbag-edit {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+    font-weight: lighter;
+
+    grid-column: 3 / span 1;
+    margin-top: 0.5em;
+    margin-right: 1em;
+}
+
+#inyourbag-money-information {
+    background-color: #fded84;
+    border-radius: 25px;
+
+    padding: 0.5em 0.5em 1em;
+    margin-bottom: 5em;
+}
+
+
+.subtotal-checkout {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#subtotal-span-checkout {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+.shipping-cost-checkout {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#shippingcost-span-checkout {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+.total-checkout {
+    padding: 0.7em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+
+    border-top: 3px solid #333333;
+    border-bottom: 3px solid #333333;
+
+    margin-bottom: 1.5em;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#total-span-checkout {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+}
+
+.checkout-items-container {
+    max-height: 19em;
+    overflow-y: auto;
+
+    background-color: #fffbe0;
+    border-radius: 5px;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.items-checkout-card {
+    display: grid;
+    grid-template-columns: 30% 50%;
+    grid-template-rows: repeat(1, 1fr);
+
+    padding: 0.5em;
+
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    background-color: #fded84;
+
+    border-bottom: #fffbe0 solid 5px;
+}
+
+#success-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background-color: #fded84;
+    padding: 2em;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 0.5em #00000000;
+    backdrop-filter: blur(5px);
+}
+
+#success-message p {
+    margin-bottom: 0.5em;
+}
+
+
+#close-button {
+    background-color: #ffa500;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#close-button:hover {
+    background-color: #ee9d00;
+}
 
         form {
             grid-area: text;
@@ -1315,16 +1906,16 @@ section.right-side {
             background: rgb(255, 255, 255);
             padding: 0.5em;
         }
-    
+
     }
 
-        form {  
+        form {
             grid-area: change;
             display: grid;
-            grid-template-areas: 
+            grid-template-areas:
                 "label"
                 "field";
-                
+
 
             section#input-fields {
                 display: grid;
@@ -1337,7 +1928,7 @@ section.right-side {
                 background: #e5e4e4;
             }
         }
-        
+
         form span {
             grid-area: label;
             text-align: center;
@@ -1348,7 +1939,7 @@ section.right-side {
             padding: 0.5em;
             font-family: 'Open Sans', sans-serif;
         }
-        
+
         form input#old-psw {
             grid-area: old;
             margin-bottom: 0.5em;
@@ -1356,13 +1947,13 @@ section.right-side {
             padding: 0.5em;
             margin-bottom: 0.5em;
         }
-        
+
         form input#new-psw {
             grid-area: new;
             border: none;
             padding: 0.5em;
         }
-        
+
         form button {
             grid-area: button;
             margin-left: 1em;
@@ -1370,7 +1961,7 @@ section.right-side {
             font-family: 'Open Sans', sans-serif;
             color: #777;
         }
-    
+
         form button:hover {
             color: #000;
         }

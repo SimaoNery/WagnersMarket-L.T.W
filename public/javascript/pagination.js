@@ -55,7 +55,7 @@ function fetchItems(limit, offset, searchType) {
             xhr.open('GET', `../api/api_dennis.php?limit=${limit}&offset=${offset}`, true);
             break;
         case "wishlist":
-            xhr.open('GET', `../api/api_wishlist.php?limit=${limit}&offset=${offset}`, true);
+            xhr.open('GET', `../api/api_wishlist_pagination.php?limit=${limit}&offset=${offset}`, true);
             break;
         case "your_adds":
             xhr.open('GET', `../api/api_yourAdds.php?limit=${limit}&offset=${offset}`, true);
@@ -70,7 +70,7 @@ function fetchItems(limit, offset, searchType) {
                 const items = response.items;
                 const mostPopularContainer = document.querySelector('#draw-items');
                 mostPopularContainer.innerHTML = '';
-                items.forEach(item => {
+                items.forEach(async item => {
                     const itemElement = document.createElement('li');
                     itemElement.classList.add('item-card');
 
@@ -93,10 +93,28 @@ function fetchItems(limit, offset, searchType) {
 
                     priceElement.textContent = formattedPrice + '€';
 
+                    const wishlistIcon = document.createElement('section');
+                    wishlistIcon.classList.add('wishlistIcon');
+
+                    const wishlistButton = document.createElement('button');
+                    wishlistButton.setAttribute('type', 'button');
+                    wishlistButton.setAttribute('class', 'wishlist-button');
+
+                    if (await inWishlist(item.itemId)) {
+                        wishlistButton.innerHTML = '<i class="fa-solid fa-heart"></i>';
+                        wishlistButton.addEventListener('click', () => removeFromWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
+                    }
+                    else {
+                        wishlistButton.innerHTML = '<i class="fa-regular fa-heart"></i>';
+                        wishlistButton.addEventListener('click', () => addToWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
+                    }
+                    wishlistIcon.appendChild(wishlistButton);
+
                     linkElement.appendChild(imageElement);
                     linkElement.appendChild(titleElement);
                     linkElement.appendChild(priceElement);
 
+                    itemElement.appendChild(wishlistIcon);
                     itemElement.appendChild(linkElement);
 
                     mostPopularContainer.appendChild(itemElement);
@@ -170,4 +188,25 @@ function fetchItems(limit, offset, searchType) {
     };
 
     xhr.send();
+}
+
+async function inWishlist(itemId) {
+    try {
+        const response = await fetch(`../api/api_is_in_wishlist.php?itemId=${itemId}`, {
+            method: 'GET',
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            return data
+        } else {
+            console.error('Failed to check wishlist status for item with ID:', itemId);
+            return false;
+        }
+    }
+    catch (error) {
+        console.error('Error checking if item is in wishlist!', error);
+        return false;
+    }
 }

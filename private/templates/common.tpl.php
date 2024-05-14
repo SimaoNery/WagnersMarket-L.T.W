@@ -18,13 +18,20 @@ require_once (__DIR__ . '/../database/category.class.php');
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../css/style.css">
         <script src="https://kit.fontawesome.com/8c148179b8.js" crossorigin="anonymous"></script>
+        <script src="../javascript/imagesLogic.js" defer></script>
+        <script src="../javascript/script.js" defer></script>
+        <script src="../javascript/suggestion.js"></script>
+        <script src="../javascript/wishlistButton.js"></script>
+        <script src="../javascript/shoppingBagButton.js"></script>
+        <script src="../javascript/trashButton.js"></script>
+        <script src="../javascript/checkoutLogic.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
     </head>
 
     <body>
         <header>
             <section class="header-left">
-                <a class="logo" href="index.php">Logo</a>
+                <a class="logo" href="../pages/index.php">Logo</a>
             </section>
             <section class="header-right">
                 <ul>
@@ -49,18 +56,18 @@ require_once (__DIR__ . '/../database/category.class.php');
                         ?>
                     </li>
                     <li>
-                        <a href="messages.php?id=<?= $session->getId() ?>"
+                        <a href="../pages/messages.php?id=<?= $session->getId() ?>"
                             onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Messages</a>
                     </li>
 
 
                     <li>
-                        <a href="wishlist.php?id=<?= $session->getId() ?>"
+                        <a href="../pages/wishlist.php?id=<?= $session->getId() ?>"
                             onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">
                             <i class="fas fa-heart"></i>
                         </a>
                     </li>
-                    <li><a href="shopping-bag.php?id=<?= $session->getId() ?>"
+                    <li><a href="../pages/shopping-bag.php?id=<?= $session->getId() ?>"
                             onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)"><i
                                 class="fas fa-shopping-bag"></i></a></li>
 
@@ -131,11 +138,8 @@ require_once (__DIR__ . '/../database/category.class.php');
             </ul>
             <p>LTW Wagner's Market &copy; 2024</p>
         </footer>
+
         <script src="../javascript/pagination.js"></script>
-        <script src="../javascript/imagesLogic.js" defer></script>
-        <script src="../javascript/script.js" defer></script>
-        <script src="../javascript/suggestion.js"></script>
-        <script src="../javascript/wishlistButton.js"></script>
         <script src="../javascript/loginPopUp.js"></script>
         <script src="../javascript/profileChanges.js"></script>
     </body>
