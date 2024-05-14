@@ -4,7 +4,8 @@ declare(strict_types = 1);
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
-if (!$session->isLoggedIn()) {
+if(!$session->isLoggedIn()) {
+    header("Location: index.php");
     exit;
 }
 

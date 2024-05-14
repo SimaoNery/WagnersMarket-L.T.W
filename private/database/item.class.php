@@ -46,6 +46,13 @@ class Item
         return (int)$stmt->fetch(PDO::FETCH_COLUMN, 0);
     }
 
+    static function getNumItemsShoppingBag(PDO $db, int $userId): int
+    {
+        $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM JOIN CART ON ITEM.ItemId = CART.ItemId WHERE CART.UserId = ? ');
+        $stmt->execute(array($userId));
+        return (int)$stmt->fetch(PDO::FETCH_COLUMN, 0);
+    }
+
     static function getNumAdds(PDO $db, int $userId): int
     {
         $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM WHERE UserId = ?');
@@ -267,15 +274,48 @@ class Item
         return $items;
     }
 
+
+    static function getShoppingBag(PDO $db, int $userId): array
+    {
+        $stmt = $db->prepare('SELECT ITEM.ItemId, ITEM.UserId, Title, Price, Description, Condition, 
+            Size, Brand, ImagePath, WishlistCounter, ITEM.Timestamp FROM ITEM JOIN CART ON ITEM.ItemId = CART.ItemId 
+            WHERE CART.UserId = ? 
+            ORDER BY CART.Timestamp DESC');
+        $stmt->execute(array($userId));
+
+        $items = array();
+        while ($item = $stmt->fetch()) {
+            $items[] = new Item(
+                $item['ItemId'],
+                $item['UserId'],
+                $item['Title'],
+                $item['Price'],
+                $item['Description'],
+                $item['Condition'],
+                $item['Size'],
+                $item['Brand'],
+                $item['ImagePath'],
+                $item['WishlistCounter'],
+                $item['Timestamp']
+            );
+        }
+
+        return $items;
+    }
+
     static function addItem(PDO $db, int $userId, string $title, float $price, string $description, string $condition, string $size, string $brand, string $imagePath)
     {
         $stmt = $db->prepare('INSERT INTO ITEM (UserId, Title, Price, Description, Condition, Size, Brand, ImagePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
         $stmt->execute(array($userId, $title, $price, $description, $condition, $size, $brand, $imagePath));
-
-
+        
         return $stmt->rowCount() == 1;
     }
 
+    static function deleteItem(PDO $db, int $itemId): bool
+    {
+        $stmt = $db->prepare('DELETE FROM ITEM WHERE ItemId = ?');
+        return $stmt->execute([$itemId]);
+    }
 
     static function incrementWishlistCounter(PDO $db, int $itemId): void
     {

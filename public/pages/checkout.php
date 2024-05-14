@@ -16,8 +16,10 @@ require_once(__DIR__ . '/../../private/database/cart.class.php');
 require_once(__DIR__ . '/../../private/templates/common.tpl.php');
 require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 require_once(__DIR__ . '/../../private/templates/profile.tpl.php');
-require_once(__DIR__ . '/../../private/templates/shoppingBag.tpl.php');
+require_once(__DIR__ . '/../../private/templates/checkout.tpl.php');
 
+$limit = 4;
+$offset = 0;
 $db = getDatabaseConnection();
 
 $userId = $session->getId();
@@ -44,12 +46,14 @@ foreach($items as $item) {
 }
 
 drawHeader($db, $session);
+drawTitle("Checkout");
 if($numItems === 0) :?>
     <p id="emptyShoppingBag"> Your shopping bag is empty!</p>
 
 <?php else :
-    drawBag($db, $userId, $items);
-    drawSummary($subTotal, $shippingCost); ?>
+    drawDeliveryOptions();
+    drawPaymentOptions();
+    drawInYourBag($subTotal, $shippingCost, $items); ?>
 <?php endif;
 
 drawFooter();
