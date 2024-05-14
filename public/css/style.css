@@ -1038,7 +1038,7 @@ ul li:hover section.profile {
     overflow: hidden;
     width: 250px;
     height: auto;
-    max-height: 280px;
+    max-height: 350px;
     border-radius: 10px;
     box-shadow: 5px 20px 20px #777;
     display: none;
@@ -1391,121 +1391,7 @@ input[type="checkbox"] {
     overflow: hidden;
 }
 
-section.personalInformationBody {
-    font-family: 'Open Sans', sans-serif;
-    display: grid;
-    grid-template-areas: "image right";
 
-    padding: 2em;
-    margin: 2em;
-    background: rgb(255, 248, 206);
-}
-
-section.left-side {
-    grid-area: image;
-    justify-self: center;
-    padding-right: 1em;
-    align-content: center;
-
-    img {
-        max-width: 15rem;
-        max-height: 15rem;
-    }
-
-    form {
-        display: grid;
-        grid-template-areas: "file"
-                             "save";
-
-        input {
-            grid-area: file;
-        }
-
-        button {
-            justify-self: start;
-            grid-area: save;
-            padding: 0.5em;
-            margin-top: 0.5em;
-            background: #ff7b00;
-            font-family: 'Open Sans', sans-serif;
-            color: #fff;
-        }
-
-        button:hover {
-            color: #000;
-            background: #ff9837;
-        }
-    }
-
-    button {
-        background: none;
-        border: none;
-    }
-
-    i {
-        color:#ff9837;
-        background: none;
-        border: none;
-        padding: 0.3em;
-        font-size: 1.5em;
-    }
-
-    button:hover i {
-        color: #ff7b00;
-    }
-}
-
-
-section.right-side {
-    grid-area: right;
-    display: grid;
-    grid-template-areas: "name"
-                         "email"
-                         "change";
-
-    section#nameInfo {
-        grid-area: name;
-        display: grid;
-        grid-template-columns: 0.2fr 2fr 0.1fr;
-        grid-template-areas: "label text button";
-        height: 1.5em;
-        margin-bottom: 2em;
-
-        button {
-            grid-area: button;
-            background: none;
-            border: none;
-        }
-
-        form {
-            grid-area: text;
-            display: grid;
-            grid-template-areas: "text save";
-            font-family: 'Open Sans Light', sans-serif;
-            background: rgb(255, 255, 255);
-            border: none;
-
-            button {
-                margin: 0;
-                grid-area: save;
-                padding: 0;
-            }
-        }
-
-        input {
-            font-family: 'Open Sans Light', sans-serif;
-            background: rgb(255, 255, 255);
-            padding: 0.5em;
-        }
-    }
-
-    section#emailInfo {
-        grid-area: email;
-        display: grid;
-        grid-template-columns: 0.2fr 2fr 0.1fr;
-        grid-template-areas: "label text button";
-        height: 1.5em;
-        margin-bottom: 2em;
 #delivery-information {
     display: inline-block;
 
@@ -1613,11 +1499,6 @@ section.right-side {
     gap: 0.3em;
 }
 
-        button {
-            grid-area: button;
-            background: none;
-            border: none;
-        }
 .card {
     grid-row: 1;
     grid-column: 1;
@@ -1681,33 +1562,6 @@ section.right-side {
     opacity: 0.8;
 }
 
-#card-number {
-    grid-row: 1;
-    grid-column: 1 / span 3;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-}
-
-#card-date {
-    grid-row: 1;
-    grid-column: 4 / span 3;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-}
 
 #cvv {
     grid-row: 2;
@@ -1886,6 +1740,129 @@ section.right-side {
     background-color: #ee9d00;
 }
 
+
+section.personalInformationBody {
+    font-family: 'Open Sans', sans-serif;
+    display: grid;
+    grid-template-areas: "image right";
+
+    padding: 2em;
+    margin: 2em;
+    background: rgb(255, 248, 206);
+}
+
+section.left-side {
+    grid-area: image;
+    justify-self: center;
+    padding-right: 1em;
+    align-content: center;
+
+    img {
+        max-width: 15rem;
+        max-height: 15rem;
+    }
+
+    form {
+        display: grid;
+        grid-template-areas: "file"
+                             "save";
+
+        input {
+            grid-area: file;
+        }
+
+        button {
+            justify-self: start;
+            grid-area: save;
+            padding: 0.5em;
+            margin-top: 0.5em;
+            background: #ff7b00;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+        }
+
+        button:hover {
+            color: #000;
+            background: #ff9837;
+        }
+    }
+
+    button {
+        background: none;
+        border: none;
+    }
+
+    i {
+        color:#ff9837;
+        background: none;
+        border: none;
+        padding: 0.3em;
+        font-size: 1.5em;
+    }
+
+    button:hover i {
+        color: #ff7b00;
+    }
+}
+
+
+section.right-side {
+    grid-area: right;
+    display: grid;
+    grid-template-areas: "name"
+                         "email"
+                         "change";
+
+    section#nameInfo {
+        grid-area: name;
+        display: grid;
+        grid-template-columns: 0.2fr 2fr 0.1fr;
+        grid-template-areas: "label text button";
+        height: 1.5em;
+        margin-bottom: 2em;
+
+        button {
+            grid-area: button;
+            background: none;
+            border: none;
+        }
+
+        form {
+            grid-area: text;
+            display: grid;
+            grid-template-areas: "text save";
+            font-family: 'Open Sans Light', sans-serif;
+            background: rgb(255, 255, 255);
+            border: none;
+
+            button {
+                margin: 0;
+                grid-area: save;
+                padding: 0;
+            }
+        }
+
+        input {
+            font-family: 'Open Sans Light', sans-serif;
+            background: rgb(255, 255, 255);
+            padding: 0.5em;
+        }
+    }
+
+    section#emailInfo {
+        grid-area: email;
+        display: grid;
+        grid-template-columns: 0.2fr 2fr 0.1fr;
+        grid-template-areas: "label text button";
+        height: 1.5em;
+        margin-bottom: 2em;
+
+        button {
+            grid-area: button;
+            background: none;
+            border: none;
+        }
+
         form {
             grid-area: text;
             display: grid;
@@ -1909,62 +1886,62 @@ section.right-side {
 
     }
 
-        form {
-            grid-area: change;
-            display: grid;
-            grid-template-areas:
+    form {
+        grid-area: change;
+        display: grid;
+        grid-template-areas:
                 "label"
                 "field";
 
 
-            section#input-fields {
-                display: grid;
-                grid-area: field;
-                grid-template-columns: 2fr 1fr;
-                grid-template-areas: "old button"
+        section#input-fields {
+            display: grid;
+            grid-area: field;
+            grid-template-columns: 2fr 1fr;
+            grid-template-areas: "old button"
                                      "new button";
 
-                padding: 0.5em;
-                background: #e5e4e4;
-            }
-        }
-
-        form span {
-            grid-area: label;
-            text-align: center;
-            align-content: center;
-            padding: 0;
-            margin-bottom: 0.5em;
-            background: rgb(254, 243, 167);
             padding: 0.5em;
-            font-family: 'Open Sans', sans-serif;
+            background: #e5e4e4;
         }
+    }
 
-        form input#old-psw {
-            grid-area: old;
-            margin-bottom: 0.5em;
-            border: none;
-            padding: 0.5em;
-            margin-bottom: 0.5em;
-        }
+    form span {
+        grid-area: label;
+        text-align: center;
+        align-content: center;
+        padding: 0;
+        margin-bottom: 0.5em;
+        background: rgb(254, 243, 167);
+        padding: 0.5em;
+        font-family: 'Open Sans', sans-serif;
+    }
 
-        form input#new-psw {
-            grid-area: new;
-            border: none;
-            padding: 0.5em;
-        }
+    form input#old-psw {
+        grid-area: old;
+        margin-bottom: 0.5em;
+        border: none;
+        padding: 0.5em;
+        margin-bottom: 0.5em;
+    }
 
-        form button {
-            grid-area: button;
-            margin-left: 1em;
-            border: none;
-            font-family: 'Open Sans', sans-serif;
-            color: #777;
-        }
+    form input#new-psw {
+        grid-area: new;
+        border: none;
+        padding: 0.5em;
+    }
 
-        form button:hover {
-            color: #000;
-        }
+    form button {
+        grid-area: button;
+        margin-left: 1em;
+        border: none;
+        font-family: 'Open Sans', sans-serif;
+        color: #777;
+    }
+
+    form button:hover {
+        color: #000;
+    }
 
     label {
         grid-area: label;

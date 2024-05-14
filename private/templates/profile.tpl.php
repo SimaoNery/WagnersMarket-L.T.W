@@ -8,7 +8,7 @@ declare(strict_types=1);
         <a href="../pages/your_adds.php?id=<?=$userId?>" <?= $page === "your_adds" ? 'class="highlighted"' : '' ?>>Your Adds</a>
         <a href="../pages/wishlist.php?id=<?=$userId?>" <?= $page === "wishlist" ? 'class="highlighted"' : '' ?>>Wishlist</a>
         <a href="../pages/messages.php?id=<?=$userId?>" <?= $page === "messages" ? 'class="highlighted"' : '' ?>>Messages</a>
-        <a href="../pages/personal_information.php?id=<?=$userId?>" <?= $page === "personal_information" ? 'class="highlighted"' : '' ?>>Personal Information</a>
+        <a href="../pages/profile.php?id=<?=$userId?>" <?= $page === "personal_information" ? 'class="highlighted"' : '' ?>>Personal Information</a>
         <a href="../pages/reviews.php?id=<?=$userId?>" <?= $page === "reviews" ? 'class="highlighted"' : '' ?>>Reviews</a>
     </nav>
 <?php } ?>
