@@ -441,6 +441,7 @@ section.home-body-left {
     margin-right: 1em;
 
     .wishlist-button {
+        display: none;
         position: absolute;
         top: 5%;
         right: 2%;
@@ -470,6 +471,10 @@ section.home-body-left {
 .item-card:hover {
     transform: translateY(-5%);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    .wishlist-button {
+        display: block;
+    }
 }
 
 /* ------ Pagination Buttons ------ */
