@@ -4,16 +4,13 @@
     require_once(__DIR__ . '/../../public/utils/session.php');
 ?>
 <?php function drawCategories(array $categories) { ?>
-    <ul class="category-list">
+    <nav class="category-list">
         <?php foreach($categories as $category) { ?>
-            <li class="category-item">
-                <a href="../../public/pages/search.php?category=<?=$category->categoryName?>">
-                    <img src="<?=$category->categoryImage?>" alt="<?=$category->categoryName?>">
-                    <span><?=$category->categoryName?></span>
-                </a>
-            </li>
+            <a class = "category-item" href="../../public/pages/search.php?category=<?=$category->categoryName?>">
+                <img src="<?=$category->categoryImage?>" alt="<?=$category->categoryName?>">
+                <span><?=$category->categoryName?></span>
+            </a>
         <?php } ?>
-    </ul>
-
+        </nav>
 <?php } ?>
 

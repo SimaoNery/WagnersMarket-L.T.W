@@ -28,7 +28,7 @@ drawHomeBody();
 drawTitle("Categories");
 drawCategories($categories);
 drawTitle("Most popular");
-drawItems($db, $items, $loggedIn, $session);
+drawItems($db, $items, $session);
 drawPagination(intval(ceil($numItems / $limit)), "most_popular");
 drawFooter();
 ?>

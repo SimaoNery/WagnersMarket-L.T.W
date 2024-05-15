@@ -10,30 +10,28 @@ require_once(__DIR__ . '/../database/wishlist.class.php');
 require_once(__DIR__ . '/../database/cart.class.php');
 ?>
 
-<?php function drawItems(PDO $db, array $items, bool $loggedIn, Session $session): void
+<?php function drawItems(PDO $db, array $items, Session $session): void
 { ?>
         <ul class="draw-items" id="draw-items">
             <?php foreach($items as $item) { ?>
                 <li class="item-card">
                     <a href="../pages/item.php?id=<?=$item->itemId?>">
-                        <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
+                        <img src="<?= $item->imagePath?>">
                     </a>
 
-                    <section class="wishlistIcon">
-                        <?php if(!$loggedIn) : ?>
-                            <button type="button" class="wishlist-button" disabled>
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        <?php elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) :?>
-                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
-                                <i class="fa-solid fa-heart"></i>
-                            </button>
-                        <?php else : ?>
-                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        <?php endif; ?>
-                    </section>
+                    <?php if(!$session->isLoggedIn()) { ?>
+                        <button id="not-logged-in" type="button" class="wishlist-button" disabled>
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
+                        <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
+                    <?php } else { ?>
+                        <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    <?php } ?>
 
                     <a href="../pages/item.php?id=<?=$item->itemId?>">
                         <h4><?=$item->title?></h4>
@@ -55,13 +53,14 @@ require_once(__DIR__ . '/../database/cart.class.php');
             <?php } ?>
         </section>
 
-        <select id="itemsPerPage">
-            <option value="4">4 per page</option>
+        <select id="items-per-page">
             <option value="8">8 per page</option>
             <option value="16">16 per page</option>
+            <option value="32">32 per page</option>
         </select>
     </section>
 <?php } ?>
+
 
 <?php function drawItem(Item $item, array $images, bool $loggedIn, bool $inWishList, bool $inShoppingBag, $user) { ?>
     <section class="row">
