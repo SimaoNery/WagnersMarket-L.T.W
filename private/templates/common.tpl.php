@@ -33,46 +33,40 @@ require_once (__DIR__ . '/../database/category.class.php');
             <section class="header-left">
                 <a class="logo" href="../pages/index.php">Logo</a>
             </section>
-            <section class="header-right">
-                <ul>
-                    <li>
-                        <a href="search.php">Products</a>
-                        <ul class="dropdown">
+            <nav class="header-right">
+                    <section id="header-products">
+                        <a  href="search.php">Products</a>
+                        <nav class="dropdown">
                             <?php $categories = Category::getCategories($db);
                             foreach ($categories as $category) { ?>
-                                <li><a href="search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a></li>
+                                <a href="search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a>
                             <?php } ?>
-                        </ul>
-                    </li>
-                    <li><a href="#" onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Sell</a></li>
-                    <li>
-                        <a href="../pages/profile.php?id=<?= $session->getId() ?>"
-                        onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Profile</a>
-                        <?php
-                        if ($session->isLoggedIn())
-                            drawProfileForm($db, $session);
-                        else
-                            drawLoginAndSignUpForm('loginAndSignup', 'chk');
-                        ?>
-                    </li>
-                    <li>
-                        <a href="../pages/messages.php?id=<?= $session->getId() ?>"
-                            onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">Messages</a>
-                    </li>
+                        </nav>
+                    </section>
+                    <?php
+                    if ($session->isLoggedIn()) { ?>
+                        <a href="../pages/publish_add.php">Sell</a>
+                        <nav id="header-profile">
+                            <a href="../pages/profile.php">Log in/Register</a>
+                            <?php drawProfileForm($db, $session); ?>
+                        </nav>
+                        <a href="../pages/messages.php">Messages</a>
+                        <a href="../pages/wishlist.php"><i class="fas fa-heart"></i></a>
+                        <a href="../pages/shopping_bag.php"><i class="fas fa-shopping-bag"></i></a>
 
+                    <?php } else { ?>
+                        <a class="not-logged-in">Sell</a>
+                        <nav id="header-profile">
+                            <a class="not-logged-in">Profile</a>
+                            <?php drawLoginAndSignUpForm('login-signup', 'chk'); ?>
+                        </nav>
+                        <a class="not-logged-in">Messages</a>
+                        <a class="not-logged-in"><i class="fas fa-heart"></i></a>
+                        <a class="not-logged-in"><i class="fas fa-shopping-bag"></i></a>
 
-                    <li>
-                        <a href="../pages/wishlist.php?id=<?= $session->getId() ?>"
-                            onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)">
-                            <i class="fas fa-heart"></i>
-                        </a>
-                    </li>
-                    <li><a href="../pages/shopping-bag.php?id=<?= $session->getId() ?>"
-                            onclick="navigateIfLoggedIn(<?= $session->isLoggedIn() ? 'true' : 'false' ?>)"><i
-                                class="fas fa-shopping-bag"></i></a></li>
+                    <?php }?>
 
-                </ul>
-            </section>
+            </nav>
             <?php drawLoginPopUp() ?>
         </header>
 
@@ -80,7 +74,7 @@ require_once (__DIR__ . '/../database/category.class.php');
 
     <?php function drawLoginAndSignUpForm(string $class, string $check)
     { ?>
-        <section class="loginAndSignup" id="<?= $class ?>">
+        <section class="login-signup" id="<?= $class ?>">
             <input type="checkbox" id="<?= $check ?>" aria-hidden="true">
             <section class="login">
                 <form action="../actions/action_login.php" method="post">
@@ -109,7 +103,7 @@ require_once (__DIR__ . '/../database/category.class.php');
     function drawProfileForm(PDO $db, Session $session)
     { ?>
         <section class="profile" id="profile">
-            <section id="user_logged">
+            <section id="user-logged">
                 <img src="<?= User::getImgPath($db, $session->getId()) ?>" style="width: 50px; height: 50px;">
                 <h4><?= $session->getName() ?></h4>
             </section>
@@ -131,11 +125,11 @@ require_once (__DIR__ . '/../database/category.class.php');
     { ?>
 
         <footer>
-            <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Purpose</a></li>
-                <li><a href="#">Contact us</a></li>
-            </ul>
+            <nav>
+                <a href="#">About</a>
+                <a href="#">Purpose</a>
+                <a href="#">Contact us</a>
+            </nav>
             <p>LTW Wagner's Market &copy; 2024</p>
         </footer>
         <script src="../../public/javascript/pagination.js"></script>

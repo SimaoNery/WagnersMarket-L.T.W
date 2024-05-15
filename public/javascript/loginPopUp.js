@@ -1,3 +1,15 @@
+const notLoggedIn = document.querySelectorAll('.not-logged-in')
+
+if (notLoggedIn) {
+    notLoggedIn.forEach(notLoggedInElement => {
+        notLoggedInElement.addEventListener('click', function() {
+            showLoginPopUp();
+        })
+    })
+}
+
+
+
 
 function navigateIfLoggedIn(isLoggedIn) {
     if (!isLoggedIn) {

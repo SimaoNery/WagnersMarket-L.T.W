@@ -311,12 +311,6 @@ class Item
         return $stmt->rowCount() == 1;
     }
 
-    static function deleteItem(PDO $db, int $itemId): bool
-    {
-        $stmt = $db->prepare('DELETE FROM ITEM WHERE ItemId = ?');
-        return $stmt->execute([$itemId]);
-    }
-
     static function incrementWishlistCounter(PDO $db, int $itemId): void
     {
         $stmt = $db->prepare('UPDATE ITEM SET WishlistCounter = WishlistCounter + 1 WHERE ItemId = ?');
