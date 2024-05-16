@@ -5,6 +5,12 @@
     box-sizing: border-box;
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 header,
 .logo,
 a {
@@ -359,7 +365,7 @@ button[type="submit"]:hover {
 
 section#title {
     font-family: 'Open Sans', sans-serif;
-    margin: 70px 0;
+    margin: 3.5em 0;
     text-align: center;
     font-size: 1.5em;
 }
@@ -373,6 +379,8 @@ section#title {
     margin: 5px auto;
 }
 
+/* ----- Category List ---- */
+
 .category-list {
     list-style: none;
     padding: 0;
@@ -383,10 +391,9 @@ section#title {
 
 .category-item {
     position: relative;
-    margin: 35px;
+    margin: 2em;
     text-align: center;
     display: flex;
-    flex: 20%
 }
 
 
@@ -398,7 +405,6 @@ section#title {
     text-decoration: none;
     color: #333;
     transition: 0.1s ease;
-    z-index: -1;
 }
 
 .category-item img {
@@ -414,7 +420,7 @@ section#title {
 }
 
 .category-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5%);
 }
 
 .category-item:hover img {
@@ -434,30 +440,29 @@ section#title {
     color: black;
 }
 
+/* ----- Items ---- */
+
 .item-card {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 10px;
-    margin-right: 10px;
-    list-style: none;
+    padding: .5em;
+    margin-bottom: .7em;
+    margin-right: .7em;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
     background-color: rgba(253, 237, 132, 0.1);
 }
 
 .item-card a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
     z-index: -1;
 }
 
 .item-card img {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
+    width: 7.5em;
+    height: 7.5em;
+    margin-bottom: .7em;
 }
 
 .item-card h4,
@@ -469,13 +474,12 @@ section#title {
 
 
 .item-card h4 {
-    font-size: 18px;
+    font-size: 1.2em;
     color: #333;
-    margin-bottom: 5px;
 }
 
 .item-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5%);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -485,11 +489,6 @@ section#title {
     color: #777;
 }
 
-.wishlistIcon {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
 
 .trashIcon {
     position: absolute;
@@ -769,7 +768,7 @@ select {
     cursor: pointer;
 }
 
-#searchItems {
+#search-items {
     margin-top: 100px;
     align-items: center;
 }
@@ -840,6 +839,9 @@ select {
 }
 
 .wishlist-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
     background: none;
     border: none;
     padding: 0;
@@ -1068,7 +1070,7 @@ body:has(#filters) {
     #order {
         grid-area: order;
     }
-    #searchItems {
+    #search-items {
         grid-area: searchbar;
     }
     #title {

@@ -1,7 +1,8 @@
 const paginationContainer = document.querySelector('.pagination');
-const itemsPerPageContainer = document.querySelector('#itemsPerPage');
+const itemsPerPageContainer = document.querySelector('#items-per-page');
+const notLoggedIn = document.querySelector('.not-logged-in')
 
-let limit = 4;
+let limit = 8;
 let offset = 0;
 let pageNumber = 1;
 let firstButtonValue = 1;
@@ -15,12 +16,10 @@ if (paginationContainer) {
             if (buttonId === 'pagination-button') {
                 pageNumber = parseInt(event.target.textContent);
             } else if (buttonId === 'next-button') {
-                console.log('Clicked on Next button');
                 pageNumber = firstButtonValue === 1 ? 4 : pageNumber + 2;
                 firstButtonValue = pageNumber;
             }
             else if (buttonId === 'previous-button') {
-                console.log('Clicked on previous button');
                 pageNumber = firstButtonValue === 4 ? 1 : pageNumber - 2;
                 firstButtonValue = pageNumber;
             }
@@ -68,8 +67,8 @@ function fetchItems(limit, offset, searchType) {
                 const response = JSON.parse(xhr.responseText);
 
                 const items = response.items;
-                const mostPopularContainer = document.querySelector('#draw-items');
-                mostPopularContainer.innerHTML = '';
+                const itemsContainer = document.querySelector('#draw-items');
+                itemsContainer.innerHTML = '';
                 items.forEach(async item => {
                     const itemElement = document.createElement('li');
                     itemElement.classList.add('item-card');
@@ -93,31 +92,51 @@ function fetchItems(limit, offset, searchType) {
 
                     priceElement.textContent = formattedPrice + '€';
 
-                    const wishlistIcon = document.createElement('section');
-                    wishlistIcon.classList.add('wishlistIcon');
+                    const wishlistButton = document.createElement('button')
 
-                    const wishlistButton = document.createElement('button');
-                    wishlistButton.setAttribute('type', 'button');
-                    wishlistButton.setAttribute('class', 'wishlist-button');
+                    wishlistButton.setAttribute('type', 'button')
+                    wishlistButton.classList.add('wishlist-button')
+                    wishlistButton.id = item.itemId
 
-                    if (await inWishlist(item.itemId)) {
-                        wishlistButton.innerHTML = '<i class="fa-solid fa-heart"></i>';
-                        wishlistButton.addEventListener('click', () => removeFromWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
+                    const iconWishlistButton = document.createElement('i')
+
+                    if (notLoggedIn) {
+                        wishlistButton.id = "not-logged-in"
+                        wishlistButton.setAttribute("disabled", true)
+                        iconWishlistButton.classList.add("fa-regular", "fa-heart")
+                    } else if (await inWishlist(item.itemId)) {
+                        wishlistButton.id = item.itemId.toString()
+                        iconWishlistButton.classList.add("fa-solid", "fa-heart")
+                    } else {
+                        wishlistButton.id = item.itemId.toString()
+                        iconWishlistButton.classList.add("fa-regular", "fa-heart")
                     }
-                    else {
-                        wishlistButton.innerHTML = '<i class="fa-regular fa-heart"></i>';
-                        wishlistButton.addEventListener('click', () => addToWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
-                    }
-                    wishlistIcon.appendChild(wishlistButton);
+
+                    wishlistButton.append(iconWishlistButton)
+
+                    wishlistButton.addEventListener('click', async function(){
+                        if (this.id !== 'not-logged-in') {
+                            if (iconWishlistButton) {
+                                if (iconWishlistButton.classList.contains('fa-solid')) {
+                                    await removeFromWishlist(this.id);
+                                    iconWishlistButton.classList.remove('fa-solid');
+                                    iconWishlistButton.classList.add('fa-regular');
+                                } else {
+                                    await addToWishlist(this.id);
+                                    iconWishlistButton.classList.remove('fa-regular');
+                                    iconWishlistButton.classList.add('fa-solid');
+                                }
+                            }
+                        }
+                    })
 
                     linkElement.appendChild(imageElement);
                     linkElement.appendChild(titleElement);
                     linkElement.appendChild(priceElement);
 
-                    itemElement.appendChild(wishlistIcon);
                     itemElement.appendChild(linkElement);
-
-                    mostPopularContainer.appendChild(itemElement);
+                    itemElement.append(wishlistButton)
+                    itemsContainer.appendChild(itemElement);
                 });
 
                 paginationContainer.innerHTML = "";

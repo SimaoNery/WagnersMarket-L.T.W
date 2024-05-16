@@ -26,7 +26,7 @@ $images = $_FILES['images'] ?? exitWithError($session, "No cover image provided"
 
 $imagePaths = [];
 foreach ($images['tmp_name'] as $index => $tmpName) {
-    if ($images['error'][$index] === UPLOAD_ERR_OK) {
+    if ($images['error'][$index] !== UPLOAD_ERR_OK) {
         $targetDir = '../../public/images/';
         $targetPath = $targetDir . basename($images['name'][$index]);
         if (move_uploaded_file($tmpName, $targetPath)) {
@@ -68,7 +68,7 @@ try {
 }
 
 header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit;
+exit();
 
 function exitWithError($session, string $error): void
 {

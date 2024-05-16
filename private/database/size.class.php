@@ -27,14 +27,20 @@ class Size
 
     static function addSize(PDO $db, string $size): bool
     {
-        $stmt = $db->prepare('INSERT INTO SIZE (Size) VALUES (?)');
+        $stmt = $db->prepare('SELECT COUNT(*) FROM SIZE WHERE Size = ?');
         $stmt->execute(array($size));
-        return $stmt->rowCount() == 1;
+        $count = $stmt->fetchColumn();
+        if ($count === 0) {
+            $stmt = $db->prepare('INSERT INTO SIZE (Size) VALUES (?)');
+            $stmt->execute(array($size));
+            return $stmt->rowCount() == 1;
+        }
+        return false;
     }
 
     static function deleteSize(PDO $db, string $size): bool
     {
-        $stmt = $db->prepare('DELETE FROM CATEGORY WHERE CategoryName = ?');
+        $stmt = $db->prepare('DELETE FROM SIZE WHERE Size = ?');
         return $stmt->execute(array($size));
     }
 }

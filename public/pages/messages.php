@@ -5,9 +5,9 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
-    //SENDS A POPUP -> PAULO IS DOING
+    header("Location: index.php");
+    exit;
 }
-
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/message.class.php');
 require_once(__DIR__ . '/../../private/database/user.class.php');

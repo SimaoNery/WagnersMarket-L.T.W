@@ -28,12 +28,18 @@ class Condition
 
     static function addCondition(PDO $db, string $condition): bool
     {
-        $stmt = $db->prepare('INSERT INTO CONDITION (Condition) VALUES (?)');
+        $stmt = $db->prepare('SELECT COUNT(*) FROM CONDITION WHERE Condition = ?');
         $stmt->execute(array($condition));
-        return $stmt->rowCount() == 1;
+        $count = $stmt->fetchColumn();
+        if ($count === 0) {
+            $stmt = $db->prepare('INSERT INTO CONDITION (Condition) VALUES (?)');
+            $stmt->execute(array($condition));
+            return $stmt->rowCount() == 1;
+        }
+        return false;
     }
 
-    static function deleteCategories(PDO $db, string $condition): bool
+    static function deleteCondition(PDO $db, string $condition): bool
     {
         $stmt = $db->prepare('DELETE FROM CONDITION WHERE Condition = ?');
         return $stmt->execute(array($condition));

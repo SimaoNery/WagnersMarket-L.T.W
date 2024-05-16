@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
@@ -13,19 +13,27 @@ require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/cart.class.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
 
-$db = getDatabaseConnection();
-$userId = $session->getId();
-$limit = 4;
-$offset = 0;
-
-$chosenItem = Item::getItem($db, intval($_GET['id']));
 
 
-if (Cart::removeFromShoppingBag($db, $userId, $chosenItem->itemId)) {
-    $session->addMessage('success', 'Item Removed Successfully From Shopping Bag!');
-} else {
-    $session->addMessage('error', 'Item Not Removed From Shopping Bag!');
+try {
+    $db = getDatabaseConnection();
+    $userId = $session->getId();
+
+    $itemId = intval($_POST['itemId']);
+
+    if(Cart::removeFromShoppingBag($db, $userId, $itemId)) {
+        $session->addMessage('success', 'Item successfully removed from shopping bag!');
+    } else {
+        $success = false;
+        $session->addMessage('error', 'Item not removed from shopping bag!');
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => 'Operation done successfully.']);
+
+} catch (Exception $e) {
+    error_log('Error in api_remove_from_shopping_bag.php: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
 }
-
-
-header('Location: ' . $_SERVER['HTTP_REFERER']);
+?>

@@ -13,21 +13,19 @@ require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/cart.class.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
 
+
+
 $db = getDatabaseConnection();
 $userId = $session->getId();
-$limit = 4;
-$offset = 0;
 
-$newItem = Item::getItem($db, intval($_GET['id']));
+$itemId = intval($_POST['itemId']);
 
-
-if(Cart::addToShoppingBag($db, $userId, $newItem->itemId)) {
-    $session->addMessage('success', 'Item Added Successfully To Shopping Bag!');
+if(Cart::addToShoppingBag($db, $userId, $itemId)) {
+    $session->addMessage('success', 'Item successfully added to shopping bag!');
 } else {
-    $session->addMessage('error', 'Item Not Added To Shopping Bag!');
+    $success = false;
+    $session->addMessage('error', 'Item not added to shopping bag!');
 }
 
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
-
-?>
+header('Content-Type: application/json');
+echo json_encode(['success' => 'Operation done successfully.']);

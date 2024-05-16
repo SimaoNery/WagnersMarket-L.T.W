@@ -10,30 +10,30 @@ require_once(__DIR__ . '/../database/wishlist.class.php');
 require_once(__DIR__ . '/../database/cart.class.php');
 ?>
 
-<?php function drawItems(PDO $db, array $items, bool $loggedIn, Session $session): void
+
+
+<?php function drawItems(PDO $db, array $items, Session $session): void
 { ?>
         <ul class="draw-items" id="draw-items">
             <?php foreach($items as $item) { ?>
                 <li class="item-card">
                     <a href="../pages/item.php?id=<?=$item->itemId?>">
-                        <img src="<?= $item->imagePath?>" style="width: 100px; height: 100px;">
+                        <img src="<?= $item->imagePath?>">
                     </a>
 
-                    <section class="wishlistIcon">
-                        <?php if(!$loggedIn) : ?>
-                            <button type="button" class="wishlist-button" disabled>
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        <?php elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) :?>
-                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
-                                <i class="fa-solid fa-heart"></i>
-                            </button>
-                        <?php else : ?>
-                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        <?php endif; ?>
-                    </section>
+                    <?php if(!$session->isLoggedIn()) { ?>
+                        <button id="not-logged-in" type="button" class="wishlist-button" disabled>
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
+                        <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
+                    <?php } else { ?>
+                        <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    <?php } ?>
 
                     <a href="../pages/item.php?id=<?=$item->itemId?>">
                         <h4><?=$item->title?></h4>
@@ -55,27 +55,27 @@ require_once(__DIR__ . '/../database/cart.class.php');
             <?php } ?>
         </section>
 
-        <select id="itemsPerPage">
-            <option value="4">4 per page</option>
+        <select id="items-per-page">
             <option value="8">8 per page</option>
             <option value="16">16 per page</option>
+            <option value="32">32 per page</option>
         </select>
     </section>
 <?php } ?>
 
-<?php function drawItem(Item $item, array $images, bool $loggedIn, bool $inWishList, bool $inShoppingBag, $user) { ?>
-    <section class="row">
+<?php function drawItem(PDO $db, Item $item, array $images, Session $session, $user) { ?>
+    <section class="item-info-and-images">
         <section id="images" class="col-2">
 
-            <div class="sideImagesContainer">
+            <section class="sideImagesContainer">
                     <?php foreach($images as $image) { ?>
                         <img src="/<?= $image->path ?>" class="sideImage">
                     <?php } ?>
-            </div>
+            </section>
 
-            <div class="main_image">
+            <section class="main_image">
                 <img src="/<?= $item->imagePath ?>" id="mainImage">
-            </div>
+            </section>
         </section>
 
         <section id="information" class="col-2">
@@ -87,56 +87,54 @@ require_once(__DIR__ . '/../database/cart.class.php');
                     </li>
 
                     <li id="wishlist">
-                        <?php if(!$loggedIn) : ?>
-                            <button type="button" class="wishlist-button" disabled>
+                        <?php if(!$session->isLoggedIn()) { ?>
+                            <button id="not-logged-in" type="button" class="wishlist-button" disabled>
                                 <i class="fa-regular fa-heart"></i>
                             </button>
-
-                        <?php elseif ($inWishList) :?>
-                            <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                        <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
+                            <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
                                 <i class="fa-solid fa-heart"></i>
                             </button>
-                        <?php else : ?>
-                            <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
+                        <?php } else { ?>
+                            <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
                                 <i class="fa-regular fa-heart"></i>
                             </button>
-                        <?php endif; ?>
+                        <?php } ?>
                     </li>
 
                     <li id="bag">
-                        <?php if(!$loggedIn) : ?>
-                        <button type="button" class="bag-button" disabled>
+                        <?php if(!$session->isLoggedIn()) { ?>
+                        <button id="not-logged-in" type="button" class="bag-button" disabled>
                             <i class="fa-solid fa-bag-shopping"></i> Add To Bag
                         </button>
 
-                        <?php elseif ($inShoppingBag) : ?>
-                            <button type="button" class="bag-button" onclick="removeFromShoppingBag(<?= $item->itemId ?>)">
-                                <i id="bagIcon" class="fa-solid fa-bag-shopping"></i> Remove From Bag
+                        <?php } elseif (Cart::isInShoppingBag($db, $session->getId(), $item->itemId)) { ?>
+                            <button id="<?= $item->itemId ?>" type="button" class="bag-button remove-from-bag">
+                                <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Remove From Cart
                             </button>
-                        <?php else : ?>
-                            <button type="button" class="bag-button" onclick="addToShoppingBag(<?= $item->itemId ?>)">
-                                <i id="bagIcon" class="fa-solid fa-bag-shopping"></i> Add To Bag
+                        <?php } else { ?>
+                            <button id="<?= $item->itemId ?>" type="button" class="bag-button add-to-bag">
+                                <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Add To Cart
                             </button>
-                        <?php endif; ?>
+                        <?php } ?>
                     </li>
                 </ul>
             </article>
 
             <h3>Product Details</h3>
-
-            <p>Brand: <span id="brandName"><?=$item->brand?></span></p>
-            <p>Condition: <span id="conditionValue"><?=$item->condition?></span></p>
+            <p>Brand: <span id="brand-name"><?=$item->brand?></span></p>
+            <p>Condition: <span id="condition-value"><?=$item->condition?></span></p>
 
         </section>
     </section>
 
-    <section id="description_seller">
+    <section id="description-seller">
         <h2>Product Description</h2>
         <hr class="line-yellow">
 
-        <div class="box_yellow">
-            <p class="description"><?=$item->description?></p>
-        </div>
+
+        <p class="description"><?=$item->description?></p>
+
 
         <h2>Contact the seller</h2>
         <hr class="line-yellow">
@@ -159,7 +157,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
                     </a>
                 </div>
 
-                <a href="../../public/pages/messages.php?otherUserId=<?=$user->userId?>" class="sendMessageButton">Send Message</a>
+                <a href="../pages/messages.php?otherUserId=<?=$user->userId?>" class="sendMessageButton">Send Message</a>
 
             </section>
         </div>

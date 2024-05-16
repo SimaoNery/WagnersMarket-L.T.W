@@ -24,9 +24,9 @@ $numItems = Item::getNumItems($db);
 $maxPrice = Item::getMaxPrice($db);
 
 drawHeader($db, $session);
-drawSearchBar("searchItems", "What are you looking for?");
+drawSearchBar("search-items", "What are you looking for?");
 drawTitle("Featured Items");
-drawItems($db, $items, $session->isLoggedIn(), $session);
+drawItems($db, $items, $session);
 drawItemFilter($db, $maxPrice, $categoryName);
 drawItemSorter();
 drawFooter();

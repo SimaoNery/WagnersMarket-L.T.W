@@ -18,11 +18,11 @@ require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 
 $db = getDatabaseConnection();
 
+
 $item = Item::getItem($db, intval($_GET['id']));
 $images = Image::getImages($db, $item->itemId);
 
-$loggedIn = $session->isLoggedIn();
-if($loggedIn) {
+if($session->isLoggedIn()) {
     $inWishList = Wishlist::isInWishlist($db, $session->getId(),$item->itemId);
     $inShoppingBag = Cart::isInShoppingBag($db, $session->getId(),$item->itemId);
 } else {
@@ -33,6 +33,6 @@ if($loggedIn) {
 $user = User::getUser($db, $item->userId);
 
 drawHeader($db, $session);
-drawItem($item, $images, $loggedIn, $inWishList, $inShoppingBag, $user);
+drawItem($db,$item, $images, $session, $user);
 drawFooter();
 ?>

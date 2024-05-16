@@ -2,8 +2,6 @@ const messages = document.getElementById("messages")
 const contacts = document.getElementById("contacts")
 const otherUser = document.getElementById("otherUser")
 
-let copy
-
 let needMoreMessages = true
 let limitMessages = 20
 let offsetMessages = 0
@@ -16,10 +14,12 @@ if (messages) {
         messages.scrollTop = messages.scrollHeight
     })
 }
+if (otherUser) {
+    otherUser.addEventListener('change', function () {
+        needMoreMessages = true
+    })
+}
 
-otherUser.addEventListener('change', function () {
-    needMoreMessages = true
-})
 
 if (messages) {
     messages.addEventListener("scroll", async function() {
@@ -137,8 +137,8 @@ if (contacts) {
 
     contacts.addEventListener("scroll", async function() {
         if (contacts.scrollHeight - contacts.scrollTop <= contacts.clientHeight+ 20) {
-            limitContacts += 6
-            offsetContacts += 6
+            limitContacts += 20
+            offsetContacts += 20
             await getMoreContacts();
         }
     })

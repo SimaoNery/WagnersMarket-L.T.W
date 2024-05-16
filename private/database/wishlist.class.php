@@ -12,21 +12,21 @@ class Wishlist
         $this->itemId = $itemId;
     }
 
-    static function addToWishlist(PDO $db, int $userId, int $itemId)
+    static function addToWishlist(PDO $db, int $userId, int $itemId): bool
     {
-        $stmt = $db->prepare("INSERT INTO WISHLIST (userId, itemId) VALUES (?, ?)");
+        $stmt = $db->prepare("INSERT INTO WISHLIST (UserId, ItemId) VALUES (?, ?)");
         $stmt->execute(array($userId, $itemId));
 
 
-        return $stmt->rowCount() > 0;
+        return $stmt->rowCount() == 1;
     }
 
-    static function removeFromWishlist(PDO $db, int $userId, int $itemId)
+    static function removeFromWishlist(PDO $db, int $userId, int $itemId): bool
     {
-        $stmt = $db->prepare("DELETE FROM WISHLIST WHERE userId = ? and itemId = ?");
+        $stmt = $db->prepare("DELETE FROM WISHLIST WHERE UserId = ? and ItemId = ?");
         $stmt->execute(array($userId, $itemId));
 
-        return $stmt->rowCount() > 0;
+        return $stmt->rowCount() == 1;
     }
 
     static function isInWishlist(PDO $db, int $userId, int $itemId): bool

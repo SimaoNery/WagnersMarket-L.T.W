@@ -1,4 +1,4 @@
-const searchItem = document.querySelector('#searchitem')
+const searchItem = document.querySelector('#search-items')
 const categories = document.querySelectorAll('#category input[type="checkbox"]')
 const conditions = document.querySelectorAll('#condition input[type="checkbox"]')
 const minInput = document.querySelector('#min-input')
@@ -9,14 +9,19 @@ const orderSelected = document.querySelector('#orderSelected')
 
 const range = document.querySelector("#slider #progress");
 
+const filters = document.querySelector("#filters");
+
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
 let numberOfItems = 16
+let offsetOfItems = 0
 
 if (categories) {
     categories.forEach(category => {
         category.addEventListener('change', async function() {
+            numberOfItems = 16
+            offsetOfItems = 0
             const categoryId = this.id
             if (this.checked) {
 
@@ -34,6 +39,8 @@ if (categories) {
 if (conditions) {
     conditions.forEach(condition => {
         condition.addEventListener('change', async function() {
+            numberOfItems = 16
+            offsetOfItems = 0
             const conditionId = this.id;
             if (this.checked) {
                 if (!selectedConditions.includes(conditionId)) {
@@ -49,6 +56,8 @@ if (conditions) {
 
 if (searchItem) {
     searchItem.addEventListener('input', async function() {
+        numberOfItems = 16
+        offsetOfItems = 0
         searchedItem = this.value
         await getSearchResults()
     })
@@ -56,6 +65,8 @@ if (searchItem) {
 
 if (minInput) {
     minInput.addEventListener('change', async function() {
+        numberOfItems = 16
+        offsetOfItems = 0
         minRange.value = this.value;
         range.style.left = (this.value / this.max) * 100 + '%'
         if (parseInt(maxInput.value) < parseInt(this.value)) {
@@ -68,6 +79,8 @@ if (minInput) {
 
 if (minRange) {
     minRange.addEventListener('change', async function() {
+        numberOfItems = 16
+        offsetOfItems = 0
         minInput.value = this.value;
         range.style.left = (this.value / this.max) * 100 + '%'
         if (parseInt(maxInput.value) < parseInt(this.value)) {
@@ -80,6 +93,8 @@ if (minRange) {
 
 if (maxInput) {
     maxInput.addEventListener('change', async function() {
+        numberOfItems = 16
+        offsetOfItems = 0
         maxRange.value = this.value;
         range.style.right = 100 - (this.value / this.max) * 100 + '%'
         if (parseInt(minInput.value) > parseInt(this.value)) {
@@ -92,6 +107,8 @@ if (maxInput) {
 
 if (maxRange) {
     maxRange.addEventListener('change', async function() {
+        numberOfItems = 16
+        offsetOfItems = 0
         maxInput.value = this.value;
         range.style.right = 100 - (this.value / this.max) * 100 + '%'
         if (parseInt(minInput.value) > parseInt(this.value)) {
@@ -105,16 +122,25 @@ if (maxRange) {
 
 if(orderSelected) {
     orderSelected.addEventListener('change', async function () {
+        numberOfItems = 16
+        offsetOfItems = 0
         await getSearchResults()
     });
 }
-//maybe change this
-window.addEventListener('scroll', async function () {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        numberOfItems += 8;
-        await getSearchResults()
+
+
+if (filters) {
+    const items = document.querySelector('#draw-items')
+    if (items) {
+        items.addEventListener('scroll', async function () {
+            if (items.scrollHeight - items.scrollTop <= items.clientHeight + 20) {
+                numberOfItems += 16
+                offsetOfItems += 8
+                await getSearchResults();
+            }
+        })
     }
-});
+}
 
 async function getSearchResults() {
 
@@ -159,55 +185,56 @@ async function getSearchResults() {
             maximumFractionDigits: 2
         }).format(item.price);
 
-        const wishlistIcon = document.createElement('section');
-        wishlistIcon.classList.add('wishlistIcon');
+        const wishlistButton = document.createElement('button')
 
-        const wishlistButton = document.createElement('button');
-        wishlistButton.setAttribute('type', 'button');
-        wishlistButton.setAttribute('class', 'wishlist-button');
+        wishlistButton.setAttribute('type', 'button')
+        wishlistButton.classList.add('wishlist-button')
+        wishlistButton.id = item.itemId
 
-        if (await inWishlist(item.itemId)) {
-            wishlistButton.innerHTML = '<i class="fa-solid fa-heart"></i>';
-            wishlistButton.addEventListener('click', () => removeFromWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
+        const iconWishlistButton = document.createElement('i')
+
+        if (notLoggedIn) {
+            wishlistButton.id = "not-logged-in"
+            wishlistButton.setAttribute("disabled", true)
+            iconWishlistButton.classList.add("fa-regular", "fa-heart")
+        } else if (await inWishlist(item.itemId)) {
+            wishlistButton.id = item.itemId.toString()
+            iconWishlistButton.classList.add("fa-solid", "fa-heart")
+        } else {
+            wishlistButton.id = item.itemId.toString()
+            iconWishlistButton.classList.add("fa-regular", "fa-heart")
         }
-        else {
-            wishlistButton.innerHTML = '<i class="fa-regular fa-heart"></i>';
-            wishlistButton.addEventListener('click', () => addToWishlist(item.itemId, wishlistButton.querySelector('.fa-heart')));
-        }
-        wishlistIcon.appendChild(wishlistButton);
+
+        wishlistButton.append(iconWishlistButton)
+
+        wishlistButton.addEventListener('click', async function(){
+            if (this.id !== 'not-logged-in') {
+                if (iconWishlistButton) {
+                    if (iconWishlistButton.classList.contains('fa-solid')) {
+                        await removeFromWishlist(this.id);
+                        iconWishlistButton.classList.remove('fa-solid');
+                        iconWishlistButton.classList.add('fa-regular');
+                    } else {
+                        await addToWishlist(this.id);
+                        iconWishlistButton.classList.remove('fa-regular');
+                        iconWishlistButton.classList.add('fa-solid');
+                    }
+                }
+            }
+        })
 
         priceElement.textContent = formattedPrice + '€';
 
         linkElement.appendChild(imageElement);
         linkElement.appendChild(titleElement);
         linkElement.appendChild(priceElement);
-
+        itemElement.append(wishlistButton)
         itemElement.appendChild(linkElement);
         itemsSection.appendChild(itemElement);
-        itemElement.appendChild(wishlistIcon);
+
     }
 }
 
-async function inWishlist(itemId) {
-    try {
-        const response = await fetch(`../api/api_is_in_wishlist.php?itemId=${itemId}`, {
-            method: 'GET',
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log(data);
-            return data
-        } else {
-            console.error('Failed to check wishlist status for item with ID:', itemId);
-            return false;
-        }
-    }
-    catch (error) {
-        console.error('Error checking if item is in wishlist!', error);
-        return false;
-    }
-}
 
 
 

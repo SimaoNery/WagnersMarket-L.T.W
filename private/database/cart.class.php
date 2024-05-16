@@ -14,7 +14,7 @@ class Cart
 
     static function addToShoppingBag(PDO $db, int $userId, int $itemId)
     {
-        $stmt = $db->prepare("INSERT INTO CART (userId, itemId) VALUES (?, ?)");
+        $stmt = $db->prepare("INSERT INTO CART (UserId, ItemId) VALUES (?, ?)");
         $stmt->execute(array($userId, $itemId));
 
 
@@ -23,7 +23,7 @@ class Cart
 
     static function removeFromShoppingBag(PDO $db, int $userId, int $itemId)
     {
-        $stmt = $db->prepare("DELETE FROM CART WHERE userId = ? and itemId = ?");
+        $stmt = $db->prepare("DELETE FROM CART WHERE UserId = ? and ItemId = ?");
         $stmt->execute(array($userId, $itemId));
 
         return $stmt->rowCount() > 0;

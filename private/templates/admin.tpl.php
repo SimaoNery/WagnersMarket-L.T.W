@@ -3,7 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/common.tpl.php';
 require_once __DIR__ . '/category.tpl.php';
 require_once __DIR__ . '/size.tpl.php';
-//require_once __DIR__ . '/condition.tpl.php';
+require_once __DIR__ . '/condition.tpl.php';
 ?>
 <?php function drawAdminBoard(array $categories, array $conditions, array $sizes) { ?>
 
@@ -15,11 +15,11 @@ require_once __DIR__ . '/size.tpl.php';
         </section>
         <section id="editCategories">
             <?php drawTitle("Manage Categories");
-            drawCategories($categories);?>
+            drawCategories($categories, true);?>
         </section>
         <section id="editConditions">
             <?php drawTitle("Manage Item Conditions");
-            //drawConditions($conditions);?>
+            drawConditions($conditions);?>
         </section>
         <section id="editSizes">
             <?php drawTitle("Manage Item Sizes");

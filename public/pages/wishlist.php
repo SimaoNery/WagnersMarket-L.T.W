@@ -17,7 +17,7 @@ require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 require_once(__DIR__ . '/../../private/templates/profile.tpl.php');
 
 
-$limit = 4;
+$limit = 16;
 $offset = 0;
 $db = getDatabaseConnection();
 
@@ -28,14 +28,11 @@ $numItems = Item::getNumItemsWishlist($db, $userId);
 drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
 drawTitle("Wishlist");
-drawItems($db, $items, $session->isLoggedIn(), $session);
 
-if($numItems === 0) { ?>
-    <p id="emptyWishlist"> Your wishlist is empty!</p>
-<?php } ?>
-
-<?php
-if($numItems != 0) {
+if($numItems === 0) {
+    drawEmpty("emptyYourAdds", "You are not selling any items!");
+} else {
+    drawItems($db, $items, $session);
     drawPagination(intval(ceil($numItems / $limit)), "wishlist");
 }
 drawFooter();

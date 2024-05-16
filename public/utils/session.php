@@ -13,7 +13,6 @@ class Session
 
     public function isLoggedIn(): bool
     {
-        session_destroy();
         return isset($_SESSION['id']);
     }
 

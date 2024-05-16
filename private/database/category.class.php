@@ -42,8 +42,14 @@ class Category
 
     static function updateCategoryImage(PDO $db, string $categoryName, string $categoryImage): bool
     {
-        $stmt = $db->prepare('UPDATE CATEGORY SET CategoryImage = ? WHERE CategoryName = ?;');
-        return $stmt->execute(array($categoryImage, $categoryName));
+        $stmt = $db->prepare('SELECT COUNT(*) FROM CATEGORY WHERE CategoryName = ?');
+        $stmt->execute(array($categoryName));
+        $count = $stmt->fetchColumn();
+        if ($count !== 0) {
+            $stmt = $db->prepare('UPDATE CATEGORY SET CategoryImage = ? WHERE CategoryName = ?');
+            return $stmt->execute(array($categoryImage, $categoryName));
+        }
+        return false;
     }
 }
 

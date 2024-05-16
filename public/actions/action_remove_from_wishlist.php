@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
@@ -13,20 +13,28 @@ require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/wishlist.class.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
 
-$db = getDatabaseConnection();
-$userId = $session->getId();
-$limit = 4;
-$offset = 0;
-
-$chosenItem = Item::getItem($db, intval($_GET['id']));
 
 
-if (Wishlist::removeFromWishlist($db, $userId, $chosenItem->itemId)) {
-    Item::decrementWishlistCounter($db, $chosenItem->itemId);
-    $session->addMessage('success', 'Item Removed Successfully From Wishlist!');
-} else {
-    $session->addMessage('error', 'Item Not Removed From Wishlist!');
+try {
+    $db = getDatabaseConnection();
+    $userId = $session->getId();
+
+    $itemId = intval($_POST['itemId']);
+
+    if(Wishlist::removeFromWishlist($db, $userId, $itemId)) {
+        Item::decrementWishlistCounter($db, $itemId);
+        $session->addMessage('success', 'Item successfully removed from wishlist!');
+    } else {
+        $success = false;
+        $session->addMessage('error', 'Item not removed from wishlist!');
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => 'Operation done successfully.']);
+
+} catch (Exception $e) {
+    error_log('Error in api_remove_from_wishlist.php: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
 }
-
-
-header('Location: ' . $_SERVER['HTTP_REFERER']);
+?>

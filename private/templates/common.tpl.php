@@ -18,13 +18,6 @@ require_once (__DIR__ . '/../database/category.class.php');
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../css/style.css">
         <script src="https://kit.fontawesome.com/8c148179b8.js" crossorigin="anonymous"></script>
-        <script src="../javascript/imagesLogic.js" defer></script>
-        <script src="../javascript/script.js" defer></script>
-        <script src="../javascript/suggestion.js"></script>
-        <script src="../javascript/wishlistButton.js"></script>
-        <script src="../javascript/shoppingBagButton.js"></script>
-        <script src="../javascript/trashButton.js"></script>
-        <script src="../javascript/checkoutLogic.js"></script>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet">
     </head>
 
@@ -47,7 +40,7 @@ require_once (__DIR__ . '/../database/category.class.php');
                     if ($session->isLoggedIn()) { ?>
                         <a href="../pages/publish_add.php">Sell</a>
                         <nav id="header-profile">
-                            <a href="../pages/profile.php">Log in/Register</a>
+                            <a href="../pages/profile.php">Profile</a>
                             <?php drawProfileForm($db, $session); ?>
                         </nav>
                         <a href="../pages/messages.php">Messages</a>
@@ -57,7 +50,7 @@ require_once (__DIR__ . '/../database/category.class.php');
                     <?php } else { ?>
                         <a class="not-logged-in">Sell</a>
                         <nav id="header-profile">
-                            <a class="not-logged-in">Profile</a>
+                            <a class="not-logged-in">Log in</a>
                             <?php drawLoginAndSignUpForm('login-signup', 'chk'); ?>
                         </nav>
                         <a class="not-logged-in">Messages</a>
@@ -132,13 +125,14 @@ require_once (__DIR__ . '/../database/category.class.php');
             </nav>
             <p>LTW Wagner's Market &copy; 2024</p>
         </footer>
-        <script src="../../public/javascript/pagination.js"></script>
-        <script src="../../public/javascript/messages.js"></script>
-        <script src="../../public/javascript/imagesLogic.js" defer></script>
-        <script src="../../public/javascript/script.js" defer></script>
-        <script src="../../public/javascript/suggestion.js"></script>
-        <script src="../../public/javascript/wishlistButton.js"></script>
-        <script src="../../public/javascript/searchUsers.js"></script>
+        <script src="../javascript/pagination.js"></script>
+        <script src="../javascript/messages.js"></script>
+        <script src="../javascript/imagesLogic.js" defer></script>
+        <script src="../javascript/script.js" defer></script>
+        <script src="../javascript/suggestion.js"></script>
+        <script src="../javascript/wishlistButton.js"></script>
+        <script src="../javascript/searchUsers.js"></script>
+        <script src="../javascript/shoppingBagButton.js"></script>
     </body>
 
     </html>
@@ -173,4 +167,10 @@ require_once (__DIR__ . '/../database/category.class.php');
             </section>
         </section>
     </section>
+<?php } ?>
+
+
+<?php function drawEmpty(string $id, string $text)
+{ ?>
+    <p id="<?= $id ?>"><?= $text ?></p>
 <?php } ?>

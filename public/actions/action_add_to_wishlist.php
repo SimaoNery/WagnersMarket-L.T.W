@@ -13,22 +13,30 @@ require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/wishlist.class.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
 
-$db = getDatabaseConnection();
-$userId = $session->getId();
-$limit = 4;
-$offset = 0;
-
-$newItem = Item::getItem($db, intval($_GET['id']));
 
 
-if(Wishlist::addToWishlist($db, $userId, $newItem->itemId)) {
-    Item::incrementWishlistCounter($db, $newItem->itemId);
-    $session->addMessage('success', 'Item Added Successfully To Wishlist!');
-} else {
-    $session->addMessage('error', 'Item Not Added To Wishlist!');
+try {
+    $db = getDatabaseConnection();
+    $userId = $session->getId();
+
+    $itemId = intval($_POST['itemId']);
+
+    if(Wishlist::addToWishlist($db, $userId, $itemId)) {
+        Item::incrementWishlistCounter($db, $itemId);
+        $session->addMessage('success', 'Item Added Successfully To Wishlist!');
+    } else {
+        $success = false;
+        $session->addMessage('error', 'Item Not Added To Wishlist!');
+    }
+
+
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => 'Operation done successfully.']);
+
+} catch (Exception $e) {
+    error_log('Error in api_add_to_wishlist.php: ' . $e->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Internal Server Error']);
 }
-
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
-
 ?>
