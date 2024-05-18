@@ -1,5 +1,6 @@
 
 async function showMessage(message, success) {
+    console.log('message')
     const messageOccurredSection = document.getElementById('message-occurred');
     const messageParagraph = document.getElementById('message-text');
 
@@ -324,10 +325,16 @@ async function addCategory(categoryName, file) {
 
                 const inputSubmit = document.createElement('input')
                 inputSubmit.type = 'submit'
-                inputSubmit.innerHTML = 'Remove Category'
+                inputSubmit.value = 'Remove Category'
 
                 formRemoveCategory.append(inputCategoryName)
                 formRemoveCategory.append(inputSubmit)
+
+                formRemoveCategory.addEventListener('submit', async function(event) {
+                    event.preventDefault()
+                        await removeCategory(categoryName, formRemoveCategory)
+
+                })
 
                 const buttonChangeImage = document.createElement('button')
                 buttonChangeImage.type = 'button'
@@ -363,7 +370,14 @@ async function addCategory(categoryName, file) {
                 formChangeImage.append(label)
                 formChangeImage.append(inputSubmitChangeImage)
 
+                formChangeImage.addEventListener('submit', async function(event) {
+
+                    event.preventDefault()
+                    await changeImageCategory(categoryName, inputUploadFile.files[0], category_image)
+                })
+
                 category_item.append(category_link)
+                category_item.append(buttonChangeImage)
                 category_item.append(formRemoveCategory)
                 category_item.append(formChangeImage)
 
@@ -512,6 +526,12 @@ async function addSize(size) {
                 form.append(inputSizeName)
                 form.append(inputSubmit)
 
+                form.addEventListener('submit', async function(event) {
+                    event.preventDefault()
+                    await removeSize(size, li)
+                })
+
+
                 li.append(span)
                 li.append(form)
                 sizeList.append(li)
@@ -570,6 +590,14 @@ async function addCondition(condition) {
 
                 form.append(inputConditionName)
                 form.append(inputSubmit)
+
+                form.addEventListener('submit', async function(event) {
+
+                    event.preventDefault()
+
+                    await removeCondition(condition, li)
+
+                })
 
                 li.append(span)
                 li.append(form)

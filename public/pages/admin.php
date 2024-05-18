@@ -23,11 +23,6 @@ $categories = Category::getCategories($db);
 $sizes = Size::getSizes($db);
 $conditions = Condition::getConditions($db);
 
-$db = getDatabaseConnection();
-$categories = Category::getCategories($db);
-$sizes = Size::getSizes($db);
-$conditions = Condition::getConditions($db);
-
 drawHeader($db, $session);
 drawTitle("Admin Board");
 drawAdminBoard($categories, $conditions, $sizes);
