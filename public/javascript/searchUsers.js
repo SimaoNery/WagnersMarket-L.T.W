@@ -1,5 +1,27 @@
+
+async function showMessage(message, success) {
+    const messageOccurredSection = document.getElementById('message-occurred');
+    const messageParagraph = document.getElementById('message-text');
+
+    if (messageOccurredSection && messageParagraph) {
+        messageParagraph.innerHTML = message;
+        messageOccurredSection.style.display = 'block';
+        if (success) messageOccurredSection.style.backgroundColor = 'rgba(99,219,107,0.8)'
+        else messageOccurredSection.style.backgroundColor = 'rgba(255, 0, 0, 0.8)'
+
+
+        setTimeout(() => {
+            messageOccurredSection.style.display = 'none';
+            messageParagraph.textContent = '';
+        }, 3000);
+    }
+
+}
+
+
 const searchUsers = document.querySelector("#searchUsers")
 const userBoxes = document.querySelector("#users")
+
 
 let input = ""
 let limitSearchUsers = 6
@@ -18,7 +40,6 @@ if (searchUsers) {
 if (userBoxes) {
     userBoxes.addEventListener("scroll", async function() {
         if (userBoxes.scrollHeight - userBoxes.scrollTop <= userBoxes.clientHeight ) {
-            console.log('coise')
             limitMessages += 6
             offsetMessages += 6
             await drawUsers();
@@ -208,3 +229,400 @@ async function deleteUserAccount(userId, userSection) {
 }
 
 
+
+const formsRemoveCategory = document.querySelectorAll(".remove-category");
+
+if (formsRemoveCategory) {
+    formsRemoveCategory.forEach(formRemoveCategory => {
+        formRemoveCategory.addEventListener('submit', async function(event) {
+            event.preventDefault()
+            const categoryName = formRemoveCategory.querySelector(".category-name").value
+
+            if (categoryName) {
+                await removeCategory(categoryName, formRemoveCategory)
+            }
+
+        })
+    })
+}
+
+async function removeCategory(categoryName, formRemoveCategory) {
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_remove_category.php', true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    request.onload = function () {
+        const response = JSON.parse(request.responseText)
+        if (response.success) {
+            formRemoveCategory.parentNode.remove()
+            showMessage(response.success, true);
+        }
+        else {
+            showMessage(response.error, false);
+        }
+
+    }
+    request.send(encodeForAjax({'category' : categoryName}))
+}
+
+const formAddCategory = document.querySelector(".add-new-category");
+
+if (formAddCategory) {
+
+    formAddCategory.addEventListener('submit', async function(event) {
+
+        event.preventDefault()
+        const categoryName = document.getElementById('category-name').value
+        const fileInput = document.querySelector('.add-new-category input[type=file]')
+        const file = fileInput.files[0];
+        if (categoryName && file) {
+            await addCategory(categoryName, file)
+        }
+    })
+}
+
+async function addCategory(categoryName, file) {
+
+    const formData = new FormData();
+    formData.append("category", categoryName)
+    formData.append("image", file);
+
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_add_category.php', true)
+    request.onload = function () {
+        try {
+
+            const response = JSON.parse(request.responseText)
+
+
+            if (response.success) {
+                const category_item = document.createElement('li')
+                category_item.classList.add('category-item')
+
+                const category_link = document.createElement('a')
+                category_link.href = "../../public/pages/search.php?category=" + categoryName
+
+                const category_image = document.createElement('img')
+                category_image.src = response.imagePath
+                category_image.alt = categoryName
+
+                const span = document.createElement('span')
+                span.innerHTML = categoryName
+
+                category_link.append(category_image)
+                category_link.append(span)
+
+                const formRemoveCategory = document.createElement('form')
+                formRemoveCategory.action = "../actions/action_remove_category.php"
+                formRemoveCategory.method = "post"
+                formRemoveCategory.classList.add("remove-category")
+
+                const inputCategoryName = document.createElement('input')
+                inputCategoryName.type = 'hidden'
+                inputCategoryName.classList.add("remove-category")
+                inputCategoryName.value = categoryName
+                inputCategoryName.name = 'category'
+
+                const inputSubmit = document.createElement('input')
+                inputSubmit.type = 'submit'
+                inputSubmit.innerHTML = 'Remove Category'
+
+                formRemoveCategory.append(inputCategoryName)
+                formRemoveCategory.append(inputSubmit)
+
+                const buttonChangeImage = document.createElement('button')
+                buttonChangeImage.type = 'button'
+                buttonChangeImage.innerHTML = 'Change the image'
+
+                const formChangeImage = document.createElement('form')
+                formChangeImage.action = "../actions/action_change_image_category.php"
+                formChangeImage.method = "post"
+                formChangeImage.classList.add("change-image-category")
+                formChangeImage.enctype = "multipart/form-data"
+
+                const inputCategoryNameChangeImage = document.createElement('input')
+                inputCategoryNameChangeImage.type = 'hidden'
+                inputCategoryNameChangeImage.value = categoryName
+                inputCategoryNameChangeImage.name = 'category'
+
+                const label = document.createElement('label')
+                label.innerHTML = "Upload an image"
+
+                const inputUploadFile = document.createElement('input')
+                inputUploadFile.type = 'file'
+                inputUploadFile.accept = "image/png,image/jpeg"
+                inputUploadFile.name = 'image'
+                inputUploadFile.required = true
+
+                label.append(inputUploadFile)
+
+                const inputSubmitChangeImage = document.createElement('input')
+                inputSubmitChangeImage.type = 'submit'
+                inputSubmitChangeImage.value = 'Change the category\'s image'
+
+                formChangeImage.append(inputCategoryNameChangeImage)
+                formChangeImage.append(label)
+                formChangeImage.append(inputSubmitChangeImage)
+
+                category_item.append(category_link)
+                category_item.append(formRemoveCategory)
+                category_item.append(formChangeImage)
+
+                const ul = document.querySelector('.category-list')
+                if (ul) ul.append(category_item)
+
+                showMessage(response.success, true)
+            }
+            else {
+                showMessage(response.error, false)
+            }
+        } catch (e) {
+            console.error('Error parsing JSON:', e);
+            console.error('Response text:', request.responseText);
+        }
+
+
+    }
+    request.send(formData)
+}
+
+const formsChangeCategoryImage = document.querySelectorAll(".change-image-category");
+
+if (formsChangeCategoryImage) {
+    formsChangeCategoryImage.forEach(formChangeCategoryImage => {
+        formChangeCategoryImage.addEventListener('submit', async function(event) {
+
+            event.preventDefault()
+            const categoryName = formChangeCategoryImage.querySelector('input[type=hidden]').value
+            const fileInput = formChangeCategoryImage.querySelector('input[type=file]')
+            const file = fileInput.files[0];
+            const oldImage = formChangeCategoryImage.parentNode.querySelector('a img')
+            if (categoryName && file && oldImage) {
+                await changeImageCategory(categoryName, file, oldImage)
+            }
+        })
+    })
+}
+async function changeImageCategory(categoryName, file, oldImage) {
+
+    const formData = new FormData();
+    formData.append("category", categoryName)
+    formData.append("image", file);
+
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_change_image_category.php', true)
+    request.onload = function () {
+        try {
+            const response = JSON.parse(request.responseText)
+
+            if (response.success) {
+
+                oldImage.src = response.imagePath
+
+                showMessage(response.success, true)
+
+            }
+            else {
+                showMessage(response.error, false)
+            }
+        } catch (e) {
+            console.error('Error parsing JSON:', e);
+            console.error('Response text:', request.responseText);
+        }
+
+
+    }
+    request.send(formData)
+}
+
+const formsRemoveSize = document.querySelectorAll(".remove-size");
+
+if (formsRemoveSize) {
+    formsRemoveSize.forEach(formRemoveSize => {
+        formRemoveSize.addEventListener('submit', async function(event) {
+
+            event.preventDefault()
+            const size = formRemoveSize.querySelector('input[type=hidden]').value
+            const sizeElement = formRemoveSize.parentNode
+            if (size && sizeElement) {
+                await removeSize(size, sizeElement)
+            }
+        })
+    })
+}
+
+async function removeSize(size, sizeElement) {
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_remove_size.php', true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    request.onload = function () {
+        const response = JSON.parse(request.responseText)
+        if (response.success) {
+            sizeElement.remove()
+            showMessage(response.success, true);
+        }
+        else {
+            showMessage(response.error, false);
+        }
+
+    }
+    request.send(encodeForAjax({'size' : size}))
+}
+
+const formAddSize = document.getElementById("add-new-size");
+
+if (formAddSize) {
+
+    formAddSize.addEventListener('submit', async function(event) {
+
+        event.preventDefault()
+        const size = formAddSize.querySelector('#size-name')
+        if (size) {
+            await addSize(size.value)
+            size.value = ''
+        }
+    })
+}
+
+async function addSize(size) {
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_add_size.php', true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    request.onload = function () {
+        const response = JSON.parse(request.responseText)
+        if (response.success) {
+            const sizeList = document.getElementById('size-list')
+            if (sizeList) {
+                const li = document.createElement('li')
+                const span = document.createElement('span')
+                span.innerHTML = size
+                const form = document.createElement('form')
+                form.classList.add('remove-size')
+                form.action = "../actions/action_remove_size.php"
+                form.method = 'post'
+
+
+                const inputSizeName = document.createElement('input')
+                inputSizeName.type = 'hidden'
+                inputSizeName.name = 'size'
+                inputSizeName.value = size
+                const inputSubmit = document.createElement('input')
+                inputSubmit.type = 'submit'
+                inputSubmit.value = 'Remove Size'
+
+                form.append(inputSizeName)
+                form.append(inputSubmit)
+
+                li.append(span)
+                li.append(form)
+                sizeList.append(li)
+            }
+            showMessage(response.success, true);
+        }
+        else {
+            showMessage(response.error, false);
+        }
+
+    }
+    request.send(encodeForAjax({'size' : size}))
+}
+
+
+const formAddCondition = document.getElementById("add-new-condition");
+
+if (formAddCondition) {
+
+    formAddCondition.addEventListener('submit', async function(event) {
+
+        event.preventDefault()
+        const condition = formAddCondition.querySelector('#condition-name')
+        if (condition) {
+            await addCondition(condition.value)
+            condition.value = ''
+        }
+    })
+}
+
+async function addCondition(condition) {
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_add_condition.php', true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    request.onload = function () {
+        const response = JSON.parse(request.responseText)
+        if (response.success) {
+            const conditionList = document.getElementById('condition-list')
+            if (conditionList) {
+                const li = document.createElement('li')
+                const span = document.createElement('span')
+                span.innerHTML = condition
+                const form = document.createElement('form')
+                form.classList.add('remove-condition')
+                form.action = "../actions/action_remove_condition.php"
+                form.method = 'post'
+
+
+                const inputConditionName = document.createElement('input')
+                inputConditionName.type = 'hidden'
+                inputConditionName.name = 'condition'
+                inputConditionName.value = condition
+                const inputSubmit = document.createElement('input')
+                inputSubmit.type = 'submit'
+                inputSubmit.value = 'Remove Condition'
+
+                form.append(inputConditionName)
+                form.append(inputSubmit)
+
+                li.append(span)
+                li.append(form)
+                conditionList.append(li)
+            }
+            showMessage(response.success, true);
+        }
+        else {
+            showMessage(response.error, false);
+        }
+
+    }
+    request.send(encodeForAjax({'condition' : condition}))
+}
+
+
+
+const formsRemoveCondition = document.querySelectorAll(".remove-condition");
+
+if (formsRemoveCondition) {
+    formsRemoveCondition.forEach(formRemoveCondition => {
+        formRemoveCondition.addEventListener('submit', async function(event) {
+
+            event.preventDefault()
+            const condition = formRemoveCondition.querySelector('input[type=hidden]').value
+            const conditionElement = formRemoveCondition.parentNode
+            if (condition && conditionElement) {
+                await removeCondition(condition, conditionElement)
+            }
+        })
+    })
+}
+
+async function removeCondition(condition, conditionElement) {
+    const request = new XMLHttpRequest()
+    request.open('POST', '../actions/action_remove_condition.php', true)
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+    request.onload = function () {
+        const response = JSON.parse(request.responseText)
+        if (response.success) {
+            conditionElement.remove()
+            showMessage(response.success, true);
+        }
+        else {
+            showMessage(response.error, false);
+        }
+
+    }
+    request.send(encodeForAjax({'condition' : condition}))
+}
+
+function encodeForAjax(data) {
+    return Object.keys(data).map(function(k){
+        return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+    }).join('&')
+}

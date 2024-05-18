@@ -29,15 +29,21 @@ class Category
 
     static function addCategory(PDO $db, string $categoryName, string $categoryImage): bool
     {
-        $stmt = $db->prepare('INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES (?, ?)');
-        $stmt->execute(array($categoryName, $categoryImage));
-        return $stmt->rowCount() == 1;
+        $stmt = $db->prepare('SELECT COUNT(*) FROM CATEGORY WHERE CategoryName = ?');
+        $stmt->execute(array($categoryName));
+        $count = $stmt->fetchColumn();
+        if ($count === 0) {
+            $stmt = $db->prepare('INSERT INTO CATEGORY (CategoryName, CategoryImage) VALUES (?, ?)');
+            $stmt->execute(array($categoryName, $categoryImage));
+            return $stmt->rowCount() == 1;
+        }
+        return false;
     }
 
     static function deleteCategory(PDO $db, string $categoryName): bool
     {
         $stmt = $db->prepare('DELETE FROM CATEGORY WHERE CategoryName = ?');
-        return $stmt->execute(array($categoryName));
+        return ( $stmt->execute(array($categoryName)));
     }
 
     static function updateCategoryImage(PDO $db, string $categoryName, string $categoryImage): bool

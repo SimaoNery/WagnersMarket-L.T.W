@@ -62,6 +62,9 @@ require_once (__DIR__ . '/../database/category.class.php');
             </nav>
             <?php drawLoginPopUp() ?>
         </header>
+        <section id="message-occurred">
+            <p id="message-text"></p>
+        </section>
 
     <?php } ?>
 

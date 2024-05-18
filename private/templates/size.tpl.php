@@ -7,7 +7,7 @@ declare(strict_types=1);
             <li class="size-item">
                 <span><?=$size->size ?></span>
 
-                <form action="../actions/action_remove_size.php" method="post">
+                <form class="remove-size" action="../actions/action_remove_size.php" method="post">
                     <input type="hidden" name="size" value="<?= $size->size ?>">
                     <input type="submit" value="Remove Size">
                 </form>

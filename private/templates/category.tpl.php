@@ -12,12 +12,12 @@
                     <span><?=$category->categoryName?></span>
                 </a>
                 <?php if($admin) { ?>
-                    <form action="../actions/action_remove_category.php" method="post">
-                        <input type="hidden" name="category" value="<?=$category->categoryName?>">
+                    <form class="remove-category" action="../actions/action_remove_category.php" method="post">
+                        <input class="category-name" type="hidden" name="category" value="<?=$category->categoryName?>">
                         <input type="submit" value="Remove Category">
                     </form>
-                    <button type="button" value="Change the image">
-                    <form action="../actions/action_change_image_category.php" method="post" enctype="multipart/form-data">
+                    <button type="button">Change the image</button>
+                    <form class="change-image-category" action="../actions/action_change_image_category.php" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="category" value="<?= $category->categoryName?>">
                         <label>Upload an image<input type="file" name="image" accept="image/png,image/jpeg" required></label>
                         <input type="submit" value="Change the category's image">
@@ -27,12 +27,12 @@
         <?php } ?>
     </ul>
     <?php if($admin) { ?>
-        <button type="button" value="Add a new category">
-        <form id="add-new-category" action="../actions/action_add_category.php" method="post" enctype="multipart/form-data">
-            <label>New category's name<input id="category-name" name="category" type="text" placeholder="e.g. Tops" required></label>
-            <label>Upload an image<input type="file" name="image" accept="image/png,image/jpeg" required></label>
-            <input type="submit" value="Publish new category">
-        </form>
+            <button type="button">Add a new category</button>
+            <form class="add-new-category" action="../actions/action_add_category.php" method="post" enctype="multipart/form-data">
+                <label>New category's name<input id="category-name" name="category" type="text" placeholder="e.g. Tops" required></label>
+                <label>Upload an image<input type="file" name="image" accept="image/png,image/jpeg" required></label>
+                <input type="submit" value="Publish new category">
+            </form>
         <?php }
 } ?>
 
