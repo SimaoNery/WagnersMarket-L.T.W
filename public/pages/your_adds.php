@@ -27,11 +27,9 @@ $numItems = Item::getNumAdds($db, $userId);
 
 drawHeader($db, $session);
 drawProfileBody("your_adds", $userId);
-drawTitle("Your Adds");
-
 
 if($numItems === 0) {
-    drawEmpty("emptyYourAdds", "You are not selling any items!");
+    drawEmpty("empty-your-adds", "You are not selling any items!");
  } else {
     drawItems($db, $items, $session);
     drawPagination(intval(ceil($numItems / $limit)), "your_adds");

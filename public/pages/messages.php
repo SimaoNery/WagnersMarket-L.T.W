@@ -8,6 +8,7 @@ if(!$session->isLoggedIn()) {
     header("Location: index.php");
     exit;
 }
+
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/message.class.php');
 require_once(__DIR__ . '/../../private/database/user.class.php');
@@ -37,7 +38,7 @@ if ($otherUserId === -1 && !empty($lastMessages)) {
 
 
 drawHeader($db, $session);
-drawTitle("Messages");
+drawProfileBody("messages", $userId);
 drawMessages($lastMessages, $messages, $db, $userId, $otherUserId);
 drawFooter();
 ?>

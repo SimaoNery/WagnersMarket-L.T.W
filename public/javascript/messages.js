@@ -1,6 +1,6 @@
 const messages = document.getElementById("messages")
 const contacts = document.getElementById("contacts")
-const otherUser = document.getElementById("otherUser")
+const otherUser = document.getElementById("other-user")
 
 let needMoreMessages = true
 let limitMessages = 20
@@ -35,7 +35,7 @@ if (messages) {
 async function getMoreMessages() {
     let need = false
 
-    const lastDate = document.getElementById("lastDate")
+    const lastDate = document.getElementById("last-date")
 
     const currentScrollHeight = messages.scrollHeight
     const currentScrollTop = messages.scrollTop
@@ -64,8 +64,8 @@ async function getMoreMessages() {
             messages.innerHTML = ''
             const firstTimestamp = document.createElement('time');
             firstTimestamp.innerHTML = current_date
-            firstTimestamp.setAttribute('id', 'lastDate');
-            firstTimestamp.classList.add('messageDate');
+            firstTimestamp.setAttribute('id', 'last-date');
+            firstTimestamp.classList.add('message-date');
             lastDate.removeAttribute('id')
             messages.append(firstTimestamp)
         }
@@ -97,7 +97,7 @@ async function getMoreMessages() {
                 need = false;
                 const timestamp = document.createElement('time');
                 timestamp.innerHTML = formattedDate
-                timestamp.classList.add('messageDate')
+                timestamp.classList.add('message-date')
                 messages.append(timestamp)
                 current_date = formattedDate
             }
@@ -113,7 +113,7 @@ async function getMoreMessages() {
             message.append(content)
 
             const time = document.createElement('time');
-            time.classList.add('messageTime')
+            time.classList.add('message-time')
             time.dateTime = msg.timestamp
             time.innerHTML = formattedTime
 
@@ -185,7 +185,6 @@ async function getMoreContacts() {
         content.innerHTML = finalResponse.contacts[i].content
         username.innerHTML = finalResponse.usernames[i]
         image.src = finalResponse.profilePics[i]
-        image.classList.add('little')
         contact.classList.add('contact')
         time.dateTime = contact.timestamp
         time.innerHTML = formattedDate !== formattedCurrentDate ? formattedDate : formattedTime
@@ -201,12 +200,12 @@ async function getMoreContacts() {
 }
 
 
-const form = document.querySelector("#send_message");
+const form = document.querySelector("#send-message");
 
 if (form) {
     form.addEventListener('submit', async function(event) {
         event.preventDefault()
-        const otherUserId = document.getElementById('otherUser').value
+        const otherUserId = document.getElementById('other-user').value
         const message = document.querySelector("#content")
 
         if (message) {
@@ -219,13 +218,13 @@ if (form) {
 }
 
 async function sendMessage(otherUserId, message) {
-    if(document.querySelector('#noMessagesSent')) messages.innerHTML = ''
-    if(document.querySelector('#noOpenConversations')) contacts.innerHTML = ''
+    if(document.querySelector('#no-messages-sent')) messages.innerHTML = ''
+    if(document.querySelector('#no-open-conversations')) contacts.innerHTML = ''
     const allTimeElements = document.querySelectorAll('#messages > time');
     let lastTimeElement = allTimeElements.length ? allTimeElements[allTimeElements.length - 1].innerHTML : false;
 
     const params = new URLSearchParams()
-    params.append('otherUserId', otherUserId.toString())
+    params.append('other-user-id', otherUserId.toString())
     params.append('message', message.toString())
 
     const request = new XMLHttpRequest()
@@ -267,21 +266,21 @@ async function sendMessage(otherUserId, message) {
 
                 if (formattedDate !== formattedCurrentDate) {
                     const dateOfMessage = document.createElement('time')
-                    dateOfMessage.classList.add('messageDate')
+                    dateOfMessage.classList.add('message-date')
                     dateOfMessage.dateTime = formattedDate
                     dateOfMessage.innerHTML = formattedTime
                     messages.append(dateOfMessage)
                 }
             } else {
                 const dateOfMessage = document.createElement('time')
-                dateOfMessage.classList.add('messageDate')
+                dateOfMessage.classList.add('message-date')
                 dateOfMessage.dateTime = formattedDate
                 dateOfMessage.innerHTML = formattedDate
                 messages.append(dateOfMessage)
             }
 
             const time = document.createElement('time')
-            time.classList.add('messageTime')
+            time.classList.add('message-time')
             time.dateTime = messageTime
             time.innerHTML = formattedTime
 
@@ -289,8 +288,8 @@ async function sendMessage(otherUserId, message) {
             msg.append(time)
             messages.append(msg)
 
-            const username = document.querySelector('#conversation_header h3').innerHTML
-            const img = document.querySelector('#conversation_header img').cloneNode(true);
+            const username = document.querySelector('#conversation-header h3').innerHTML
+            const img = document.querySelector('#conversation-header img').cloneNode(true);
             const contactArray = contacts.querySelectorAll('#contacts a')
 
             const newContact = document.createElement('a')
@@ -301,12 +300,15 @@ async function sendMessage(otherUserId, message) {
             const span = document.createElement('span')
             span.innerHTML = username
 
+            const par_msg = document.createElement('p')
+            par_msg.textContent = message
+
             const contactTime = document.createElement('time')
             contactTime.dateTime = messageTime
             contactTime.innerHTML = formattedTime
 
             contactSection.append(span)
-            contactSection.append(message)
+            contactSection.append(par_msg)
             contactSection.append(img)
             contactSection.append(contactTime)
             newContact.append(contactSection)
@@ -333,5 +335,5 @@ async function sendMessage(otherUserId, message) {
 }
 
 
-//METER PREPEND EM TUDO
+// METER PREPEND EM TUDO
 
