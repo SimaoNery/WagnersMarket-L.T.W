@@ -229,6 +229,19 @@ class User
         return $stmt->execute(array($admin, $userId));
     }
 
+    static function isAdmin(PDO $db, int $userId): bool
+    {
+        $stmt = $db->prepare('SELECT Admin FROM USER WHERE UserId = ?');
+        $stmt->execute(array($userId));
+
+        $admin = $stmt->fetchColumn();
+        if($admin != 1) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 ?>

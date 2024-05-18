@@ -5,9 +5,12 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if(!$session->isLoggedIn()) {
-    header("Location: index.php");
-    exit;
+    $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
+    $redirectUrl .= (!str_contains($redirectUrl, '?') ? '?' : '&') . 'showLogin=true';
+    header("Location: " . $redirectUrl);
+    exit();
 }
+
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/message.class.php');
 require_once(__DIR__ . '/../../private/database/user.class.php');

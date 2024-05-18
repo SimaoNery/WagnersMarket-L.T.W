@@ -27,12 +27,17 @@ require_once (__DIR__ . '/../database/category.class.php');
                 <a class="logo" href="../pages/index.php">Logo</a>
             </section>
             <nav class="header-right">
+                    <section id="header-admin">
+                        <?php if($session->isLoggedIn() && User::isAdmin($db, $session->getId() )) { ?>
+                            <a href="../pages/admin.php">Admin</a>
+                        <?php } ?>
+                    </section>
                     <section id="header-products">
                         <a  href="search.php">Products</a>
                         <nav class="dropdown">
                             <?php $categories = Category::getCategories($db);
                             foreach ($categories as $category) { ?>
-                                <a href="search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a>
+                                <a href="../pages/search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a>
                             <?php } ?>
                         </nav>
                     </section>
@@ -135,6 +140,7 @@ require_once (__DIR__ . '/../database/category.class.php');
         <script src="../javascript/suggestion.js"></script>
         <script src="../javascript/wishlistButton.js"></script>
         <script src="../javascript/searchUsers.js"></script>
+        <script src="../javascript/loginPopUp.js"> </script>
         <script src="../javascript/shoppingBagButton.js"></script>
     </body>
 
@@ -164,8 +170,8 @@ require_once (__DIR__ . '/../database/category.class.php');
     <section id="popup-wrapper" class="popup-wrapper">
         <section id="popup" class="popup">
             <section class="popup-content">
-                <span class="close" onclick="closeLoginPopUp()">&times;</span>
-                <p class="message">You have to login to access this feature</p>
+                <span class="close" onclick="closeLoginPopUp()">x</span>
+                <p class="message">You have to log in to access this feature</p>
                 <?php drawLoginAndSignUpForm('popup-form', 'popup-chk') ?>
             </section>
         </section>

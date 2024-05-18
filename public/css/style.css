@@ -22,6 +22,7 @@ a {
 
 a:hover {
     color: black;
+    cursor: pointer;
 }
 
 h4 {
@@ -98,7 +99,7 @@ header {
 .header-right {
     font-size: 1.2em;
     display: grid;
-    grid-template-columns: repeat(4, 1fr) .4fr .4fr;
+    grid-template-columns: repeat(5, 1fr) .5fr .5fr;
     justify-items: center;
     align-items: center;
 }

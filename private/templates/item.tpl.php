@@ -8,6 +8,8 @@ require_once(__DIR__ . '/../database/condition.class.php');
 require_once(__DIR__ . '/../database/category.class.php');
 require_once(__DIR__ . '/../database/wishlist.class.php');
 require_once(__DIR__ . '/../database/cart.class.php');
+
+require_once(__DIR__ . '/../templates/common.tpl.php');
 ?>
 
 
@@ -22,7 +24,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
                     </a>
 
                     <?php if(!$session->isLoggedIn()) { ?>
-                        <button id="not-logged-in" type="button" class="wishlist-button" disabled>
+                        <button id="not-logged-in" type="button" class="not-logged-in wishlist-button">
                             <i class="fa-regular fa-heart"></i>
                         </button>
                     <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
@@ -42,6 +44,8 @@ require_once(__DIR__ . '/../database/cart.class.php');
                 </li>
             <?php } ?>
         </ul>
+
+    <?php drawLoginPopUp(); ?>
 <?php }?>
 
 <?php function drawPagination(int $pages, string $id) { ?>
@@ -63,7 +67,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
     </section>
 <?php } ?>
 
-<?php function drawItem(PDO $db, Item $item, array $images, Session $session, $user) { ?>
+<?php function drawItem(PDO $db, Item $item, array $images, Session $session, User $user) { ?>
     <section class="item-info-and-images">
         <section id="images" class="col-2">
 
@@ -88,7 +92,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
                     <li id="wishlist">
                         <?php if(!$session->isLoggedIn()) { ?>
-                            <button id="not-logged-in" type="button" class="wishlist-button" disabled>
+                            <button id="not-logged-in" type="button" class="wishlist-button not-logged-in">
                                 <i class="fa-regular fa-heart"></i>
                             </button>
                         <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
@@ -104,7 +108,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
                     <li id="bag">
                         <?php if(!$session->isLoggedIn()) { ?>
-                        <button id="not-logged-in" type="button" class="bag-button" disabled>
+                        <button id="not-logged-in" type="button" class="bag-button not-logged-in">
                             <i class="fa-solid fa-bag-shopping"></i> Add To Bag
                         </button>
 
@@ -142,25 +146,29 @@ require_once(__DIR__ . '/../database/cart.class.php');
         <div class="box_yellow">
             <section id="sellerInfo">
                 <div class="profilePic">
-                    <a href="../pages/profile.php">
+                    <a class href="../pages/profile.php?id=<?=$user->userId?>">
                         <img src= "/<?= $user->profilePic ?>">
                     </a>
                 </div>
 
                 <div class="sellerDetails">
-                    <a href="../pages/profile.php">
+                    <a href="../pages/profile.php?id=<?=$user->userId ?>">
                         <p class="username"><?=$user->username?></p>
                     </a>
 
-                    <a href="../pages/profile.php">
+                    <a href="../pages/profile.php?id=<?=$user->userId ?>">
                         <p class="name"><?=$user->name ?></p>
                     </a>
                 </div>
 
-                <a href="../pages/messages.php?otherUserId=<?=$user->userId?>" class="sendMessageButton">Send Message</a>
-
+                <?php if(!$session->isLoggedIn()) { ?>
+                    <a class="sendMessageButton not-logged-in">Send Message</a>
+                <?php } else { ?>
+                    <a href="../pages/messages.php?otherUserId=<?=$user->userId?>" class="sendMessageButton">Send Message</a>
+                <?php } ?>
             </section>
         </div>
+        <?php drawLoginPopUp(); ?>
     </section>
 <?php } ?>
 

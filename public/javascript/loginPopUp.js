@@ -11,23 +11,23 @@ if (notLoggedIn) {
 
 
 
-function navigateIfLoggedIn(isLoggedIn) {
-    if (!isLoggedIn) {
-        event.preventDefault();
-        showLoginPopUp()
-    }
-}
-
 function showLoginPopUp() {
-    var popup = document.getElementById("popup-wrapper");
+    let popup = document.getElementById("popup-wrapper");
         if (popup) {
             popup.style.display = "block";
         }
 }
 
 function closeLoginPopUp() {
-    var popup = document.getElementById("popup-wrapper");
+    let popup = document.getElementById("popup-wrapper");
         if (popup) {
             popup.style.display = "none";
         }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('showLogin') && urlParams.get('showLogin') === 'true') {
+        showLoginPopUp();
+    }
+});

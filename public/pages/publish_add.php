@@ -1,9 +1,15 @@
 <?php
 declare(strict_types = 1);
 
-
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
+
+if(!$session->isLoggedIn()) {
+    $redirectUrl = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'index.php';
+    $redirectUrl .= (!str_contains($redirectUrl, '?') ? '?' : '&') . 'showLogin=true';
+    header("Location: " . $redirectUrl);
+    exit();
+}
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/category.class.php');
