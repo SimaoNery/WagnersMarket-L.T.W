@@ -47,6 +47,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
 <?php }?>
 
 <?php function drawPagination(int $pages, string $id) { ?>
+    <?php if ($pages > 1) { ?>
     <section class="pagination-container">
         <section class="pagination" id="<?= $id ?>">
             <?php for ($i = 1; $i <= min(3, $pages); $i++) { ?>
@@ -63,6 +64,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
             <option value="32">32 per page</option>
         </select>
     </section>
+    <?php } ?>
 <?php } ?>
 
 <?php function drawItem(PDO $db, Item $item, array $images, Session $session, $user) { ?>

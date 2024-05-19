@@ -61,13 +61,13 @@ require_once (__DIR__ . '/../database/category.class.php');
             </nav>
             <?php drawLoginPopUp() ?>
         </header>
-        <?php /*$messages = $session->getMessages();
+        <?php $messages = $session->getMessages();
         if (count($messages) !== 0) { ?>
             <section id="message-occurred">
                 <p id="message-text"><?= $messages[0]['text'] ?></p>
             </section>
         <?php $session->clearMessages();
-        } */?>
+        } ?>
 
     <?php } ?>
 
@@ -143,7 +143,6 @@ require_once (__DIR__ . '/../database/category.class.php');
         <script src="../javascript/profileChanges.js"></script>
         <script src="../javascript/loginPopUp.js"></script>
         <script src="../javascript/profileChanges.js"></script>
-        <script src="../javascript/trashButton.js"></script>
         <script src="../javascript/checkoutLogic.js"></script>
     </body>
 

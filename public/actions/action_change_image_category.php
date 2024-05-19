@@ -30,7 +30,7 @@ try {
             if(isset($_FILES['image'])) {
                 $image = $_FILES['image'];
                 $fileName = $image['tmp_name'];
-                $targetDir = "../images/";
+                $targetDir = "../category_images/";
                 $targetPath = $targetDir . basename($image['name']);
             } else {
                 throw new Exception('Category image is not set.');

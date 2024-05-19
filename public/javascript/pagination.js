@@ -78,8 +78,6 @@ function fetchItems(limit, offset, searchType) {
 
                     const imageElement = document.createElement('img');
                     imageElement.src = item.imagePath;
-                    imageElement.style.width = '100px';
-                    imageElement.style.height = '100px';
 
                     const titleElement = document.createElement('h4');
                     titleElement.textContent = item.title;

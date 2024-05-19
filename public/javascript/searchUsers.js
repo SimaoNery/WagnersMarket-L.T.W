@@ -433,7 +433,7 @@ if (formsChangeCategoryImage) {
             const csrf = formChangeCategoryImage.querySelector('.csrf').value
             const fileInput = formChangeCategoryImage.querySelector('input[type=file]')
             const file = fileInput.files[0];
-            const oldImage = formChangeCategoryImage.parentNode.querySelector('a img')
+            const oldImage = formChangeCategoryImage.parentNode.parentNode.querySelector('a img')
             if (categoryName && file && oldImage && csrf) {
                 await changeImageCategory(categoryName, file, oldImage, csrf)
                 fileInput.value = ''
@@ -441,6 +441,8 @@ if (formsChangeCategoryImage) {
         })
     })
 }
+
+
 async function changeImageCategory(categoryName, file, oldImage, csrf) {
 
     const formData = new FormData();
