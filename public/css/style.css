@@ -617,6 +617,12 @@ ul#suggestions.suggestions {
 
 /* ------ Default Item Card ------ */
 
+body:has(#search-items) {
+    .draw-items {
+        max-height: 30em;
+    }
+}
+
 .draw-items {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

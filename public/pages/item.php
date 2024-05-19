@@ -18,8 +18,6 @@ require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 
 $db = getDatabaseConnection();
 
-
-
 $item = Item::getItem($db, intval($_GET['id']));
 $images = Image::getImages($db, $item->itemId);
 

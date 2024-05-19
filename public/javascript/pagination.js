@@ -211,7 +211,6 @@ async function inWishlist(itemId) {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data);
             return data
         } else {
             console.error('Failed to check wishlist status for item with ID:', itemId);

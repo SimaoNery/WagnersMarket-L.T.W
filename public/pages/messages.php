@@ -24,9 +24,12 @@ $db = getDatabaseConnection();
 
 $userId = $session->getId();
 $lastMessages = Message::getLastMessages($db, $userId, $limit, $offset);
-
 $otherUserId = $_GET['otherUserId'] ?? -1;
 $otherUserId = intval($otherUserId);
+
+if ($otherUserId === $userId) {
+    $otherUserId = -1;
+}
 
 $messages = ($otherUserId === -1) ?  [] : Message::getConversation($db, $userId, $otherUserId, $limit, $offset);
 
@@ -39,11 +42,8 @@ if ($otherUserId === -1 && !empty($lastMessages)) {
 
 drawHeader($db, $session);
 drawProfileBody("messages", $userId);
-if (!empty($messages)) {
-    drawMessages($lastMessages, $messages, $db, $userId, $otherUserId);
-} else {
-    drawEmpty("empty-messages", "You haven't started any conversation!");
-}
+drawMessages($lastMessages, $messages, $db, $userId, $otherUserId);
+
 drawFooter();
 ?>
 

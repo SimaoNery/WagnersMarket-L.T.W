@@ -14,13 +14,15 @@ const filters = document.querySelector("#filters");
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
-let numberOfItems = 32
+let numberOfItems = 16
 let offsetOfItems = 0
+
+let end = false
 
 if (categories) {
     categories.forEach(category => {
         category.addEventListener('change', async function() {
-            numberOfItems = 32
+            numberOfItems = 16
             offsetOfItems = 0
             const categoryId = this.id
             if (this.checked) {
@@ -39,7 +41,7 @@ if (categories) {
 if (conditions) {
     conditions.forEach(condition => {
         condition.addEventListener('change', async function() {
-            numberOfItems = 32
+            numberOfItems = 16
             offsetOfItems = 0
             const conditionId = this.id;
             if (this.checked) {
@@ -56,7 +58,7 @@ if (conditions) {
 
 if (searchItem) {
     searchItem.addEventListener('input', async function() {
-        numberOfItems = 32
+        numberOfItems = 16
         offsetOfItems = 0
         searchedItem = this.value
         await getSearchResults(true)
@@ -65,7 +67,7 @@ if (searchItem) {
 
 if (minInput) {
     minInput.addEventListener('change', async function() {
-        numberOfItems = 32
+        numberOfItems = 16
         offsetOfItems = 0
         minRange.value = this.value;
         range.style.left = (this.value / this.max) * 100 + '%'
@@ -79,7 +81,7 @@ if (minInput) {
 
 if (minRange) {
     minRange.addEventListener('change', async function() {
-        numberOfItems = 32
+        numberOfItems = 16
         offsetOfItems = 0
         minInput.value = this.value;
         range.style.left = (this.value / this.max) * 100 + '%'
@@ -93,7 +95,7 @@ if (minRange) {
 
 if (maxInput) {
     maxInput.addEventListener('change', async function() {
-        numberOfItems = 32
+        numberOfItems = 16
         offsetOfItems = 0
         maxRange.value = this.value;
         range.style.right = 100 - (this.value / this.max) * 100 + '%'
@@ -107,7 +109,7 @@ if (maxInput) {
 
 if (maxRange) {
     maxRange.addEventListener('change', async function() {
-        numberOfItems = 32
+        numberOfItems = 16
         offsetOfItems = 0
         maxInput.value = this.value;
         range.style.right = 100 - (this.value / this.max) * 100 + '%'
@@ -122,7 +124,7 @@ if (maxRange) {
 
 if(orderSelected) {
     orderSelected.addEventListener('change', async function () {
-        numberOfItems = 32
+        numberOfItems = 16
         offsetOfItems = 0
         await getSearchResults(true)
     });
@@ -138,12 +140,13 @@ if (filters) {
         items.addEventListener('scroll', async function () {
             if (items.scrollHeight - items.scrollTop <= items.clientHeight + 20) {
                 prevScrollHeight = items.scrollHeight;
+                if (!end) {
+                    numberOfItems += 16
+                    offsetOfItems += 16
+                    await getSearchResults(false);
 
-                numberOfItems += 16
-                offsetOfItems += 16
-                await getSearchResults(false);
-
-                items.scrollTop = items.scrollHeight - prevScrollHeight;
+                    //items.scrollTop = items.scrollHeight - prevScrollHeight;
+                }
             }
         })
     }
@@ -165,10 +168,13 @@ async function getSearchResults(reset) {
     if (reset) itemsSection.innerHTML = ''
 
     if (!items.length) {
-        const paragraph = document.createElement('p')
-        paragraph.id = 'not-found'
-        paragraph.textContent = 'No items found'
-        itemsSection.appendChild(paragraph)
+        end = true
+        if (reset) {
+            const paragraph = document.createElement('p')
+            paragraph.id = 'not-found'
+            paragraph.textContent = 'No items found'
+            itemsSection.appendChild(paragraph)
+        }
     }
 
     for (const item of items) {
