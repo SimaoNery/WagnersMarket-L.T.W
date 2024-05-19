@@ -110,10 +110,12 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
                         <?php } elseif (Cart::isInShoppingBag($db, $session->getId(), $item->itemId)) { ?>
                             <button id="<?= $item->itemId ?>" type="button" class="bag-button remove-from-bag">
+                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                 <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Remove From Cart
                             </button>
                         <?php } else { ?>
                             <button id="<?= $item->itemId ?>" type="button" class="bag-button add-to-bag">
+                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                 <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Add To Cart
                             </button>
                         <?php } ?>
@@ -187,6 +189,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
                             <?php } ?>
 
                             <button id="<?= $item->itemId ?>" type="button" class="trash-button">
+                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                 <i id="trashIcon" class="fa-solid fa-trash"></i>
                             </button>
                         </section>

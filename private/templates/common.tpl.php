@@ -28,7 +28,7 @@ require_once (__DIR__ . '/../database/category.class.php');
             </section>
             <nav class="header-right">
                     <section id="header-products">
-                        <a  href="search.php">Products</a>
+                        <a  href="/pages/search.php">Products</a>
                         <nav class="dropdown">
                             <?php $categories = Category::getCategories($db);
                             foreach ($categories as $category) { ?>

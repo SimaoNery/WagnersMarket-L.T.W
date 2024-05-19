@@ -57,11 +57,7 @@ async function drawUsers() {
     const params = encodeForAjax({search: input, limit: limitSearchUsers, offset: offsetSearchUsers})
 
     await fetch('../api/api_search_users.php?' + params, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
+        method: 'GET'
 
     })
         .then(response => response.json())
