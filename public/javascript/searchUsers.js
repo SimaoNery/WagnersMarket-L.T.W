@@ -524,6 +524,7 @@ async function addSize(size) {
 
                 li.append(span)
                 li.append(form)
+                
                 const referenceNode = sizeList.children[sizeList.children.length - 1]
                 sizeList.insertBefore(li, referenceNode)
             }

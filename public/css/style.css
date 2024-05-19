@@ -1350,180 +1350,120 @@ input[type="range"]::-moz-range-thumb {
 
 
 /* ------ Shopping Bag Page ------ */
-
 .shopping-bag-page {
-    display: inline-block;
-    width: 69%;
+    display: grid;
+    grid-template-columns: 1fr 0.35fr;
+    gap: 2%;
+    padding: 2%;
+    margin-top: 4em;
 }
 
-.shopping-bag-page2 {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 15%;
-    width: 25%;
 
+#shopping-bag-summary {
     position: sticky;
-    top: 15%;
-    z-index: 1000;
 }
 
-#ShoppingBagItems {
-    margin-top: 15%;
-    margin-left: 7%;
-}
-
-#shoppingbag-info {
-    grid-column: 2;
-    margin-left: 25%;
-    width: 75%;
+#bag-title, #summary-title {
+    font-size: 2em;
+    margin-bottom: 1em;
 }
 
 #bag-title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 2.3em;
+    font-size: 2.5em;
 }
 
-#summary-title {
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.7em;
-}
 
 #money-information {
     background-color: #fded84;
     text-align: center;
-
-    margin-top: 1.5em;
-    margin-bottom: 3em;
-    padding-top: 1em;
-    padding-bottom: 5em;
-
+    padding: 1em 0 5em 0;
     border-radius: 10px;
 }
 
-.subtotal {
+.subtotal, .shipping-cost, .total {
     padding: 0.7em;
-    font-family: 'Open Sans', sans-serif;
     font-size: 1.5em;
-
     display: flex;
     justify-content: space-between;
-}
-
-#subtotal-span {
-    font-family: 'Roboto', sans-serif;
-    font-weight: lighter;
-}
-
-.shipping-cost {
-    padding: 0.7em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.5em;
     margin-bottom: 1em;
-
-    display: flex;
-    justify-content: space-between;
-}
-
-#shippingcost-span {
-    font-family: 'Roboto', sans-serif;
-    font-weight: lighter;
 }
 
 .total {
-    padding: 0.7em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.5em;
-
-    border-top: 3px solid #333333;
-    border-bottom: 3px solid #333333;
-
+    border-top: 3px solid #333;
+    border-bottom: 3px solid #333;
     margin-bottom: 3em;
-
-    display: flex;
-    justify-content: space-between;
 }
 
-#total-span {
+#subtotal-span, #shipping-cost-span, #total-span {
     font-family: 'Roboto', sans-serif;
     font-weight: lighter;
-}
-
-.checkout-button {
-    margin-top: 1em;
-}
-
-.bag-card {
-    display: grid;
-    grid-template-columns: 30% 25% 25%;
-    grid-template-rows: 20% 40% 35%;
-
-    gap: 5px;
-    padding: 10px;
-    margin-bottom: 2%;
-
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    background-color: rgba(253, 237, 132, 0.1);
-}
-
-.bagItemImage {
-    grid-column: 1;
-    grid-row: 1 /span 3;
-    grid-area: image;
-}
-
-.bagItemTitle {
-    grid-column: 2;
-    grid-row: 1;
-
-    font-size: 30px;
-}
-
-.bagItemPrice {
-    grid-column: 3;
-    grid-row: 1;
-
-    font-weight: bold;
-    font-size: 25px;
-
-    margin-bottom: 1.5em;
-}
-
-.bagItemBrand {
-    grid-column: 2;
-    grid-row: 2;
-
-    grid-area: brand;
-}
-
-.bagItemCondition {
-    grid-column: 2;
-    grid-row: 3;
-
-    grid-area: condition;
-}
-
-.bagItemButtons {
-    grid-column: 3;
-    grid-row: 3;
-
-    grid-area: buttons;
 }
 
 .checkout-button {
     background: white;
-    padding: 5% 20% 5% 20%;
+    padding: 5% 20%;
     cursor: pointer;
     border: none;
     border-radius: 30px;
     font-size: 21px;
     font-weight: bolder;
+    text-decoration: none;
+    color: inherit;
 }
 
 .checkout-button:hover {
-    color: rgba(0, 0, 0, 1); /
+    color: rgba(0, 0, 0, 1);
 }
 
+.bag-card {
+    display: grid;
+    grid-template-columns: 150px auto 100px;
+    grid-template-rows: auto auto auto;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 2%;
+    background-color: rgba(253, 237, 132, 0.1);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    border-radius: 5px;
+}
+
+.bag-item-image {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    width: 150px;
+    height: 150px;
+}
+
+.bag-item-title {
+    grid-column: 2 / span 2;
+    grid-row: 1;
+    font-size: 1.5em;
+    margin: 0;
+}
+
+.bag-item-price {
+    grid-column: 3;
+    grid-row: 1;
+    font-weight: bold;
+    font-size: 1.25em;
+    text-align: right;
+    margin: 0;
+}
+
+.bag-item-brand, .bag-item-condition {
+    grid-column: 2 / span 2;
+    grid-row: auto;
+    margin: 0;
+}
+
+.bag-item-buttons {
+    grid-column: 3;
+    grid-row: 2 / span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
 .trash-button {
     background: none;
     border: none;
@@ -1532,15 +1472,16 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .trash-button i {
-    font-size: 27px;
+    font-size: 2em;
     color: rgba(100, 100, 100, 0.5);
     transition: color 0.3s ease;
     margin-right: 10px;
 }
 
 .trash-button:hover i {
-    color: rgba(64, 64, 64, 0.6); /
+    color: rgba(64, 64, 64, 0.6);
 }
+
 
 /* ------ Footer Style ------ */
 

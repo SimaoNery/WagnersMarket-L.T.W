@@ -166,7 +166,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
 <?php function drawBag(PDO $db, int $user, array $items) { ?>
     <section class="shopping-bag-page">
-        <section id="ShoppingBagItems">
+        <section id="shopping-bag-items">
 
             <h2 id="bag-title">
                 Shopping Bag
@@ -176,11 +176,11 @@ require_once(__DIR__ . '/../database/cart.class.php');
                 <?php foreach($items as $item) { ?>
                     <li class="bag-card">
                         <a href="../pages/item.php?id=<?=$item->itemId?>">
-                            <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bagItemImage">
+                            <img src="<?= $item->imagePath?>" class="bag-item-image">
                         </a>
 
-                        <section class="bagItemButtons">
-                            <section class="wishlistIcon">
+                        <section class="bag-item-buttons">
+                            <section class="wishlist-icon">
                                 <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) :?>
                                     <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
                                         <i class="fa-solid fa-heart"></i>
@@ -192,24 +192,23 @@ require_once(__DIR__ . '/../database/cart.class.php');
                                 <?php endif; ?>
                             </section>
 
-                            <section class="trashIcon">
+                            <section class="trash-icon">
                                 <button type="button" class="trash-button" onclick="trashBagItem(<?= $item->itemId ?>)">
-                                    <i id="trashIcon" class="fa-solid fa-trash"></i>
+                                    <i id="trash-icon" class="fa-solid fa-trash"></i>
                                 </button>
                             </section>
                         </section>
 
                         <a href="../pages/item.php?id=<?=$item->itemId?>">
-                            <h4 class="bagItemTitle"><?=$item->title?></h4>
-                            <p class="bagItemPrice"><?=number_format($item->price, 2)?>€</p>
-                            <p class="bagItemBrand">Brand: <span id="brandName"><?=$item->brand?></span></p>
-                            <p class="bagItemCondition">Condition: <span id="conditionValue"><?=$item->condition?></span></p>
+                            <h4 class="bag-item-title"><?=$item->title?></h4>
+                            <p class="bag-item-price"><?=number_format($item->price, 2)?>€</p>
+                            <p class="bag-item-brand">Brand: <span id="brand-name"><?=$item->brand?></span></p>
+                            <p class="bag-item-condition">Condition: <span id="condition-value"><?=$item->condition?></span></p>
                         </a>
                     </li>
                 <?php } ?>
             </ul>
         </section>
-    </section>
 <?php } ?>
 
 <?php function drawItemFilter(PDO $db, float $maxPrice, ?string $selectedCategory = null) { ?>

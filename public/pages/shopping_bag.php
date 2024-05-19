@@ -45,7 +45,7 @@ foreach($items as $item) {
 
 drawHeader($db, $session);
 if($numItems === 0) :?>
-    <p id="emptyShoppingBag"> Your shopping bag is empty!</p>
+    <p id="empty-shopping-bag"> Your shopping bag is empty!</p>
 
 <?php else :
     drawBag($db, $userId, $items);

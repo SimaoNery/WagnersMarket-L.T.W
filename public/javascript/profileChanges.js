@@ -1,12 +1,12 @@
-
 document.addEventListener('DOMContentLoaded', function() {
-    const emailSpan = document.querySelector('#emailSpan');
+    const nameSpan = document.querySelector('#name-span');
+    const emailSpan = document.querySelector('#email-span');
+
     if (emailSpan) {
         const initialEmailText = emailSpan.textContent;
         setupEmailEditButton(initialEmailText);
     }
 
-    const nameSpan = document.querySelector('#nameSpan');
     if (nameSpan) {
         const initialNameText = nameSpan.textContent;
         setupNameEditButton(initialNameText);
@@ -16,41 +16,40 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function setupEmailCancelButton(initialEmailText) {
-    const emailCancel = document.querySelector('#cancelEmailButton');
-    const emailForm = document.querySelector('#emailForm');
+    const emailCancel = document.querySelector('#cancel-email-button');
+    const emailForm = document.querySelector('#email-form');
 
-    if (emailCancel) {
+    if (emailCancel && emailForm) {
         emailCancel.addEventListener('click', function(event) {
             const span = document.createElement('span');
-            span.setAttribute('id', 'emailSpan');
+            span.setAttribute('id', 'email-span');
             span.textContent = initialEmailText;
 
             emailForm.parentNode.replaceChild(span, emailForm);
 
             const newButton = document.createElement('button');
-            newButton.setAttribute('id', 'editEmailButton');
+            newButton.setAttribute('id', 'edit-email-button');
             const newIcon = document.createElement('i');
             newIcon.classList.add('fas', 'fa-pencil-alt');
             newButton.appendChild(newIcon);
 
             emailCancel.parentNode.replaceChild(newButton, emailCancel);
             setupEmailEditButton(initialEmailText);
-            
         });
     } else {
-        console.log('emailCancel is null or undefined');
+        console.log('emailCancel or emailForm is null or undefined');
     }
 }
 
 function setupEmailEditButton(initialEmailText) {
-    const emailChange = document.querySelector('#editEmailButton');
+    const emailChange = document.querySelector('#edit-email-button');
 
     if (emailChange) {
         emailChange.addEventListener('click', function(event) {
             const form = document.createElement('form');
             form.setAttribute('action', '../actions/action_change_costumer_email.php');
             form.setAttribute('method', 'post');
-            form.setAttribute('id', 'emailForm');
+            form.setAttribute('id', 'email-form');
 
             const emailInput = document.createElement('input');
             emailInput.setAttribute('type', 'email');
@@ -62,17 +61,17 @@ function setupEmailEditButton(initialEmailText) {
 
             const saveButton = document.createElement('button');
             saveButton.textContent = "Save";
-
             form.appendChild(saveButton);
 
-            emailSpan.parentNode.replaceChild(form, emailSpan);
+            const emailSpan = document.querySelector('#email-span');
+            if (emailSpan) {
+                emailSpan.parentNode.replaceChild(form, emailSpan);
+            }
 
             const cancelButton = document.createElement('button');
-            cancelButton.setAttribute('id', 'cancelEmailButton');
-
+            cancelButton.setAttribute('id', 'cancel-email-button');
             const cancelIcon = document.createElement('i');
             cancelIcon.classList.add('fas', 'fa-times');
-
             cancelButton.appendChild(cancelIcon);
 
             emailChange.parentNode.replaceChild(cancelButton, emailChange);
@@ -81,43 +80,41 @@ function setupEmailEditButton(initialEmailText) {
     }
 }
 
-
 function setupNameCancelButton(initialNameText) {
-    const nameCancel = document.querySelector('#cancelNameButton');
-    const nameForm = document.querySelector('#nameForm');
+    const nameCancel = document.querySelector('#cancel-name-button');
+    const nameForm = document.querySelector('#name-form');
 
-    if (nameCancel) {
+    if (nameCancel && nameForm) {
         nameCancel.addEventListener('click', function(event) {
             const span = document.createElement('span');
-            span.setAttribute('id', 'nameSpan');
+            span.setAttribute('id', 'name-span');
             span.textContent = initialNameText;
 
             nameForm.parentNode.replaceChild(span, nameForm);
 
             const newButton = document.createElement('button');
-            newButton.setAttribute('id', 'editNameButton');
+            newButton.setAttribute('id', 'edit-name-button');
             const newIcon = document.createElement('i');
             newIcon.classList.add('fas', 'fa-pencil-alt');
             newButton.appendChild(newIcon);
 
             nameCancel.parentNode.replaceChild(newButton, nameCancel);
             setupNameEditButton(initialNameText);
-            
         });
     } else {
-        console.log('nameCancel is null or undefined');
+        console.log('nameCancel or nameForm is null or undefined');
     }
 }
 
 function setupNameEditButton(initialNameText) {
-    const nameChange = document.querySelector('#editNameButton');
+    const nameChange = document.querySelector('#edit-name-button');
 
     if (nameChange) {
         nameChange.addEventListener('click', function(event) {
             const form = document.createElement('form');
             form.setAttribute('action', '../actions/action_change_costumer_name.php');
             form.setAttribute('method', 'post');
-            form.setAttribute('id', 'nameForm');
+            form.setAttribute('id', 'name-form');
 
             const nameInput = document.createElement('input');
             nameInput.setAttribute('type', 'text');
@@ -129,17 +126,17 @@ function setupNameEditButton(initialNameText) {
 
             const saveButton = document.createElement('button');
             saveButton.textContent = "Save";
-
             form.appendChild(saveButton);
 
-            nameSpan.parentNode.replaceChild(form, nameSpan);
+            const nameSpan = document.querySelector('#name-span');
+            if (nameSpan) {
+                nameSpan.parentNode.replaceChild(form, nameSpan);
+            }
 
             const cancelButton = document.createElement('button');
-            cancelButton.setAttribute('id', 'cancelNameButton');
-
+            cancelButton.setAttribute('id', 'cancel-name-button');
             const cancelIcon = document.createElement('i');
             cancelIcon.classList.add('fas', 'fa-times');
-
             cancelButton.appendChild(cancelIcon);
 
             nameChange.parentNode.replaceChild(cancelButton, nameChange);
@@ -149,15 +146,14 @@ function setupNameEditButton(initialNameText) {
 }
 
 function setupImageEditButton() {
-    const imageChange = document.querySelector('#editImageButton');
+    const imageChange = document.querySelector('#edit-image-button');
 
     if (imageChange) {
         imageChange.addEventListener('click', function(event) {
-
             const form = document.createElement('form');
             form.setAttribute('action', '../actions/action_change_profile_pic.php');
             form.setAttribute('method', 'post');
-            form.setAttribute('id', 'imageForm');
+            form.setAttribute('id', 'image-form');
             form.setAttribute('enctype', 'multipart/form-data');
 
             const inputField = document.createElement('input');
@@ -165,7 +161,6 @@ function setupImageEditButton() {
             inputField.setAttribute('name', 'image[]');
             inputField.setAttribute('required', '');
             inputField.setAttribute('accept', "image/png,image/jpeg");
-
             form.appendChild(inputField);
 
             const saveButton = document.createElement('button');
@@ -173,15 +168,12 @@ function setupImageEditButton() {
             form.appendChild(saveButton);
 
             const cancelButton = document.createElement('button');
-            cancelButton.setAttribute('id', 'cancelImageButton');
-
+            cancelButton.setAttribute('id', 'cancel-image-button');
             const cancelIcon = document.createElement('i');
             cancelIcon.classList.add('fas', 'fa-times');
-
             cancelButton.appendChild(cancelIcon);
 
             imageChange.parentNode.appendChild(form);
-
             imageChange.parentNode.replaceChild(cancelButton, imageChange);
             setupImageCancelButton();
         });
@@ -189,15 +181,15 @@ function setupImageEditButton() {
 }
 
 function setupImageCancelButton() {
-    const imageCancel = document.querySelector('#cancelImageButton');
-    const imageSpan = document.querySelector('#imageForm')
+    const imageCancel = document.querySelector('#cancel-image-button');
+    const imageForm = document.querySelector('#image-form');
 
-    if (imageCancel) {
+    if (imageCancel && imageForm) {
         imageCancel.addEventListener('click', function(event) {
-            imageSpan.remove();
+            imageForm.remove();
 
             const newButton = document.createElement('button');
-            newButton.setAttribute('id', 'editImageButton');
+            newButton.setAttribute('id', 'edit-image-button');
             const newIcon = document.createElement('i');
             newIcon.classList.add('fas', 'fa-pencil-alt');
             newButton.appendChild(newIcon);
