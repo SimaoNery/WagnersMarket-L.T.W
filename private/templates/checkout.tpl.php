@@ -79,7 +79,7 @@ declare(strict_types = 1);
                 <section class="checkout-items-container">
                     <ul class="draw-in-your-bag">
                         <?php foreach($items as $item) { ?>
-                            <li class="items-checkout-card">
+                            <li class="items-checkout-card" data-item-id="<?= $item->itemId ?>">
                                 <a href="../pages/item.php?id=<?=$item->itemId?>">
                                     <img src="<?= $item->imagePath?>" class="bagItemImage-checkout">
                                 </a>
@@ -99,6 +99,8 @@ declare(strict_types = 1);
 
         <section id="success-message" style="display: none;">
             <p>Checkout successful!</p>
+            <input class="csrf" id="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+            <input class="user-id" id="user-id" type="hidden" name="user-id" value="<?= $_SESSION['id'] ?>">
             <button id="close-button">Close</button>
         </section>
 

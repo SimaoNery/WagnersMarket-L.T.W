@@ -323,6 +323,21 @@ class Item
         $stmt = $db->prepare('DELETE FROM ITEM WHERE ItemId = ?');
         return $stmt->execute([$itemId]);
     }
+
+    static function getSellerId(PDO $db, int $itemId): int {
+        $stmt = $db->prepare('SELECT UserId FROM ITEM WHERE ItemId = ?');
+        $stmt->execute([$itemId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['UserId'] ?? 0; 
+    }
+    
+    static function getPrice(PDO $db, int $itemId): float {
+        $stmt = $db->prepare('SELECT Price FROM ITEM WHERE ItemId = ?');
+        $stmt->execute([$itemId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return isset($result['Price']) ? (float)$result['Price'] : 0.0;
+    }
+    
 }
 
 ?>

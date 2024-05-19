@@ -9,7 +9,7 @@ declare(strict_types=1);
         <a href="../pages/wishlist.php?id=<?=$userId?>" <?= $page === "wishlist" ? 'class="highlighted"' : '' ?>>Wishlist</a>
         <a href="../pages/messages.php?id=<?=$userId?>" <?= $page === "messages" ? 'class="highlighted"' : '' ?>>Messages</a>
         <a href="../pages/profile.php?id=<?=$userId?>" <?= $page === "personal_information" ? 'class="highlighted"' : '' ?>>Personal Information</a>
-        <a href="../pages/reviews.php?id=<?=$userId?>" <?= $page === "reviews" ? 'class="highlighted"' : '' ?>>Reviews</a>
+        <a href="../pages/shipping_form.php?id=<?=$userId?>" <?= $page === "shipping_form" ? 'class="highlighted"' : '' ?>>Shipping Forms</a>
     </nav>
 <?php } ?>
 
