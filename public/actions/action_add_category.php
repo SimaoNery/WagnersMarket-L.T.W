@@ -6,6 +6,7 @@ $session = new Session();
 
 if (!$session->isLoggedIn()) {
     header('Location: ../pages/denied.php');
+    handleBadAccess("You don't have permission to access this page!", $session);
     exit();
 }
 

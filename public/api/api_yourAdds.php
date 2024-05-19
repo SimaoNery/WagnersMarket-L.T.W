@@ -8,6 +8,13 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
+if (!$session->isLoggedIn()) {
+    header('Location: ../pages/denied.php');
+    handleBadAccess("You don't have permission to access this page!", $session);
+    exit();
+}
+
+
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
 require_once(__DIR__ . '/../../private/database/image.class.php');

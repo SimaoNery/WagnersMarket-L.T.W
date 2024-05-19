@@ -10,8 +10,11 @@ require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
 if (!$session->isLoggedIn()) {
-    exitWithError($session, "User not logged in");
+    header('Location: ../pages/denied.php');
+    handleBadAccess("You don't have permission to access this page!", $session);
+    exit();
 }
+
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/item.class.php');
@@ -22,7 +25,7 @@ try {
     $db = getDatabaseConnection();
     $userId = $session->getId();
     $otherUserId = isset($_POST['other-user-id']) ? intval($_POST['other-user-id']) : exitWithError($session, "Missing receiver of message");
-    $message = $_POST['message'] ?? exitWithError($session, "Missing message");
+    $message = htmlentities($_POST['message']) ?? exitWithError($session, "Missing message");
 
     $result = Message::addMessage($db, $userId, $otherUserId, $message);
 

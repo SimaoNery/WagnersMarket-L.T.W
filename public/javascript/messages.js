@@ -79,8 +79,6 @@ async function getMoreMessages() {
 
         for (const msg of msgs) {
             let date = new Date(msg.timestamp)
-
-
             let year = date.getFullYear()
             let month = date.getMonth() + 1;
             let day = date.getDate()
@@ -129,12 +127,10 @@ async function getMoreMessages() {
         messages.scrollTop = currentScrollTop + (messages.scrollHeight - currentScrollHeight);
     }
     else needMoreMessages = false;
-
 }
 
 
 if (contacts) {
-
     contacts.addEventListener("scroll", async function() {
         if (contacts.scrollHeight - contacts.scrollTop <= contacts.clientHeight+ 20) {
             limitContacts += 20

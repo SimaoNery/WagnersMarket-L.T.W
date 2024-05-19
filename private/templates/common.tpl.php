@@ -125,7 +125,7 @@ require_once (__DIR__ . '/../database/category.class.php');
                 <a href="../pages/wishlist.php?id=<?= $session->getId() ?>">Wishlist</a>
                 <a href="../pages/messages.php?id=<?= $session->getId() ?>">Messages</a>
                 <a href="../pages/profile.php?id=<?= $session->getId() ?>">Personal Information</a>
-                <a>Reviews</a>
+                <a href="../pages/shipping_form?id=<?= $session->getId()?>"></a>
             </nav>
             <form action="../actions/action_logout.php" method="post">
                 <button type="submit">Logout</button>
@@ -138,11 +138,6 @@ require_once (__DIR__ . '/../database/category.class.php');
     { ?>
 
         <footer>
-            <nav>
-                <a href="#">About</a>
-                <a href="#">Purpose</a>
-                <a href="#">Contact us</a>
-            </nav>
             <p>LTW Wagner's Market &copy; 2024</p>
         </footer>
         <script src="../javascript/pagination.js"></script>
