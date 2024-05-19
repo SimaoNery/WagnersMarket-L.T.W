@@ -360,15 +360,15 @@ class Item
     static function getSellerId(PDO $db, int $itemId): int {
         $stmt = $db->prepare('SELECT UserId FROM ITEM WHERE ItemId = ?');
         $stmt->execute([$itemId]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['UserId'] ?? 0; 
+        $result = $stmt->fetch();
+        return (int) $result['UserId']; 
     }
     
     static function getPrice(PDO $db, int $itemId): float {
         $stmt = $db->prepare('SELECT Price FROM ITEM WHERE ItemId = ?');
         $stmt->execute([$itemId]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return isset($result['Price']) ? (float)$result['Price'] : 0.0;
+        $result = $stmt->fetch();
+        return (float) $result['Price'];
     }
     
 }

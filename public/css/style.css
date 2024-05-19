@@ -1432,7 +1432,6 @@ input[type="range"]::-moz-range-thumb {
 }
 
 
-
 /* ------ Shopping Bag Page ------ */
 
 .shopping-bag-page {
@@ -1740,75 +1739,139 @@ footer ul li:last-child a{
 }
 
 
-#searchItems {
-    margin-top: 100px;
-    align-items: center;
+/* ------ Item Page ------ */
+.item-page {
+    margin: 5em 2em 2em 2em;
+    display: grid;
+    grid-template-areas: 
+        "images info"
+        "description description"
+        "seller seller";
+
+    grid-template-columns: 45% auto;
 }
 
-
-#images {
-    margin-top: 5%;
-    margin-left: 5%;
-
-    display: flex;
+.item-images {
+    grid-area: images;
+    display: grid;
+    grid-template-areas: "side main";
+    grid-template-columns: auto 1fr;
 }
 
-#mainImage {
-    width: 500px;
-    max-height: 600px;
-    height: auto;
-    margin-left: 35px;
-    cursor: pointer;
-}
-
-.sideImagesContainer {
-    overflow-y: auto;
-    width: 130px;
-    height: 580px;
-
-    margin-top: 15px;
+.side-images-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    margin-right: 0.5em;
+    overflow-y: scroll;
+    max-height: 30em;
 }
 
-.sideImage {
-    width: 130px;
-    height: 130px;
-    margin-bottom: 15px;
-
-    cursor: pointer;
+.side-images-container img {
+    width: 7em;
+    height: 7em;
+    grid-area: side;
+    margin-bottom: 0.5em;
 }
 
-#information {
-    margin-left: 5%;
+.main-image img {
+    grid-area: main;
 
-    h3 {
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 700    ;
-        font-size: 30px;
-        margin-left: 35px;
-        margin-bottom: 10px;
-    }
-
-    p {
-        font-family: 'Roboto', sans-serif;
-        font-weight: 600;
-        font-size: 20px;
-
-        margin-left: 35px;
-    }
-
-    #brandName {
-        font-weight: 450;
-        font-size: 20px;
-    }
-
-    #conditionValue {
-        font-weight: 450;
-        font-size: 20px;
-    }
 }
+
+.item-info {
+    grid-area: info;
+    margin-left: 2em;
+    justify-self: start;
+}
+
+.price-and-button {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+}
+
+.item-info h1 {
+    font-size: 5em;
+    margin-bottom: 0.5em;
+}
+
+.item-info h3 {
+    font-size: 1.5em;
+}
+
+.item-info .wishlist-button,
+.item-info .bag-button {
+    margin-right: 1em; 
+}
+
+.product-details {
+    margin-top: 1em; 
+}
+
+span#brand-name,
+span#condition-value {
+    font-family: 'Open Sans Light', sans-serif;
+    font-weight: lighter;
+}
+
+.item-description {
+    grid-area: description;
+}
+
+.item-seller {
+    grid-area: seller;
+    display: grid;
+}
+
+.description-container {
+    margin-left: 1em;
+    margin-right: 1em;
+    min-height: 5em;
+    padding: 1em;
+    background: #ffdb93;
+    border-radius: 20px;
+    align-content: center;
+}
+
+.seller-info {
+    display: grid;
+    grid-template-areas: "img button"
+                         "label button";
+
+                        grid-template-rows: 1fr auto;
+                        grid-template-columns: .4fr 1fr;
+    margin: 1em;
+    padding: 1em;
+    background: #ffdb93;
+    border-radius: 20px;
+}
+
+.seller-info img {
+    grid-area: img;
+    border-radius: 50%;
+    justify-self: center;
+    width: 12em;
+    height: 12em;
+}
+
+.seller-info h2 {
+    grid-area: label;
+    font-size: 2em;
+    text-align: center;
+}
+
+.seller-info a {
+    grid-area: button;
+    background: white;
+    font-size: 1.5em;
+    padding: 1em;
+    border-radius: 2em;
+    align-self: center;
+    max-width: 10em;
+    text-align: center;
+    justify-self: end;
+}
+
+/* ------ Wishlist Buttons ------ */
 
 .wishlist-button {
     background: none;
@@ -1828,138 +1891,6 @@ footer ul li:last-child a{
     color: rgba(255, 0, 0, 0.6);
 }
 
-#mainInfo {
-    h1 {
-        font-family: 'Open Sans', sans-serif;
-        font-weight: 700;
-        font-size: 100px;
-        margin-bottom: 25px;
-    }
-
-    ul {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        margin-left: 31px;
-        margin-bottom: 60px;
-
-        font-size: 25px;
-        color: #333333;
-    }
-
-    ul li:first-child {
-        margin-right: 275px;
-    }
-
-    .bag-button {
-        padding: 10px 20px;
-        background-color: rgba(253, 237, 132, 1);
-        color: #777777;
-        font-weight: 700;
-        font-size: 17px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-    }
-
-    .bag-button .fa-bag-shopping {
-        margin-right: 5px;
-        font-size: 20px;
-    }
-
-    .bag-button:hover {
-        color: black;
-    }
-
-    margin-bottom: 45px;
-}
-
-#description_seller {
-    h2 {
-        margin-top: 75px;
-        margin-bottom: 5px;
-        text-align: center;
-
-        font-family: 'Open Sans', sans-serif;
-        font-size: 27px;
-    }
-
-    hr{
-        margin-bottom: 15px;
-    }
-
-    .box_yellow {
-        background-color: rgba(253, 237, 132, 0.25);
-        padding: 20px;
-        border-radius: 10px;
-        max-width: 95%;
-        margin: 25px auto;
-
-        font-family: 'Roboto', sans-serif;
-        font-size: 21px;
-    }
-
-    .description {
-        margin-left: 80px;
-    }
-
-    #sellerInfo {
-        display: flex;
-        align-items: center;
-
-        margin-left: 75px;
-    }
-
-    .profilePic {
-        width: 100px;
-        height: 100px;
-        border: 2px solid rgba(253, 237, 132, 1);
-        border-radius: 50%;
-        overflow: hidden;
-        margin-right: 15px;
-    }
-
-    .profilePic img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .username {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 35px;
-        font-weight: 500;
-    }
-
-    .name {
-        font-family: 'Roboto', sans-serif;
-        font-size: 25px;
-        font-weight: 200;
-    }
-
-    #itemsPerPage {
-        margin-right: 10px;
-        padding: 8px;
-        border: 1px solid #ccc;
-        cursor: pointer;
-    }
-    .sendMessageButton {
-        padding: 30px 60px;
-        background-color: rgba(253, 237, 132, 1);
-        color: #777777;
-        font-weight: 700;
-        font-size: 21px;
-        border: none;
-        border-radius: 20px;
-        cursor: pointer;
-        margin-left: auto;
-        margin-right: 75px;
-    }
-
-    .sendMessageButton:hover {
-        color: black;
-    }
-}
 
 #empty-messages,
 #empty-wishlist,

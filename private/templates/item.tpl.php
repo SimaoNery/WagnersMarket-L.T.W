@@ -99,54 +99,57 @@ require_once(__DIR__ . '/../database/cart.class.php');
             <?php } ?>
 
 
-
+            <section class="price-and-button">
             <h3><?=number_format($item->price, 2)?>€</h3>
 
-            <?php if(!$session->isLoggedIn()) { ?>
-                <button id="not-logged-in" type="button" class="wishlist-button" disabled>
-                    <i class="fa-regular fa-heart"></i>
-                </button>
-            <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
-                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
-                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                    <i class="fa-solid fa-heart"></i>
-                </button>
-            <?php } else { ?>
-                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
-                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                    <i class="fa-regular fa-heart"></i>
-                </button>
-            <?php } ?>
+<?php if(!$session->isLoggedIn()) { ?>
+    <button id="not-logged-in" type="button" class="wishlist-button" disabled>
+        <i class="fa-regular fa-heart"></i>
+    </button>
+<?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
+    <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+        <i class="fa-solid fa-heart"></i>
+    </button>
+<?php } else { ?>
+    <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+        <i class="fa-regular fa-heart"></i>
+    </button>
+<?php } ?>
 
-            <?php if(!$session->isLoggedIn()) { ?>
-                <button id="not-logged-in" type="button" class="bag-button">
-                    <i class="fa-solid fa-bag-shopping"></i> Add To Bag
-                </button>
+<?php if(!$session->isLoggedIn()) { ?>
+    <button id="not-logged-in" type="button" class="bag-button">
+        <i class="fa-solid fa-bag-shopping"></i> Add To Bag
+    </button>
 
-            <?php } elseif (Cart::isInShoppingBag($db, $session->getId(), $item->itemId)) { ?>
-                <button id="<?= $item->itemId ?>" type="button" class="bag-button remove-from-bag">
-                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                    <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Remove From Cart
-                </button>
-            <?php } else { ?>
-                <button id="<?= $item->itemId ?>" type="button" class="bag-button add-to-bag">
-                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                    <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Add To Cart
-                </button>
-            <?php } ?>
+<?php } elseif (Cart::isInShoppingBag($db, $session->getId(), $item->itemId)) { ?>
+    <button id="<?= $item->itemId ?>" type="button" class="bag-button remove-from-bag">
+        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+        <i id="bag-icon" class="fa-solid fa-bag-shopping"></i> Remove From Cart
+    </button>
+<?php } else { ?>
+    <button id="<?= $item->itemId ?>" type="button" class="bag-button add-to-bag">
+        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+        <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Add To Cart
+    </button>
+<?php } ?>
 
-            <?php if ($isAdmin) { ?>
-                <button id="<?= $item->itemId ?>" type="button" class="delete-item">
-                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Delete Post
-                </button>
-            <?php } ?>
+<?php if ($isAdmin) { ?>
+    <button id="<?= $item->itemId ?>" type="button" class="delete-item">
+        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Delete Post
+    </button>
+<?php } ?>
 
-            <?php if ($editItem && !$isAdmin) { ?>
-                <button id="<?= $item->itemId ?>" type="button" class="delete-item">
-                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Delete Post
-                </button>
-            <?php } ?>
+<?php if ($editItem && !$isAdmin) { ?>
+    <button id="<?= $item->itemId ?>" type="button" class="delete-item">
+        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Delete Post
+    </button>
+<?php } ?>
 
+            </section>
+
+            
             <section class="product-details">
                 <h3>Product Details</h3>
                 <h4>Brand: <span id="brand-name"><?=$item->brand?></span></h4>
@@ -163,8 +166,10 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
         <section class="item-description">
             <?php drawTitle("Product Description");?>
-            <p id="description-name" class="description"><?=$item->description?></p>
-
+            <section class="description-container">
+                <p id="description-name" class="description"><?=$item->description?></p>
+            </section>
+            
             <?php if ($editItem) { ?>
                 <button type="button" class="change-description">
                     <input class="title" type="hidden" value="<?=$item->description?>">
