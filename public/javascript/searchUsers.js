@@ -53,130 +53,129 @@ if (userBoxes) {
 }
 
 async function drawUsers() {
-    const request = new XMLHttpRequest();
-    request.open('GET', `../api/api_search_users.php?search=${input}&limit=${limitSearchUsers}&offset=${offsetSearchUsers}`)
-    request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-            try {
-                const response = JSON.parse(request.responseText);
-                if (response) {
-                    const users = document.getElementById("users")
-                    users.innerHTML = ""
 
-                    if (users) {
-                        response.forEach(user => {
-                            const profileLinkOnImage = document.createElement('a')
-                            const profileLink = document.createElement('a')
-                            const userSection = document.createElement('section')
-                            const userInfo = document.createElement('user-info')
-                            const userManagement = document.createElement('user-management')
-                            const profilePic = document.createElement('img')
-                            const userId = document.createElement('p')
-                            const name = document.createElement('p')
-                            const username = document.createElement('p')
-                            const email = document.createElement('p')
-                            const manageAdminStatus = document.createElement('button')
-                            const banUser = document.createElement('button')
-                            const deleteAccount = document.createElement('button')
+    const params = encodeForAjax({search: input, limit: limitSearchUsers, offset: offsetSearchUsers})
 
-                            profileLinkOnImage.href = `../../public/pages/profile.php?id=${user.userId}`
-                            profileLink.href = `../../public/pages/profile.php?id=${user.userId}`
-                            profileLink.innerHTML = 'Profile'
-                            profileLink.classList.add('profile-link')
-                            profileLink.classList.add('button')
-                            profilePic.src= user.profilePic
-                            userId.innerHTML = `User ID: ${user.userId}`
-                            userId.classList.add("user-id")
-                            name.innerHTML = `Name: ${user.name}`
-                            name.classList.add("name")
-                            username.innerHTML = `Username: ${user.username}`
-                            username.classList.add("username")
-                            email.innerHTML = `Email: ${user.email}`
-                            email.classList.add("email")
+    await fetch('../api/api_search_users.php?' + params, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
 
-                            manageAdminStatus.innerHTML = user.admin ? 'Revoke Admin Privileges' : 'Grant Admin Privileges'
-                            manageAdminStatus.classList.add('manage-admin-status')
-                            manageAdminStatus.setAttribute('admin-status', user.admin ? 'RevokeAdmin' : 'GrantAdmin')
-                            manageAdminStatus.setAttribute('user-id', user.userId)
-                            banUser.innerHTML = 'Ban User'
-                            banUser.classList.add('ban-user')
-                            banUser.classList.add('button')
-                            deleteAccount.innerHTML = 'Delete Account'
-                            deleteAccount.classList.add('delete-account')
-                            deleteAccount.classList.add('button')
-                            deleteAccount.setAttribute('user-id', user.userId)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.error) {
+                const users = document.getElementById("users")
+                users.innerHTML = ""
+                if (users) {
+                    data.forEach(user => {
+                        const profileLinkOnImage = document.createElement('a')
+                        const profileLink = document.createElement('a')
+                        const userSection = document.createElement('section')
+                        const userInfo = document.createElement('user-info')
+                        const userManagement = document.createElement('user-management')
+                        const profilePic = document.createElement('img')
+                        const userId = document.createElement('p')
+                        const name = document.createElement('p')
+                        const username = document.createElement('p')
+                        const email = document.createElement('p')
+                        const manageAdminStatus = document.createElement('button')
+                        const banUser = document.createElement('button')
+                        const deleteAccount = document.createElement('button')
 
-                            userInfo.classList.add('user-info')
-                            userManagement.classList.add('user-management')
+                        profileLinkOnImage.href = `../../public/pages/profile.php?id=${user.userId}`
+                        profileLink.href = `../../public/pages/profile.php?id=${user.userId}`
+                        profileLink.innerHTML = 'Profile'
+                        profileLink.classList.add('profile-link')
+                        profileLink.classList.add('button')
+                        profilePic.src= user.profilePic
+                        userId.innerHTML = `User ID: ${user.userId}`
+                        userId.classList.add("user-id")
+                        name.innerHTML = `Name: ${user.name}`
+                        name.classList.add("name")
+                        username.innerHTML = `Username: ${user.username}`
+                        username.classList.add("username")
+                        email.innerHTML = `Email: ${user.email}`
+                        email.classList.add("email")
 
-                            userInfo.append(userId)
-                            userInfo.append(name)
-                            userInfo.append(username)
-                            userInfo.append(email)
+                        manageAdminStatus.innerHTML = user.admin ? 'Revoke Admin Privileges' : 'Grant Admin Privileges'
+                        manageAdminStatus.classList.add('manage-admin-status')
+                        manageAdminStatus.setAttribute('admin-status', user.admin ? 'RevokeAdmin' : 'GrantAdmin')
+                        manageAdminStatus.setAttribute('user-id', user.userId)
+                        banUser.innerHTML = 'Ban User'
+                        banUser.classList.add('ban-user')
+                        banUser.classList.add('button')
+                        deleteAccount.innerHTML = 'Delete Account'
+                        deleteAccount.classList.add('delete-account')
+                        deleteAccount.classList.add('button')
+                        deleteAccount.setAttribute('user-id', user.userId)
 
-                            userManagement.append(profileLink)
-                            userManagement.append(manageAdminStatus)
-                            userManagement.append(banUser)
-                            userManagement.append(deleteAccount)
+                        userInfo.classList.add('user-info')
+                        userManagement.classList.add('user-management')
 
-                            profileLinkOnImage.append(profilePic)
-                            profileLinkOnImage.classList.add('profile-link-on-image')
-                            userSection.classList.add('user-box')
-                            userSection.append(profileLinkOnImage)
-                            userSection.append(userInfo)
-                            userSection.append(userManagement)
+                        userInfo.append(userId)
+                        userInfo.append(name)
+                        userInfo.append(username)
+                        userInfo.append(email)
 
-                            users.append(userSection)
+                        userManagement.append(profileLink)
+                        userManagement.append(manageAdminStatus)
+                        userManagement.append(banUser)
+                        userManagement.append(deleteAccount)
 
-                            const csrf = document.querySelector('.csrf').value
-                            const adminStatusButtons = document.querySelectorAll(".manage-admin-status")
-                            if (adminStatusButtons) {
-                                adminStatusButtons.forEach(adminStatusButton => {
-                                    adminStatusButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('user-id')
-                                        const isAdmin = this.getAttribute('admin-status') === 'RevokeAdmin'
-                                        await changeAdminStatus(userId, isAdmin, adminStatusButton, csrf)
-                                    })
+                        profileLinkOnImage.append(profilePic)
+                        profileLinkOnImage.classList.add('profile-link-on-image')
+                        userSection.classList.add('user-box')
+                        userSection.append(profileLinkOnImage)
+                        userSection.append(userInfo)
+                        userSection.append(userManagement)
+
+                        users.append(userSection)
+
+                        const csrf = document.querySelector('.csrf').value
+                        const adminStatusButtons = document.querySelectorAll(".manage-admin-status")
+                        if (adminStatusButtons) {
+                            adminStatusButtons.forEach(adminStatusButton => {
+                                adminStatusButton.addEventListener('click', async function() {
+                                    const userId = this.getAttribute('user-id')
+                                    const isAdmin = this.getAttribute('admin-status') === 'RevokeAdmin'
+                                    await changeAdminStatus(userId, isAdmin, adminStatusButton, csrf)
                                 })
-                            }
+                            })
+                        }
 
-                            const deleteAccountButtons = document.querySelectorAll(".delete-account")
-                            if (deleteAccountButtons) {
-                                deleteAccountButtons.forEach(deleteAccountButton => {
-                                    deleteAccountButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('user-id')
-                                        await deleteUserAccount(userId, userSection, csrf)
-                                    })
+                        const deleteAccountButtons = document.querySelectorAll(".delete-account")
+                        if (deleteAccountButtons) {
+                            deleteAccountButtons.forEach(deleteAccountButton => {
+                                deleteAccountButton.addEventListener('click', async function() {
+                                    const userId = this.getAttribute('user-id')
+                                    await deleteUserAccount(userId, userSection, csrf)
                                 })
-                            }
+                            })
+                        }
 
-                            const banUserButtons = document.querySelectorAll(".ban-user")
-                            if (banUserButtons) {
-                                banUserButtons.forEach(banUserButton => {
-                                    banUserButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('user-id')
-                                        // await banUserAccount(userId, userSection, csrf)
-                                    })
+                        const banUserButtons = document.querySelectorAll(".ban-user")
+                        if (banUserButtons) {
+                            banUserButtons.forEach(banUserButton => {
+                                banUserButton.addEventListener('click', async function() {
+                                    const userId = this.getAttribute('user-id')
+                                    // await banUserAccount(userId, userSection, csrf)
                                 })
-                            }
+                            })
+                        }
 
-                        })
-                    }
+                    })
                 }
-
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
             }
-        } else {
-            console.error('HTTP Error:', request.status);
-        }
-    }
-
-    request.onerror = function() {
-        console.error('Request failed');
-    }
-
-    request.send();
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
 }
 
 
@@ -354,6 +353,7 @@ async function addCategory(categoryName, file, csrf) {
                 const inputSubmit = document.createElement('input')
                 inputSubmit.type = 'submit'
                 inputSubmit.value = 'Remove Category'
+                inputSubmit.classList.add('button')
 
                 formRemoveCategory.append(inputCsrf)
                 formRemoveCategory.append(inputCategoryName)
@@ -401,8 +401,6 @@ async function addCategory(categoryName, file, csrf) {
                 formChangeImage.append(inputSubmitChangeImage)
 
                 formChangeImage.addEventListener('submit', async function(event) {
-                    console.log('asjuduasd')
-                    console.log(categoryName, inputUploadFile.files[0], category_image, csrf)
                     event.preventDefault()
                     await changeImageCategory(categoryName, inputUploadFile.files[0], category_image, csrf)
                 })
@@ -413,7 +411,8 @@ async function addCategory(categoryName, file, csrf) {
                 category_item.append(formChangeImage)
 
                 const ul = document.querySelector('.category-list')
-                if (ul) ul.append(category_item)
+                const referenceNode = ul.children[ul.children.length - 1]
+                ul.insertBefore(category_item, referenceNode)
 
                 showMessage(data.success, true)
             }

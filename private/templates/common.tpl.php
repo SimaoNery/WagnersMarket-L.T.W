@@ -140,6 +140,7 @@ require_once (__DIR__ . '/../database/category.class.php');
         <script src="../javascript/searchUsers.js"></script>
         <script src="../javascript/shoppingBagButton.js"></script>
         <script src="../javascript/categoryPopUp.js"></script>
+        <script src="../javascript/profileChanges.js"></script>
         <script src="../javascript/loginPopUp.js"></script>
     </body>
 
