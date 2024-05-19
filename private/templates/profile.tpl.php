@@ -15,22 +15,22 @@ declare(strict_types=1);
 
 <?php function drawPersonalInformationBody(PDO $db, User $user)
 { ?>
-    <section class="personalInformationBody">
+    <section class="personal-information-body">
         <section class="left-side">
             <img src="<?= $user->profilePic ?>">
-            <button id="editImageButton"><i class="fas fa-pencil-alt"></i></button>
+            <button id="edit-image-button"><i class="fas fa-pencil-alt"></i></button>
         </section>
 
         <section class="right-side">
-            <section class="profileInfo" id="nameInfo">
+            <section class="profile-info" id="name-info">
                 <label>Name</label>
-                <span id="nameSpan"><?= $user->name ?></span>
-                <button id="editNameButton"><i class="fas fa-pencil-alt"></i></button>
+                <span id="name-span"><?= $user->name ?></span>
+                <button id="edit-name-button"><i class="fas fa-pencil-alt"></i></button>
             </section>
-            <section class="profileInfo" id="emailInfo">
+            <section class="profile-info" id="email-info">
                 <label>Email</label>
-                <span id="emailSpan"><?= $user->email ?></span>
-                <button id="editEmailButton"><i class="fas fa-pencil-alt"></i></button>
+                <span id="email-span"><?= $user->email ?></span>
+                <button id="edit-email-button"><i class="fas fa-pencil-alt"></i></button>
             </section>
 
             <form action="../actions/action_change_password.php" method="post">

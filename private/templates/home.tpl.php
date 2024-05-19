@@ -17,7 +17,7 @@ require_once __DIR__ . '/common.tpl.php';
             <a href="search.php" class="button">Explore Now &#8594;</a>
         </section>
         <section class="home-body-right">
-                <?php drawSearchBar("search-bar", "What are you looking for?") ?>
+                <?php drawSearchBar("search-item", "What are you looking for?") ?>
                 <ul class="suggestions" id="suggestions"></ul>
         </section>
     </section>

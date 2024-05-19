@@ -21,7 +21,7 @@ require_once(__DIR__ . '/../../private/database/message.class.php');
 try {
     $db = getDatabaseConnection();
     $userId = $session->getId();
-    $otherUserId = isset($_POST['otherUserId']) ? intval($_POST['otherUserId']) : exitWithError($session, "Missing receiver of message");
+    $otherUserId = isset($_POST['other-user-id']) ? intval($_POST['other-user-id']) : exitWithError($session, "Missing receiver of message");
     $message = $_POST['message'] ?? exitWithError($session, "Missing message");
 
     $result = Message::addMessage($db, $userId, $otherUserId, $message);

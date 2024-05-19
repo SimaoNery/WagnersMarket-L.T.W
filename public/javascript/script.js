@@ -5,7 +5,7 @@ const minInput = document.querySelector('#min-input')
 const maxInput = document.querySelector('#max-input')
 const minRange = document.querySelector('#min-range')
 const maxRange = document.querySelector('#max-range')
-const orderSelected = document.querySelector('#orderSelected')
+const orderSelected = document.querySelector('#order-selected')
 
 const range = document.querySelector("#slider #progress");
 
@@ -145,8 +145,8 @@ if (filters) {
 async function getSearchResults() {
 
     let url = '../api/api_items.php?'
-    let cat = selectedCategories.join(';');
-    let cond = selectedConditions.join(';');
+    let cat = selectedCategories.join(';')
+    let cond = selectedConditions.join(';')
     let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: numberOfItems};
     url += new URLSearchParams(params).toString()
 
@@ -154,7 +154,7 @@ async function getSearchResults() {
 
     let items = await response.json()
 
-    const itemsSection = document.querySelector('#draw-items');
+    const itemsSection = document.querySelector('#draw-items')
     itemsSection.innerHTML = ''
 
     if (!items.length) {
@@ -165,16 +165,14 @@ async function getSearchResults() {
     }
 
     for (const item of items) {
-        const itemElement = document.createElement('li');
+        const itemElement = document.createElement('li')
         itemElement.classList.add('item-card');
 
         const linkElement = document.createElement('a');
-        linkElement.href = `../pages/item.php?id=${item.itemId}`;
+        linkElement.href = `../pages/item.php?id=${item.itemId}`
 
         const imageElement = document.createElement('img');
         imageElement.src = '/' + item.imagePath;
-        imageElement.style.width = '100px';
-        imageElement.style.height = '100px';
 
         const titleElement = document.createElement('h4');
         titleElement.textContent = item.title;
@@ -193,11 +191,7 @@ async function getSearchResults() {
 
         const iconWishlistButton = document.createElement('i')
 
-        if (notLoggedIn) {
-            wishlistButton.id = "not-logged-in"
-            wishlistButton.setAttribute("disabled", true)
-            iconWishlistButton.classList.add("fa-regular", "fa-heart")
-        } else if (await inWishlist(item.itemId)) {
+        if (await inWishlist(item.itemId)) {
             wishlistButton.id = item.itemId.toString()
             iconWishlistButton.classList.add("fa-solid", "fa-heart")
         } else {

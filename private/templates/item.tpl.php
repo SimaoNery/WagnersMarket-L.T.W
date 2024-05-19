@@ -251,7 +251,7 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
 <?php function drawItemSorter() { ?>
     <label id="order"> Order By:
-        <select id="orderSelected">
+        <select id="order-selected">
             <option value="popular" selected>Most Popular</option>
             <option value="asc">Price: Ascending</option>
             <option value="desc">Price: Descending</option>

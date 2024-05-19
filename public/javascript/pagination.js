@@ -1,6 +1,6 @@
 const paginationContainer = document.querySelector('.pagination');
 const itemsPerPageContainer = document.querySelector('#items-per-page');
-const notLoggedIn = document.querySelector('.not-logged-in')
+//const notLoggedIn = document.querySelector('.not-logged-in')
 
 let limit = 8;
 let offset = 0;
@@ -100,11 +100,7 @@ function fetchItems(limit, offset, searchType) {
 
                     const iconWishlistButton = document.createElement('i')
 
-                    if (notLoggedIn) {
-                        wishlistButton.id = "not-logged-in"
-                        wishlistButton.setAttribute("disabled", true)
-                        iconWishlistButton.classList.add("fa-regular", "fa-heart")
-                    } else if (await inWishlist(item.itemId)) {
+                    if (await inWishlist(item.itemId)) {
                         wishlistButton.id = item.itemId.toString()
                         iconWishlistButton.classList.add("fa-solid", "fa-heart")
                     } else {

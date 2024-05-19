@@ -15,27 +15,36 @@
                     <form class="remove-category" action="../actions/action_remove_category.php" method="post">
                         <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                         <input class="category-name" type="hidden" name="category" value="<?=$category->categoryName?>">
-                        <input type="submit" value="Remove Category">
+                        <input class="button" type="submit" value="Remove Category">
                     </form>
                     <button type="button">Change the image</button>
                     <form class="change-image-category" action="../actions/action_change_image_category.php" method="post" enctype="multipart/form-data">
                         <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                         <input class="change-image-name" type="hidden" name="category" value="<?= $category->categoryName?>">
                         <label>Upload an image<input type="file" name="image" accept="image/png,image/jpeg" required></label>
-                        <input type="submit" value="Change the category's image">
+                        <input class="button" type="submit" value="Change the category's image">
                     </form>
                 <?php } ?>
             </li>
+        <?php } if ($admin) { ?>
+        <li class="category-item">
+            <a class="add-category-button">
+                    <img src="<?=$category->categoryImage?>" alt="<?=$category->categoryName?>">
+                    <span>Add category</span>
+            </a>
+        </li>
         <?php } ?>
     </ul>
     <?php if($admin) { ?>
-            <button type="button">Add a new category</button>
-            <form class="add-new-category" action="../actions/action_add_category.php" method="post" enctype="multipart/form-data">
-                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                <label>New category's name<input id="category-name" name="category" type="text" placeholder="e.g. Tops" required></label>
-                <label>Upload an image<input type="file" name="image" accept="image/png,image/jpeg" required></label>
-                <input type="submit" value="Publish new category">
-            </form>
-        <?php }
+        <section id="add-category-popup">
+        <form class="add-new-category" action="../actions/action_add_category.php" method="post" enctype="multipart/form-data">
+            <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+            <label>New category's name<input id="category-name" name="category" type="text" placeholder="e.g. Tops" required></label>
+            <label>Upload an image<input type="file" name="image" accept="image/png,image/jpeg" required></label>
+            <button id="close-add-category-popup">Close</button>
+            <input class="button" type="submit" value="Publish new category">
+        </form>
+        </section>
+    <?php }
 } ?>
 

@@ -1,13 +1,13 @@
 let suggestionsContainer = document.querySelector("#suggestions");
 let searchBarContainer = document.querySelector("#search-bar");
-let inputSearch = document.querySelector("#searchitem");
+let inputSearch = document.querySelector("#search-item");
 let inputText = "";
 
 
 if (inputSearch) {
     inputSearch.addEventListener("input", function (event) {
         inputText = event.target.value.trim();
-        if (inputText.length == 0) {
+        if (inputText.length === 0) {
             suggestionsContainer.innerHTML = "";
             return;
         }
@@ -36,7 +36,7 @@ function renderSuggestions(suggestions) {
                 } else {
                     response.forEach(suggestion => {
                         const listItem = document.createElement("li");
-                        listItem.classList.add("suggestionItem");
+                        listItem.classList.add("suggestion-item");
 
                         const suggestionLink = document.createElement("a");
                         suggestionLink.href = `../pages/item.php?id=${suggestion.itemId}`;

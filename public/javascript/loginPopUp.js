@@ -9,15 +9,6 @@ if (notLoggedIn) {
 }
 
 
-
-
-function navigateIfLoggedIn(isLoggedIn) {
-    if (!isLoggedIn) {
-        event.preventDefault();
-        showLoginPopUp()
-    }
-}
-
 function showLoginPopUp() {
     var popup = document.getElementById("popup-wrapper");
         if (popup) {

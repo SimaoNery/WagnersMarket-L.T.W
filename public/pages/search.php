@@ -24,10 +24,17 @@ $numItems = Item::getNumItems($db);
 $maxPrice = Item::getMaxPrice($db);
 
 drawHeader($db, $session);
-drawSearchBar("search-items", "What are you looking for?");
 drawTitle("Featured Items");
-drawItems($db, $items, $session);
-drawItemFilter($db, $maxPrice, $categoryName);
-drawItemSorter();
+
+?>
+
+<section class="search-items-body"> <?php
+    drawSearchBar("search-items", "What are you looking for?");
+    drawItems($db, $items, $session);
+    drawItemFilter($db, $maxPrice, $categoryName);
+    drawItemSorter(); ?>
+</section>
+
+<?php
 drawFooter();
 ?>

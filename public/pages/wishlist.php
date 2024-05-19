@@ -27,7 +27,6 @@ $numItems = Item::getNumItemsWishlist($db, $userId);
 
 drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
-drawTitle("Wishlist");
 
 if($numItems === 0) {
     drawEmpty("emptyYourAdds", "You are not selling any items!");

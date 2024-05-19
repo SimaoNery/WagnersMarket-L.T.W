@@ -55,7 +55,7 @@ declare(strict_types = 1);
 
                 </fieldset>
 
-                <input type="submit" value="Publish add">
+                <input class="button" type="submit" value="Publish add">
             </form>
         </section>
 
