@@ -44,12 +44,14 @@ foreach($items as $item) {
 
 drawHeader($db, $session);
 drawTitle("Shopping Cart");
-drawBag($db, $userId, $items);
+
 if (count($items) > 0) {
+    drawBag($db, $userId, $items);
     drawSummary($subTotal, $shippingCost);
 }
-
-
+else {
+    drawEmpty("empty-shopping-bag", "Your shopping bag is empty!");
+}
 
 drawFooter();
 ?>

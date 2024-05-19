@@ -77,14 +77,17 @@ async function handleInsideShoppingBag(itemId) {
         li.remove()
 
         if (ul.children.length === 0) {
+            const shoppingBag = document.getElementById('shopping-bag-page');
+            if (shoppingBag) {
+                shoppingBag.innerHTML = ""
+            }
+            
             const p = document.createElement('p')
             p.innerHTML = "Your shopping bag is empty!"
             p.id = "empty-shopping-bag"
 
-            ul.insertAdjacentElement('afterend', p)
+            shoppingBag.append(p)
             ul.remove()
-            const summary = document.getElementById('summary')
-            if (summary) summary.remove()
         }
     }
 }
