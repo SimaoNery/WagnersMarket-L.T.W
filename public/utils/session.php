@@ -6,8 +6,8 @@ class Session
     public function __construct()
     {
         session_start();
-
-        $this->messages = isset($_SESSION['messages']) ? $_SESSION['messages'] : array();
+        $this->setToken();
+        $this->messages = $_SESSION['messages'] ?? array();
         unset($_SESSION['messages']);
     }
 
@@ -23,27 +23,31 @@ class Session
 
     public function getId(): ?int
     {
-        return isset($_SESSION['id']) ? $_SESSION['id'] : null;
+        return $_SESSION['id'] ?? null;
     }
 
     public function getName(): ?string
     {
-        return isset($_SESSION['name']) ? $_SESSION['name'] : null;
+        return $_SESSION['name'] ?? null;
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $_SESSION['id'] = $id;
     }
 
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $_SESSION['name'] = $name;
     }
 
-    public function addMessage(string $type, string $text)
+    public function addMessage(string $type, string $text): void
     {
         $_SESSION['messages'][] = array('type' => $type, 'text' => $text);
+    }
+    public function clearMessages(): void
+    {
+        $_SESSION['messages'][] = array();
     }
 
     public function getMessages()
@@ -51,11 +55,16 @@ class Session
         return $this->messages;
     }
 
-    public function setToken()
+    public function setToken(): void
     {
         if (!isset($_SESSION['csrf'])) {
-            $_SESSION['csrf'] = openssl_random_pseudo_bytes(32);
+            $_SESSION['csrf'] = bin2hex(openssl_random_pseudo_bytes(32));
         }
+    }
+
+    public function getToken()
+    {
+        return $_SESSION['csrf'];
     }
 }
 

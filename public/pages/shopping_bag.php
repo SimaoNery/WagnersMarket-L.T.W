@@ -22,7 +22,6 @@ $db = getDatabaseConnection();
 
 $userId = $session->getId();
 $items = Item::getShoppingBag($db, $userId);
-$numItems = Item::getNumItemsShoppingBag($db, $userId);
 
 $subTotal = 0;
 $shippingCost = 0;
@@ -44,13 +43,13 @@ foreach($items as $item) {
 }
 
 drawHeader($db, $session);
-if($numItems === 0) :?>
-    <p id="emptyShoppingBag"> Your shopping bag is empty!</p>
+drawTitle("Shopping Cart");
+drawBag($db, $userId, $items);
+if (count($items) > 0) {
+    drawSummary($subTotal, $shippingCost);
+}
 
-<?php else :
-    drawBag($db, $userId, $items);
-    drawSummary($subTotal, $shippingCost); ?>
-<?php endif;
+
 
 drawFooter();
 ?>

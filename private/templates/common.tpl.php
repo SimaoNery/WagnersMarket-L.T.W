@@ -62,9 +62,13 @@ require_once (__DIR__ . '/../database/category.class.php');
             </nav>
             <?php drawLoginPopUp() ?>
         </header>
-        <section id="message-occurred">
-            <p id="message-text"></p>
-        </section>
+        <?php /*$messages = $session->getMessages();
+        if (count($messages) !== 0) { ?>
+            <section id="message-occurred">
+                <p id="message-text"><?= $messages[0]['text'] ?></p>
+            </section>
+        <?php $session->clearMessages();
+        } */?>
 
     <?php } ?>
 

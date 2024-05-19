@@ -8,16 +8,21 @@ declare(strict_types=1);
                 <span><?=$size->size ?></span>
 
                 <form class="remove-size" action="../actions/action_remove_size.php" method="post">
-                    <input type="hidden" name="size" value="<?= $size->size ?>">
-                    <input type="submit" value="Remove Size">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <input class="size-name" type="hidden" name="size" value="<?= $size->size ?>">
+                    <input class="button" type="submit" value="Remove size">
                 </form>
             </li>
         <?php } ?>
+        <li class="size-item">
+            <form id="add-new-size" action="../actions/action_add_size.php" method="post">
+                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                <label id="new-size">New size's name</label>
+                <input id="size-name" name="size" type="text" placeholder="e.g. Small" required>
+                <input class="button" type="submit" value="Publish new size">
+            </form>
+        </li>
     </ul>
-    <button type="button" value="Add new size">
-    <form id="add-new-size" action="../actions/action_add_size.php" method="post">
-        <label>New size's name<input id="size-name" name="size" type="text" placeholder="e.g. Small" required></label>
-        <input type="submit" value="Publish new size">
-    </form>
+
 <?php } ?>
 

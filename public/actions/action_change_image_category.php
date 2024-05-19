@@ -1,36 +1,73 @@
 <?php
-
 declare(strict_types=1);
 
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
-require_once(__DIR__ . '/../../private/database/connection.db.php');
-require_once(__DIR__ . '/../../private/database/category.class.php');
-
-
-$db = getDatabaseConnection();
-$category = $_POST['category'] ?? '';
-$image = $_FILES['image'];
-
-$fileName = $image['tmp_name'];
-$targetDir = "../images/";
-$targetPath = $targetDir . basename($image['name']);
-
-$response = [];
-
-if (move_uploaded_file($fileName, $targetPath)) {
-    if (Category::updateCategoryImage($db, $category, $targetPath)) {
-        $response = ['success' => 'The category\'s image was successfully changed.', 'imagePath' => $targetPath];
-    }
-    else {
-        $response = ['error' => 'An error occurred! The image could not be changed.'];
-    }
-} else {
-    $response = ['error', 'An error occurred while uploading the image file.'];
+if (!$session->isLoggedIn()) {
+    header('Location: ../pages/denied.php');
+    exit();
 }
 
-header('Content-Type: application/json');
-echo json_encode($response);
+require_once(__DIR__ . '/../../private/database/connection.db.php');
+require_once(__DIR__ . '/../../private/database/category.class.php');
+require_once(__DIR__ . '/action_utils.php');
+
+try {
+    $db = getDatabaseConnection();
+    $response = [];
+
+    if (isset($_POST['csrf'])) {
+        $csrf = $_POST['csrf'];
+
+        if ($csrf === $session->getToken()) {
+
+            if (isset($_POST['category'])) {
+                $category = $_POST['category'];
+            } else {
+                throw new Exception('Category is not set.');
+            }
+            if(isset($_FILES['image'])) {
+                $image = $_FILES['image'];
+                $fileName = $image['tmp_name'];
+                $targetDir = "../images/";
+                $targetPath = $targetDir . basename($image['name']);
+            } else {
+                throw new Exception('Category image is not set.');
+            }
+
+            if (move_uploaded_file($fileName, $targetPath)) {
+                if (Category::updateCategoryImage($db, $category, $targetPath)) {
+                    $response = ['success' => 'The category\'s image was successfully changed.', 'imagePath' => $targetPath];
+                }
+                else {
+                    $response = ['error' => 'An error occurred! The image could not be changed.'];
+                }
+            } else {
+                $response = ['error', 'An error occurred while uploading the image file.'];
+            }
+
+
+        } else {
+            $response = ['error' => 'An error occurred! The tokens do not match.'];
+        }
+    } else {
+        $response = ['error' => 'An error occurred! Couldn\'t get token.'];
+    }
+
+    handleResponse($response, $session);
+
+} catch (PDOException $e) {
+    $response = ['error' => 'A database error occurred. Please try again later.'];
+
+    handleResponse($response, $session);
+
+} catch (Exception $e) {
+
+    $response = ['error' => 'An error occurred. Please try again later.'];
+
+    handleResponse($response, $session);
+}
+
 
 

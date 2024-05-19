@@ -122,8 +122,9 @@ require_once(__DIR__ . '/../database/cart.class.php');
             </article>
 
             <h3>Product Details</h3>
-            <p>Brand: <span id="brand-name"><?=$item->brand?></span></p>
-            <p>Condition: <span id="condition-value"><?=$item->condition?></span></p>
+
+            <p>Brand: <span id="brandName"><?=$item->brand?></span></p>
+            <p>Condition: <span id="conditionValue"><?=$item->condition?></span></p>
 
         </section>
     </section>
@@ -165,51 +166,43 @@ require_once(__DIR__ . '/../database/cart.class.php');
 <?php } ?>
 
 <?php function drawBag(PDO $db, int $user, array $items) { ?>
-    <section class="shopping-bag-page">
-        <section id="ShoppingBagItems">
-
-            <h2 id="bag-title">
-                Shopping Bag
-            </h2>
-
+        <?php if (count($items) !== 0) { ?>
             <ul class="draw-bag" id="draw-bag">
                 <?php foreach($items as $item) { ?>
-                    <li class="bag-card">
+                    <li id="item-<?= $item->itemId ?>" class="bag-card">
                         <a href="../pages/item.php?id=<?=$item->itemId?>">
-                            <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bagItemImage">
+                            <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bag-item-image">
                         </a>
 
-                        <section class="bagItemButtons">
-                            <section class="wishlistIcon">
-                                <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) :?>
-                                    <button type="button" class="wishlist-button" onclick="removeFromWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
-                                        <i class="fa-solid fa-heart"></i>
-                                    </button>
-                                <?php else : ?>
-                                    <button type="button" class="wishlist-button" onclick="addToWishlist(<?= $item->itemId ?>, this.querySelector('.fa-heart'))">
-                                        <i class="fa-regular fa-heart"></i>
-                                    </button>
-                                <?php endif; ?>
-                            </section>
+                        <section class="bag-item-buttons">
 
-                            <section class="trashIcon">
-                                <button type="button" class="trash-button" onclick="trashBagItem(<?= $item->itemId ?>)">
-                                    <i id="trashIcon" class="fa-solid fa-trash"></i>
+                            <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) { ?>
+                                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                    <i class="fa-solid fa-heart"></i>
                                 </button>
-                            </section>
+                            <?php } else { ?>
+                                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+                            <?php } ?>
+
+                            <button id="<?= $item->itemId ?>" type="button" class="trash-button">
+                                <i id="trashIcon" class="fa-solid fa-trash"></i>
+                            </button>
                         </section>
 
                         <a href="../pages/item.php?id=<?=$item->itemId?>">
-                            <h4 class="bagItemTitle"><?=$item->title?></h4>
-                            <p class="bagItemPrice"><?=number_format($item->price, 2)?>€</p>
-                            <p class="bagItemBrand">Brand: <span id="brandName"><?=$item->brand?></span></p>
-                            <p class="bagItemCondition">Condition: <span id="conditionValue"><?=$item->condition?></span></p>
+                            <h4 class="bag-item-title"><?=$item->title?></h4>
+                            <p class="bag-item-price"><?=number_format($item->price, 2)?>€</p>
+                            <p class="bag-item-brand">Brand: <span id="brandName"><?=$item->brand?></span></p>
+                            <p class="bag-item-condition">Condition: <span id="conditionValue"><?=$item->condition?></span></p>
                         </a>
                     </li>
                 <?php } ?>
             </ul>
-        </section>
-    </section>
+    <?php } else { ?>
+        <p id="empty-shopping-bag">Your shopping bag is empty!</p>
+    <?php } ?>
 <?php } ?>
 
 <?php function drawItemFilter(PDO $db, float $maxPrice, ?string $selectedCategory = null) { ?>

@@ -1,37 +1,66 @@
 <?php
 declare(strict_types=1);
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
+if (!$session->isLoggedIn()) {
+    header('Location: ../pages/denied.php');
+    exit();
+}
+
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/user.class.php');
+require_once(__DIR__ . '/action_utils.php');
 
 try {
     $db = getDatabaseConnection();
-    $userId = intval($_POST['userId']);
-    $isAdmin = boolval($_POST['isAdmin']);
-    $success = true;
-    if ($userId) {
-        if (User::changeAdminStatus($db,$userId, $isAdmin)) $session->addMessage('error', 'Admin Status Changed');
-        else {
-            $session->addMessage('error', 'Not able to change admin status');
-            $success = false;
+    $response = [];
+
+    if (isset($_POST['csrf'])) {
+        $csrf = urldecode($_POST['csrf']);
+
+        if ($csrf === $session->getToken()) {
+
+            if (isset($_POST['userId'])) {
+                $userId = intval($_POST['userId']);
+            } else {
+                throw new Exception('userId is not set.');
+            }
+            if(isset($_POST['isAdmin'])) {
+                $isAdmin = boolval($_POST['isAdmin']);
+            } else {
+                throw new Exception('isAdmin is not set.');
+            }
+
+            if (User::changeAdminStatus($db,$userId, $isAdmin)) {
+                $response = ['success' => 'User\'s admin status changed.'];
+            } else {
+                $response = ['error' => 'An error occurred! Not able to change user\'s admin status.'];
+            }
+
+        } else {
+            $response = ['error' => 'An error occurred! The tokens do not match.'];
         }
+    } else {
+        $response = ['error' => 'An error occurred! Couldn\'t get token.'];
     }
 
+    handleResponse($response, $session);
 
-    header('Content-Type: application/json');
-    $finalResponse = [
-        'success' => $success ? '1' : '0',
-    ];
-    echo json_encode($success);
+} catch (PDOException $e) {
+    $response = ['error' => 'A database error occurred. Please try again later.'];
+
+    handleResponse($response, $session);
+
 } catch (Exception $e) {
-    error_log('Error in api_contacts.php: ' . $e->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => 'Internal Server Error']);
+
+    $response = ['error' => 'An error occurred. Please try again later.'];
+
+    handleResponse($response, $session);
 }
+
+
+
+
+

@@ -19,14 +19,14 @@ require_once(__DIR__ . '/../database/category.class.php');
                 <?php } ?>
                 <?php foreach ($lastMessages as $message) {
                     $user = $message->receiverId === $userId ? User::getUser($db, $message->authorId) : User::getUser($db, $message->receiverId); ?>
-                    <a href="../../public/pages/messages.php?otherUserId=<?= $user->userId ?>">
+                    <a id="<?= $user->userId ?>" href="../pages/messages.php?otherUserId=<?= $user->userId ?>">
                         <section class="contact">
                             <?php
                             $timestamp = strtotime($message->timestamp);
                             $displayDate = date('Y-m-d') === date('Y-m-d', $timestamp) ? date('H:i', $timestamp) : date('Y-m-d', $timestamp);
                             ?>
                             <span><?= $user->username ?></span>
-                            <img class="little" src="<?= $user->profilePic ?>">
+                            <img class="little" src="<?= $user->profilePic ?>" alt="../profile_pictures/profile_pic1.png">
                             <p><?= $message->content ?></p>
                             <time datetime="<?= $message->timestamp ?>"><?= $displayDate ?></time>
                         </section>
@@ -41,7 +41,7 @@ require_once(__DIR__ . '/../database/category.class.php');
                 if ($otherUserId !== -1) { ?>
                 <section id="conversation_header">
                     <?php $otherUser = User::getUser($db, $otherUserId) ?>
-                    <img class="little" src="<?= $otherUser->profilePic ?>">
+                    <img class="little" src="<?= $otherUser->profilePic ?>" alt="../profile_pictures/profile_pic1.png">
                     <h3><?= $otherUser->username ?></h3>
                 </section>
                 <section id="messages">
