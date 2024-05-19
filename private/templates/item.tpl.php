@@ -175,13 +175,12 @@ require_once(__DIR__ . '/../database/cart.class.php');
     <section class="shopping-bag-page" id="shopping-bag-page">
         <ul class="draw-bag" id="draw-bag">
             <?php foreach($items as $item) { ?>
-                <li id="item-<?= $item->itemId ?>" class="bag-card">
+                <li id="item-<?= $item->itemId ?>" class="bag-card" data-price="<?= $item->price ?>">
                     <a href="../pages/item.php?id=<?=$item->itemId?>">
-                        <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bag-item-image">
+                        <img src="<?= $item->imagePath?>" class="bag-item-image">
                     </a>
 
                     <section class="bag-item-buttons">
-
                         <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) { ?>
                             <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
                                 <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">

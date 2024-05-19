@@ -75,6 +75,7 @@ async function handleInsideShoppingBag(itemId) {
         const ul = document.querySelector('.draw-bag')
         const parent = document.querySelector('.draw-bag')
         li.remove()
+        updateBagTotals()
 
         if (ul.children.length === 0) {
             const shoppingBag = document.getElementById('shopping-bag-page');
@@ -131,3 +132,33 @@ async function addToShoppingBag(itemId, csrf) {
             console.error('Error:', error)
         })
 }
+
+function updateBagTotals() {
+    const items = document.querySelectorAll('.draw-bag .bag-card')
+    let subTotal = 0
+
+    items.forEach(item => {
+        const price = parseFloat(item.getAttribute('data-price'))
+        subTotal += price
+    })
+
+    const shippingCost = calculateShippingCost(subTotal)
+    const totalPrice = subTotal + shippingCost
+
+    document.getElementById('subtotal-span').innerText = `${subTotal.toFixed(2)} €`
+    document.getElementById('shipping-cost-span').innerText = `${shippingCost.toFixed(2)} €`
+    document.getElementById('total-span').innerText = `${totalPrice.toFixed(2)} €`
+}
+
+function calculateShippingCost(subTotal) {
+    if (subTotal <= 5) {
+        return 5
+    } else if (subTotal >= 100) {
+        return 0
+    } else {
+        let res = 5 + (subTotal * 0.03)
+        res = Math.min(15, res)
+        return res
+    }
+}
+
