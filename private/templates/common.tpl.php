@@ -28,7 +28,7 @@ require_once (__DIR__ . '/../database/category.class.php');
             </section>
             <nav class="header-right">
                     <section id="header-products">
-                        <a  href="search.php">Products</a>
+                        <a  href="/pages/search.php">Products</a>
                         <nav class="dropdown">
                             <?php $categories = Category::getCategories($db);
                             foreach ($categories as $category) { ?>
@@ -61,9 +61,13 @@ require_once (__DIR__ . '/../database/category.class.php');
             </nav>
             <?php drawLoginPopUp() ?>
         </header>
-        <section id="message-occurred">
-            <p id="message-text"></p>
-        </section>
+        <?php /*$messages = $session->getMessages();
+        if (count($messages) !== 0) { ?>
+            <section id="message-occurred">
+                <p id="message-text"><?= $messages[0]['text'] ?></p>
+            </section>
+        <?php $session->clearMessages();
+        } */?>
 
     <?php } ?>
 
@@ -136,6 +140,7 @@ require_once (__DIR__ . '/../database/category.class.php');
         <script src="../javascript/searchUsers.js"></script>
         <script src="../javascript/shoppingBagButton.js"></script>
         <script src="../javascript/categoryPopUp.js"></script>
+        <script src="../javascript/profileChanges.js"></script>
         <script src="../javascript/loginPopUp.js"></script>
         <script src="../javascript/profileChanges.js"></script>
         <script src="../javascript/trashButton.js"></script>

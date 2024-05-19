@@ -5,9 +5,7 @@ declare(strict_types = 1);
 require_once(__DIR__ . '/../utils/session.php');
 $session = new Session();
 
-if (!$session->isLoggedIn()) {
-    header("Location: access_denied.php");
-}
+
 
 require_once(__DIR__ . '/../../private/database/connection.db.php');
 require_once(__DIR__ . '/../../private/database/user.class.php');
@@ -23,13 +21,8 @@ $categories = Category::getCategories($db);
 $sizes = Size::getSizes($db);
 $conditions = Condition::getConditions($db);
 
-$db = getDatabaseConnection();
-$categories = Category::getCategories($db);
-$sizes = Size::getSizes($db);
-$conditions = Condition::getConditions($db);
-
 drawHeader($db, $session);
 drawTitle("Admin Board");
-drawAdminBoard($categories, $conditions, $sizes);
+drawAdminBoard($categories, $conditions, $sizes, $session);
 drawFooter();
 ?>

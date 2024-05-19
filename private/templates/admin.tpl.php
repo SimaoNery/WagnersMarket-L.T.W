@@ -5,7 +5,7 @@ require_once __DIR__ . '/category.tpl.php';
 require_once __DIR__ . '/size.tpl.php';
 require_once __DIR__ . '/condition.tpl.php';
 ?>
-<?php function drawAdminBoard(array $categories, array $conditions, array $sizes) { ?>
+<?php function drawAdminBoard(array $categories, array $conditions, array $sizes, Session $session) { ?>
 
     <section id="admin-board">
         <section id="edit-users">

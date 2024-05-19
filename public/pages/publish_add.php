@@ -14,8 +14,6 @@ require_once(__DIR__ . '/../../private/templates/common.tpl.php');
 require_once(__DIR__ . '/../../private/templates/publish.tpl.php');
 
 
-$limit = 4;
-$offset = 0;
 $db = getDatabaseConnection();
 
 $categories = Category::getCategories($db);

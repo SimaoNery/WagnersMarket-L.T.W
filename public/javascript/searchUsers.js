@@ -34,11 +34,10 @@ if (searchUsers) {
         offsetSearchUsers = 0
         input = this.value.trim();
         if (input.length === 0) {
-            users.innerHTML = "";
+            userBoxes.innerHTML = "";
             return
-        } 
+        }
         await drawUsers();
-        
     })
 }
 
@@ -54,149 +53,144 @@ if (userBoxes) {
 }
 
 async function drawUsers() {
-    const request = new XMLHttpRequest();
-    request.open('GET', `../api/api_search_users.php?search=${input}&limit=${limitSearchUsers}&offset=${offsetSearchUsers}`)
-    request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
-            try {
-                const response = JSON.parse(request.responseText);
-                if (response) {
-                    const users = document.getElementById("users")
-                    users.innerHTML = ""
 
-                    if (users) {
-                        response.forEach(user => {
-                            const profileLinkOnImage = document.createElement('a')
-                            const profileLink = document.createElement('a')
-                            const userSection = document.createElement('section')
-                            const userInfo = document.createElement('user-info')
-                            const userManagement = document.createElement('user-management')
-                            const profilePic = document.createElement('img')
-                            const userId = document.createElement('p')
-                            const name = document.createElement('p')
-                            const username = document.createElement('p')
-                            const email = document.createElement('p')
-                            const manageAdminStatus = document.createElement('button')
-                            const banUser = document.createElement('button')
-                            const deleteAccount = document.createElement('button')
+    const params = encodeForAjax({search: input, limit: limitSearchUsers, offset: offsetSearchUsers})
 
-                            profileLinkOnImage.href = `../../public/pages/profile.php?id=${user.userId}`
-                            profileLink.href = `../../public/pages/profile.php?id=${user.userId}`
-                            profileLink.innerHTML = 'Profile'
-                            profileLink.classList.add('profile-link')
-                            profileLink.classList.add('button')
-                            profilePic.src= user.profilePic
-                            userId.innerHTML = `User ID: ${user.userId}`
-                            userId.classList.add("user-id")
-                            name.innerHTML = `Name: ${user.name}`
-                            name.classList.add("name")
-                            username.innerHTML = `Username: ${user.username}`
-                            username.classList.add("username")
-                            email.innerHTML = `Email: ${user.email}`
-                            email.classList.add("email")
+    await fetch('../api/api_search_users.php?' + params, {
+        method: 'GET'
 
-                            manageAdminStatus.innerHTML = user.admin ? 'Revoke Admin Privileges' : 'Grant Admin Privileges'
-                            manageAdminStatus.classList.add('manage-admin-status')
-                            manageAdminStatus.setAttribute('admin-status', user.admin ? 'RevokeAdmin' : 'GrantAdmin')
-                            manageAdminStatus.setAttribute('user-id', user.userId)
-                            banUser.innerHTML = 'Ban User'
-                            banUser.classList.add('ban-user')
-                            banUser.classList.add('button')
-                            deleteAccount.innerHTML = 'Delete Account'
-                            deleteAccount.classList.add('delete-account')
-                            deleteAccount.classList.add('button')
-                            deleteAccount.setAttribute('user-id', user.userId)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.error) {
+                const users = document.getElementById("users")
+                users.innerHTML = ""
+                if (users) {
+                    data.forEach(user => {
+                        const profileLinkOnImage = document.createElement('a')
+                        const profileLink = document.createElement('a')
+                        const userSection = document.createElement('section')
+                        const userInfo = document.createElement('user-info')
+                        const userManagement = document.createElement('user-management')
+                        const profilePic = document.createElement('img')
+                        const userId = document.createElement('p')
+                        const name = document.createElement('p')
+                        const username = document.createElement('p')
+                        const email = document.createElement('p')
+                        const manageAdminStatus = document.createElement('button')
+                        const banUser = document.createElement('button')
+                        const deleteAccount = document.createElement('button')
 
-                            userInfo.classList.add('user-info')
-                            userManagement.classList.add('user-management')
+                        profileLinkOnImage.href = `../../public/pages/profile.php?id=${user.userId}`
+                        profileLink.href = `../../public/pages/profile.php?id=${user.userId}`
+                        profileLink.innerHTML = 'Profile'
+                        profileLink.classList.add('profile-link')
+                        profileLink.classList.add('button')
+                        profilePic.src= user.profilePic
+                        userId.innerHTML = `User ID: ${user.userId}`
+                        userId.classList.add("user-id")
+                        name.innerHTML = `Name: ${user.name}`
+                        name.classList.add("name")
+                        username.innerHTML = `Username: ${user.username}`
+                        username.classList.add("username")
+                        email.innerHTML = `Email: ${user.email}`
+                        email.classList.add("email")
 
-                            userInfo.append(userId)
-                            userInfo.append(name)
-                            userInfo.append(username)
-                            userInfo.append(email)
+                        manageAdminStatus.innerHTML = user.admin ? 'Revoke Admin Privileges' : 'Grant Admin Privileges'
+                        manageAdminStatus.classList.add('manage-admin-status')
+                        manageAdminStatus.setAttribute('admin-status', user.admin ? 'RevokeAdmin' : 'GrantAdmin')
+                        manageAdminStatus.setAttribute('user-id', user.userId)
+                        banUser.innerHTML = 'Ban User'
+                        banUser.classList.add('ban-user')
+                        banUser.classList.add('button')
+                        deleteAccount.innerHTML = 'Delete Account'
+                        deleteAccount.classList.add('delete-account')
+                        deleteAccount.classList.add('button')
+                        deleteAccount.setAttribute('user-id', user.userId)
 
-                            userManagement.append(profileLink)
-                            userManagement.append(manageAdminStatus)
-                            userManagement.append(banUser)
-                            userManagement.append(deleteAccount)
+                        userInfo.classList.add('user-info')
+                        userManagement.classList.add('user-management')
 
-                            profileLinkOnImage.append(profilePic)
-                            profileLinkOnImage.classList.add('profile-link-on-image')
-                            userSection.classList.add('user-box')
-                            userSection.append(profileLinkOnImage)
-                            userSection.append(userInfo)
-                            userSection.append(userManagement)
+                        userInfo.append(userId)
+                        userInfo.append(name)
+                        userInfo.append(username)
+                        userInfo.append(email)
 
-                            users.append(userSection)
+                        userManagement.append(profileLink)
+                        userManagement.append(manageAdminStatus)
+                        userManagement.append(banUser)
+                        userManagement.append(deleteAccount)
 
-                            const adminStatusButtons = document.querySelectorAll(".manage-admin-status")
-                            if (adminStatusButtons) {
-                                adminStatusButtons.forEach(adminStatusButton => {
-                                    adminStatusButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('user-id')
-                                        const isAdmin = this.getAttribute('admin-status') === 'RevokeAdmin'
-                                        await changeAdminStatus(userId, isAdmin, adminStatusButton)
-                                    })
+                        profileLinkOnImage.append(profilePic)
+                        profileLinkOnImage.classList.add('profile-link-on-image')
+                        userSection.classList.add('user-box')
+                        userSection.append(profileLinkOnImage)
+                        userSection.append(userInfo)
+                        userSection.append(userManagement)
+
+                        users.append(userSection)
+
+                        const csrf = document.querySelector('.csrf').value
+                        const adminStatusButtons = document.querySelectorAll(".manage-admin-status")
+                        if (adminStatusButtons) {
+                            adminStatusButtons.forEach(adminStatusButton => {
+                                adminStatusButton.addEventListener('click', async function() {
+                                    const userId = this.getAttribute('user-id')
+                                    const isAdmin = this.getAttribute('admin-status') === 'RevokeAdmin'
+                                    await changeAdminStatus(userId, isAdmin, adminStatusButton, csrf)
                                 })
-                            }
+                            })
+                        }
 
-                            const deleteAccountButtons = document.querySelectorAll(".delete-account")
-                            if (deleteAccountButtons) {
-                                deleteAccountButtons.forEach(deleteAccountButton => {
-                                    deleteAccountButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('user-id')
-                                        await deleteUserAccount(userId, userSection)
-                                    })
+                        const deleteAccountButtons = document.querySelectorAll(".delete-account")
+                        if (deleteAccountButtons) {
+                            deleteAccountButtons.forEach(deleteAccountButton => {
+                                deleteAccountButton.addEventListener('click', async function() {
+                                    const userId = this.getAttribute('user-id')
+                                    await deleteUserAccount(userId, userSection, csrf)
                                 })
-                            }
+                            })
+                        }
 
-                            const banUserButtons = document.querySelectorAll(".ban-user")
-                            if (banUserButtons) {
-                                banUserButtons.forEach(banUserButton => {
-                                    banUserButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('user-id')
-                                        // await banUserAccount(userId, userSection)
-                                    })
+                        const banUserButtons = document.querySelectorAll(".ban-user")
+                        if (banUserButtons) {
+                            banUserButtons.forEach(banUserButton => {
+                                banUserButton.addEventListener('click', async function() {
+                                    const userId = this.getAttribute('user-id')
+                                    // await banUserAccount(userId, userSection, csrf)
                                 })
-                            }
+                            })
+                        }
 
-                        })
-                    }
+                    })
                 }
-
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
             }
-        } else {
-            console.error('HTTP Error:', request.status);
-        }
-    }
-
-    request.onerror = function() {
-        console.error('Request failed');
-    }
-
-    request.send();
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
 }
 
 
 
 
-async function changeAdminStatus(userId, isAdmin, adminStatusButton) {
+async function changeAdminStatus(userId, isAdmin, adminStatusButton, csrf) {
 
-    const params = new URLSearchParams()
-    params.append('user-id', userId.toString())
-    params.append('is-admin', isAdmin.toString())
+    await fetch('../actions/action_change_admin_status.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({userId: userId, isAdmin: isAdmin, csrf: csrf}),
 
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_change_admin_status.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-
-    request.onload = function () {
-        try {
-            const changeWentWell = JSON.parse(request.responseText)
-
-            if (Boolean(changeWentWell)) {
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
                 if (!isAdmin) {
                     adminStatusButton.innerHTML = 'Revoke Admin Privileges'
                     adminStatusButton.setAttribute('admin-status', 'RevokeAdmin')
@@ -206,34 +200,39 @@ async function changeAdminStatus(userId, isAdmin, adminStatusButton) {
                     adminStatusButton.setAttribute('admin-status', 'GrantAdmin')
                 }
             }
-
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-        }
-    }
-    request.send(params.toString());
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
 }
 
 
-async function deleteUserAccount(userId, userSection) {
+async function deleteUserAccount(userId, userSection, csrf) {
+    await fetch('../actions/action_delete_account.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({userId: userId, csrf: csrf}),
 
-    const params = new URLSearchParams()
-    params.append('user-id', userId.toString())
-
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_delete_account.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-
-    request.onload = function () {
-        try {
-            const deletionWentWell = JSON.parse(request.responseText)
-            if (deletionWentWell) userSection.remove();
-
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-        }
-    }
-    request.send(params.toString());
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                userSection.remove()
+                showMessage(data.success, true)
+            }
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
 }
 
 
@@ -245,31 +244,38 @@ if (formsRemoveCategory) {
         formRemoveCategory.addEventListener('submit', async function(event) {
             event.preventDefault()
             const categoryName = formRemoveCategory.querySelector(".category-name").value
-
+            const csrf = formRemoveCategory.querySelector(".csrf").value
             if (categoryName) {
-                await removeCategory(categoryName, formRemoveCategory)
+                await removeCategory(categoryName, formRemoveCategory, csrf)
             }
 
         })
     })
 }
 
-async function removeCategory(categoryName, formRemoveCategory) {
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_remove_category.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-    request.onload = function () {
-        const response = JSON.parse(request.responseText)
-        if (response.success) {
-            formRemoveCategory.parentNode.remove()
-            showMessage(response.success, true);
-        }
-        else {
-            showMessage(response.error, false);
-        }
+async function removeCategory(categoryName, formRemoveCategory, csrf) {
+    await fetch('../actions/action_remove_category.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({category: categoryName, csrf: csrf}),
 
-    }
-    request.send(encodeForAjax({'category' : categoryName}))
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                formRemoveCategory.parentNode.remove()
+                showMessage(data.success, true);
+            }
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
 }
 
 const formAddCategory = document.querySelector(".add-new-category");
@@ -281,28 +287,32 @@ if (formAddCategory) {
         event.preventDefault()
         const categoryName = document.getElementById('category-name').value
         const fileInput = document.querySelector('.add-new-category input[type=file]')
+        const csrf = formAddCategory.querySelector('.csrf').value
         const file = fileInput.files[0];
-        if (categoryName && file) {
-            await addCategory(categoryName, file)
+        if (categoryName && file && csrf) {
+            await addCategory(categoryName, file, csrf)
         }
     })
 }
 
-async function addCategory(categoryName, file) {
+async function addCategory(categoryName, file, csrf) {
 
     const formData = new FormData();
     formData.append("category", categoryName)
     formData.append("image", file);
+    formData.append("csrf", csrf);
 
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_add_category.php', true)
-    request.onload = function () {
-        try {
+    await fetch('../actions/action_add_category.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json'
+        },
+        body: formData
 
-            const response = JSON.parse(request.responseText)
-
-
-            if (response.success) {
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
                 const category_item = document.createElement('li')
                 category_item.classList.add('category-item')
 
@@ -310,7 +320,7 @@ async function addCategory(categoryName, file) {
                 category_link.href = "../../public/pages/search.php?category=" + categoryName
 
                 const category_image = document.createElement('img')
-                category_image.src = response.imagePath
+                category_image.src = data.imagePath
                 category_image.alt = categoryName
 
                 const span = document.createElement('span')
@@ -318,6 +328,12 @@ async function addCategory(categoryName, file) {
 
                 category_link.append(category_image)
                 category_link.append(span)
+
+                const inputCsrf = document.createElement('input')
+                inputCsrf.type = 'hidden'
+                inputCsrf.name = 'csrf'
+                inputCsrf.classList.add('csrf')
+                inputCsrf.value = csrf
 
                 const formRemoveCategory = document.createElement('form')
                 formRemoveCategory.action = "../actions/action_remove_category.php"
@@ -332,10 +348,18 @@ async function addCategory(categoryName, file) {
 
                 const inputSubmit = document.createElement('input')
                 inputSubmit.type = 'submit'
-                inputSubmit.innerHTML = 'Remove Category'
+                inputSubmit.value = 'Remove Category'
+                inputSubmit.classList.add('button')
 
+                formRemoveCategory.append(inputCsrf)
                 formRemoveCategory.append(inputCategoryName)
                 formRemoveCategory.append(inputSubmit)
+
+                formRemoveCategory.addEventListener('submit', async function(event) {
+                    event.preventDefault()
+                    await removeCategory(categoryName, formRemoveCategory, csrf)
+
+                })
 
                 const buttonChangeImage = document.createElement('button')
                 buttonChangeImage.type = 'button'
@@ -367,30 +391,35 @@ async function addCategory(categoryName, file) {
                 inputSubmitChangeImage.type = 'submit'
                 inputSubmitChangeImage.value = 'Change the category\'s image'
 
+                formChangeImage.append(inputCsrf)
                 formChangeImage.append(inputCategoryNameChangeImage)
                 formChangeImage.append(label)
                 formChangeImage.append(inputSubmitChangeImage)
 
+                formChangeImage.addEventListener('submit', async function(event) {
+                    event.preventDefault()
+                    await changeImageCategory(categoryName, inputUploadFile.files[0], category_image, csrf)
+                })
+
                 category_item.append(category_link)
                 category_item.append(formRemoveCategory)
+                category_item.append(buttonChangeImage)
                 category_item.append(formChangeImage)
 
                 const ul = document.querySelector('.category-list')
-                if (ul) ul.append(category_item)
+                const referenceNode = ul.children[ul.children.length - 1]
+                ul.insertBefore(category_item, referenceNode)
 
-                showMessage(response.success, true)
+                showMessage(data.success, true)
             }
             else {
-                showMessage(response.error, false)
+                showMessage(data.error, false)
             }
-        } catch (e) {
-            console.error('Error parsing JSON:', e);
-            console.error('Response text:', request.responseText);
-        }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 
-
-    }
-    request.send(formData)
 }
 
 const formsChangeCategoryImage = document.querySelectorAll(".change-image-category");
@@ -400,46 +429,48 @@ if (formsChangeCategoryImage) {
         formChangeCategoryImage.addEventListener('submit', async function(event) {
 
             event.preventDefault()
-            const categoryName = formChangeCategoryImage.querySelector('input[type=hidden]').value
+            const categoryName = formChangeCategoryImage.querySelector('.change-image-name').value
+            const csrf = formChangeCategoryImage.querySelector('.csrf').value
             const fileInput = formChangeCategoryImage.querySelector('input[type=file]')
             const file = fileInput.files[0];
             const oldImage = formChangeCategoryImage.parentNode.querySelector('a img')
-            if (categoryName && file && oldImage) {
-                await changeImageCategory(categoryName, file, oldImage)
+            if (categoryName && file && oldImage && csrf) {
+                await changeImageCategory(categoryName, file, oldImage, csrf)
+                fileInput.value = ''
             }
         })
     })
 }
-async function changeImageCategory(categoryName, file, oldImage) {
+async function changeImageCategory(categoryName, file, oldImage, csrf) {
 
     const formData = new FormData();
     formData.append("category", categoryName)
     formData.append("image", file);
+    formData.append("csrf", csrf);
 
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_change_image_category.php', true)
-    request.onload = function () {
-        try {
-            const response = JSON.parse(request.responseText)
+    await fetch('../actions/action_change_image_category.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json'
+        },
+        body: formData
 
-            if (response.success) {
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
 
-                oldImage.src = response.imagePath
+                oldImage.src = data.imagePath
 
-                showMessage(response.success, true)
-
+                showMessage(data.success, true)
             }
             else {
-                showMessage(response.error, false)
+                showMessage(data.error, false)
             }
-        } catch (e) {
-            console.error('Error parsing JSON:', e);
-            console.error('Response text:', request.responseText);
-        }
-
-
-    }
-    request.send(formData)
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 const formsRemoveSize = document.querySelectorAll(".remove-size");
@@ -449,31 +480,39 @@ if (formsRemoveSize) {
         formRemoveSize.addEventListener('submit', async function(event) {
 
             event.preventDefault()
-            const size = formRemoveSize.querySelector('input[type=hidden]').value
+            const size = formRemoveSize.querySelector('.size-name').value
             const sizeElement = formRemoveSize.parentNode
-            if (size && sizeElement) {
-                await removeSize(size, sizeElement)
+            const csrf = formRemoveSize.querySelector('.csrf').value
+            if (size && sizeElement && csrf) {
+                await removeSize(size, sizeElement, csrf)
             }
         })
     })
 }
 
-async function removeSize(size, sizeElement) {
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_remove_size.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-    request.onload = function () {
-        const response = JSON.parse(request.responseText)
-        if (response.success) {
-            sizeElement.remove()
-            showMessage(response.success, true);
-        }
-        else {
-            showMessage(response.error, false);
-        }
+async function removeSize(size, sizeElement, csrf) {
+    await fetch('../actions/action_remove_size.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({size: size, csrf: csrf}),
 
-    }
-    request.send(encodeForAjax({'size' : size}))
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                sizeElement.remove()
+                showMessage(data.success, true)
+            }
+            else {
+                showMessage(data.error, false)
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
 }
 
 const formAddSize = document.getElementById("add-new-size");
@@ -484,58 +523,81 @@ if (formAddSize) {
 
         event.preventDefault()
         const size = formAddSize.querySelector('#size-name')
-        if (size) {
-            await addSize(size.value)
+        const csrf = formAddSize.querySelector('.csrf').value
+        if (size && csrf) {
+
+            await addSize(size.value, csrf)
             size.value = ''
         }
     })
 }
 
-async function addSize(size) {
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_add_size.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-    request.onload = function () {
-        const response = JSON.parse(request.responseText)
-        if (response.success) {
-            const sizeList = document.getElementById('size-list')
-            if (sizeList) {
-                const li = document.createElement('li')
-                li.classList.add('size-item')
-                const span = document.createElement('span')
-                span.innerHTML = size
-                const form = document.createElement('form')
-                form.classList.add('remove-size')
-                form.action = "../actions/action_remove_size.php"
-                form.method = 'post'
+async function addSize(size, csrf) {
+    await fetch('../actions/action_add_size.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({size: size, csrf:csrf})
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const sizeList = document.getElementById('size-list')
+                if (sizeList) {
+                    const li = document.createElement('li')
+                    li.classList.add('size-item')
+                    const span = document.createElement('span')
+                    span.innerHTML = size
+                    const form = document.createElement('form')
+                    form.classList.add('remove-size')
+                    form.action = "../actions/action_remove_size.php"
+                    form.method = 'post'
+
+                    const inputCsrf = document.createElement('input')
+                    inputCsrf.type = 'hidden'
+                    inputCsrf.name = 'csrf'
+                    inputCsrf.classList.add('csrf')
+                    inputCsrf.value = csrf
+
+                    const inputSizeName = document.createElement('input')
+                    inputSizeName.type = 'hidden'
+                    inputSizeName.name = 'size'
+                    inputSizeName.value = size
+                    inputSizeName.classList.add('size-name')
+                    const inputSubmit = document.createElement('input')
+                    inputSubmit.type = 'submit'
+                    inputSubmit.value = 'Remove size'
+                    inputSubmit.classList.add('button')
+
+                    form.append(inputCsrf)
+                    form.append(inputSizeName)
+                    form.append(inputSubmit)
+
+                    form.addEventListener('submit', async function(event) {
+                        event.preventDefault()
+                        await removeSize(size, li, csrf)
+                    })
 
 
-                const inputSizeName = document.createElement('input')
-                inputSizeName.type = 'hidden'
-                inputSizeName.name = 'size'
-                inputSizeName.value = size
-                const inputSubmit = document.createElement('input')
-                inputSubmit.type = 'submit'
-                inputSubmit.value = 'Remove Size'
-                inputSubmit.classList.add('button')
+                    li.append(span)
+                    li.append(form)
 
-                form.append(inputSizeName)
-                form.append(inputSubmit)
-
-                li.append(span)
-                li.append(form)
-                
-                const referenceNode = sizeList.children[sizeList.children.length - 1]
-                sizeList.insertBefore(li, referenceNode)
+                    const referenceNode = sizeList.children[sizeList.children.length - 1]
+                    sizeList.insertBefore(li, referenceNode)
+                }
+                showMessage(data.success, true);
             }
-            showMessage(response.success, true);
-        }
-        else {
-            showMessage(response.error, false);
-        }
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
 
-    }
-    request.send(encodeForAjax({'size' : size}))
+            console.error('Error:', error);
+        });
+
 }
 
 
@@ -547,56 +609,81 @@ if (formAddCondition) {
 
         event.preventDefault()
         const condition = formAddCondition.querySelector('#condition-name')
-        if (condition) {
-            await addCondition(condition.value)
+        const csrf = formAddCondition.querySelector('.csrf').value
+        if (condition && csrf) {
+
+            await addCondition(condition.value, csrf)
             condition.value = ''
         }
     })
 }
 
-async function addCondition(condition) {
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_add_condition.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-    request.onload = function () {
-        const response = JSON.parse(request.responseText)
-        if (response.success) {
-            const conditionList = document.getElementById('condition-list')
-            if (conditionList) {
-                const li = document.createElement('li')
-                li.classList.add('size-item')
-                const span = document.createElement('span')
-                span.innerHTML = condition
-                const form = document.createElement('form')
-                form.classList.add('remove-condition')
-                form.action = "../actions/action_remove_condition.php"
-                form.method = 'post'
+async function addCondition(condition, csrf) {
+    await fetch('../actions/action_add_condition.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({condition: condition, csrf:csrf})
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const conditionList = document.getElementById('condition-list')
+                if (conditionList) {
+                    const li = document.createElement('li')
+                    li.classList.add('size-item')
+                    const span = document.createElement('span')
+                    span.innerHTML = condition
+                    const form = document.createElement('form')
+                    form.classList.add('remove-condition')
+                    form.action = "../actions/action_remove_condition.php"
+                    form.method = 'post'
+
+                    const inputCsrf = document.createElement('input')
+                    inputCsrf.type = 'hidden'
+                    inputCsrf.name = 'csrf'
+                    inputCsrf.classList.add('csrf')
+                    inputCsrf.value = csrf
+
+                    const inputConditionName = document.createElement('input')
+                    inputConditionName.type = 'hidden'
+                    inputConditionName.name = 'condition'
+                    inputConditionName.value = condition
+                    inputConditionName.classList.add('condition-name')
+
+                    const inputSubmit = document.createElement('input')
+                    inputSubmit.classList.add("button")
+                    inputSubmit.type = 'submit'
+                    inputSubmit.value = 'Remove condition'
+
+                    form.append(inputCsrf)
+                    form.append(inputConditionName)
+                    form.append(inputSubmit)
+
+                    form.addEventListener('submit', async function (event) {
+                        event.preventDefault()
+                        await removeCondition(condition, li, csrf)
+
+                    })
+
+                    li.append(span)
+                    li.append(form)
 
 
-                const inputConditionName = document.createElement('input')
-                inputConditionName.type = 'hidden'
-                inputConditionName.name = 'condition'
-                inputConditionName.value = condition
-                const inputSubmit = document.createElement('input')
-                inputSubmit.type = 'submit'
-                inputSubmit.value = 'Remove Condition'
-
-                form.append(inputConditionName)
-                form.append(inputSubmit)
-
-                li.append(span)
-                li.append(form)
-                const referenceNode = conditionList.children[conditionList.children.length - 1]
-                conditionList.insertBefore(li, referenceNode)
+                    const referenceNode = conditionList.children[conditionList.children.length - 1]
+                    conditionList.insertBefore(li, referenceNode)
+                }
+                showMessage(data.success, true);
+            } else {
+                showMessage(data.error, false);
             }
-            showMessage(response.success, true);
-        }
-        else {
-            showMessage(response.error, false);
-        }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 
-    }
-    request.send(encodeForAjax({'condition' : condition}))
 }
 
 
@@ -608,31 +695,39 @@ if (formsRemoveCondition) {
         formRemoveCondition.addEventListener('submit', async function(event) {
 
             event.preventDefault()
-            const condition = formRemoveCondition.querySelector('input[type=hidden]').value
+            const condition = formRemoveCondition.querySelector('.condition-name').value
             const conditionElement = formRemoveCondition.parentNode
-            if (condition && conditionElement) {
-                await removeCondition(condition, conditionElement)
+            const csrf = formRemoveCondition.querySelector('.csrf').value
+            if (condition && conditionElement && csrf) {
+                await removeCondition(condition, conditionElement, csrf)
             }
         })
     })
 }
 
-async function removeCondition(condition, conditionElement) {
-    const request = new XMLHttpRequest()
-    request.open('POST', '../actions/action_remove_condition.php', true)
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-    request.onload = function () {
-        const response = JSON.parse(request.responseText)
-        if (response.success) {
-            conditionElement.remove()
-            showMessage(response.success, true);
-        }
-        else {
-            showMessage(response.error, false);
-        }
+async function removeCondition(condition, conditionElement, csrf) {
+    await fetch('../actions/action_remove_condition.php', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: encodeForAjax({condition: condition, csrf: csrf}),
 
-    }
-    request.send(encodeForAjax({'condition' : condition}))
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                conditionElement.remove()
+                showMessage(data.success, true);
+            }
+            else {
+                showMessage(data.error, false);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function encodeForAjax(data) {

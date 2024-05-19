@@ -46,12 +46,6 @@ class Item
         return (int)$stmt->fetch(PDO::FETCH_COLUMN, 0);
     }
 
-    static function getNumItemsShoppingBag(PDO $db, int $userId): int
-    {
-        $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM JOIN CART ON ITEM.ItemId = CART.ItemId WHERE CART.UserId = ? ');
-        $stmt->execute(array($userId));
-        return (int)$stmt->fetch(PDO::FETCH_COLUMN, 0);
-    }
 
     static function getNumAdds(PDO $db, int $userId): int
     {

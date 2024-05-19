@@ -334,6 +334,109 @@ async function sendMessage(otherUserId, message) {
 
 }
 
+if (contacts) {
+    const contactLinks = contacts.querySelectorAll('a')
+    if (contactLinks) {
+
+        contactLinks.forEach(contactLink => {
+
+            contactLink.addEventListener('click', async function(event) {
+
+                event.preventDefault();
+                limitMessages = 20
+                offsetMessages = 0
+                await changeMessagesContainer(contactLink);
+            })
+        })
+    }
+}
+
+
+
+
+async function changeMessagesContainer(contactLink) {
+    const oldImage = document.querySelector('#conversation_header img')
+    const oldUsername = document.querySelector('#conversation_header h3')
+    const newImg = contactLink.querySelector('img')
+    const newUsername = contactLink.querySelector('span')
+
+    oldImage.src = newImg.src
+    oldUsername.innerHTML = newUsername.innerHTML
+
+    let url = '../api/api_messages.php?'
+    let params = {otherUser: contactLink.id, limit: limitMessages, offset: offsetMessages};
+    url += new URLSearchParams(params).toString()
+
+    const response = await fetch(url)
+    const msgs = await response.json()
+
+    messages.innerHTML = ''
+
+
+
+
+    if (msgs.length) {
+        let date = new Date(msgs[0].timestamp.toString())
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let current_date = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+        const initialTimestamp = document.createElement('time');
+        initialTimestamp.innerHTML = current_date
+        initialTimestamp.classList.add('messageDate')
+        initialTimestamp.timestamp = msgs[0].timestamp.toString()
+        initialTimestamp.id = 'lastDate'
+        messages.append(initialTimestamp)
+
+
+        for (const msg of msgs) {
+            let date = new Date(msg.timestamp)
+
+
+            let year = date.getFullYear()
+            let month = date.getMonth() + 1;
+            let day = date.getDate()
+            let hour = date.getHours()
+            let minute = date.getMinutes()
+
+            let paddedHour = hour < 10 ? '0' + hour : hour;
+            let paddedMinute = minute < 10 ? '0' + minute : minute;
+            let formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+            let formattedTime = paddedHour + ':' + paddedMinute;
+
+
+            if (formattedDate !== current_date) {
+                const timestamp = document.createElement('time');
+                timestamp.innerHTML = formattedDate
+                timestamp.classList.add('messageDate')
+                messages.append(timestamp)
+                current_date = formattedDate
+            }
+
+            const message = document.createElement('section');
+            const content = document.createElement('p');
+
+            const leftOrRight = msg.receiverId.toString() === contactLink.id ? "right" : "left"
+            message.classList.add('message')
+            message.classList.add(leftOrRight);
+
+            content.innerHTML = msg.content
+            message.append(content)
+
+            const time = document.createElement('time');
+            time.classList.add('messageTime')
+            time.dateTime = msg.timestamp
+            time.innerHTML = formattedTime
+
+            message.append(time)
+            messages.append(message)
+            messages.scrollTop = messages.scrollHeight
+        }
+    }
+
+}
+
 
 // METER PREPEND EM TUDO
 
