@@ -53,6 +53,53 @@ button:hover, .button:hover {
     color: black;
 }
 
+/* ------ Message popup ------ */
+
+#message-occurred-php {
+    display: block;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: orange;
+    color: white;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    transition: opacity 0.3s ease;
+    opacity: 1;
+}
+
+#message-occurred-php.hide {
+    opacity: 0;
+    top: -100%;
+}
+
+@keyframes hidePopup {
+    0% { opacity: 1; }
+    99% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+}
+
+#message-occurred-php {
+    animation-name: hidePopup;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}
+
+#message-occurred {
+    display: none;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1em;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    z-index: 9999;
+}
+
+
 /* ------ Default Select ------ */
 select {
     padding: .3em;
@@ -473,10 +520,6 @@ ul#suggestions.suggestions {
     color: black;
 }
 
-.change-image-category{
-    display: none;
-}
-
 #add-category-popup {
     padding: 2em;
     backdrop-filter: blur(5px);
@@ -540,6 +583,37 @@ ul#suggestions.suggestions {
     text-align: center;
 }
 
+.change-category-img-popup {
+    display: none;
+    position: absolute;
+}
+
+.change-category-img-popup.active {
+    display: block;
+}
+
+.change-image-category {
+    background-color: #fedebf;
+    padding: 1em;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 20em;
+}
+
+.change-image-category input[type="file"] {
+    margin-bottom: 1em;
+}
+
+.change-image-category input[type="submit"] {
+    padding: 0.5em 1em;
+    background-color: #ff9837;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 /* ------ Default Item Card ------ */
 
@@ -548,8 +622,7 @@ ul#suggestions.suggestions {
     grid-template-columns: repeat(4, 1fr);
     list-style: none;
     margin: 0 1.5em;
-    overflow: scroll;
-    max-height: 50em;
+    overflow-y: scroll;
 }
 
 .item-card {

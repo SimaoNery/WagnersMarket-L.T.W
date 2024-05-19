@@ -27,48 +27,62 @@ require_once (__DIR__ . '/../database/category.class.php');
                 <a class="logo" href="../pages/index.php">Logo</a>
             </section>
             <nav class="header-right">
-                    <section id="header-products">
-                        <a  href="/pages/search.php">Products</a>
-                        <nav class="dropdown">
-                            <?php $categories = Category::getCategories($db);
-                            foreach ($categories as $category) { ?>
-                                <a href="search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a>
-                            <?php } ?>
-                        </nav>
-                    </section>
-                    <?php
-                    if ($session->isLoggedIn()) { ?>
-                        <a href="../pages/publish_add.php">Sell</a>
-                        <nav id="header-profile">
-                            <a href="../pages/profile.php">Profile</a>
-                            <?php drawProfileForm($db, $session); ?>
-                        </nav>
-                        <a href="../pages/messages.php">Messages</a>
-                        <a href="../pages/wishlist.php"><i class="fas fa-heart"></i></a>
-                        <a href="../pages/shopping_bag.php"><i class="fas fa-shopping-bag"></i></a>
+                <section id="header-products">
+                    <a href="/pages/search.php">Products</a>
+                    <nav class="dropdown">
+                        <?php $categories = Category::getCategories($db);
+                        foreach ($categories as $category) { ?>
+                            <a
+                                href="search.php?category=<?= urlencode($category->categoryName) ?>"><?= $category->categoryName ?></a>
+                        <?php } ?>
+                    </nav>
+                </section>
+                <?php
+                if ($session->isLoggedIn()) { ?>
+                    <a href="../pages/publish_add.php">Sell</a>
+                    <nav id="header-profile">
+                        <a href="../pages/profile.php">Profile</a>
+                        <?php drawProfileForm($db, $session); ?>
+                    </nav>
+                    <a href="../pages/messages.php">Messages</a>
+                    <a href="../pages/wishlist.php"><i class="fas fa-heart"></i></a>
+                    <a href="../pages/shopping_bag.php"><i class="fas fa-shopping-bag"></i></a>
 
-                    <?php } else { ?>
-                        <a class="not-logged-in">Sell</a>
-                        <nav id="header-profile">
-                            <a class="not-logged-in">Log in</a>
-                        </nav>
-                        <a class="not-logged-in">Messages</a>
-                        <a class="not-logged-in"><i class="fas fa-heart"></i></a>
-                        <a class="not-logged-in"><i class="fas fa-shopping-bag"></i></a>
+                <?php } else { ?>
+                    <a class="not-logged-in">Sell</a>
+                    <nav id="header-profile">
+                        <a class="not-logged-in">Log in</a>
+                    </nav>
+                    <a class="not-logged-in">Messages</a>
+                    <a class="not-logged-in"><i class="fas fa-heart"></i></a>
+                    <a class="not-logged-in"><i class="fas fa-shopping-bag"></i></a>
 
-                    <?php }?>
+                <?php } ?>
 
             </nav>
             <?php drawLoginPopUp() ?>
         </header>
-        <?php /*$messages = $session->getMessages();
-        if (count($messages) !== 0) { ?>
-            <section id="message-occurred">
-                <p id="message-text"><?= $messages[0]['text'] ?></p>
-            </section>
-        <?php $session->clearMessages();
-        } */?>
+        <?php
+        $messages = $session->getMessages();
 
+        if (!empty($messages) && is_array($messages)) {
+            $message = $messages[0] ?? null;
+            if (is_array($message) && isset($message['text']) && is_string($message['text'])) {
+                ?>
+                <section id="message-occurred-php">
+                    <p id="message-text"><?= $message['text'] ?></p>
+                </section>
+                <?php
+            }
+
+            $session->clearMessages();
+        }
+        ?>
+
+
+        <section id="message-occurred">
+            <p id="message-text"></p>
+        </section>
     <?php } ?>
 
     <?php function drawLoginAndSignUpForm(string $class, string $check)
@@ -92,7 +106,7 @@ require_once (__DIR__ . '/../database/category.class.php');
                     <input type="email" name="email" placeholder="Email" required="">
                     <input type="password" name="password" placeholder="Password" required="">
                     <button>Sign Up</button>
-                </form> 
+                </form>
             </section>
         </section>
     <?php } ?>
@@ -151,7 +165,7 @@ require_once (__DIR__ . '/../database/category.class.php');
 <?php } ?>
 
 <?php function drawSearchBar(string $id, string $placeholder)
-{?>
+{ ?>
     <section id="search-bar" class="search-bar">
         <input id="<?= $id ?>" type="text" placeholder="<?= $placeholder ?>">
         <button><i class="fa fa-search"></i></button>
@@ -165,7 +179,7 @@ require_once (__DIR__ . '/../database/category.class.php');
             <?= $title ?>
         </h2>
         <hr class="line-yellow">
-    </section> 
+    </section>
 <?php } ?>
 
 

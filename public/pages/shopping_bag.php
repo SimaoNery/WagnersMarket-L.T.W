@@ -28,19 +28,20 @@ $shippingCost = 0;
 
 foreach($items as $item) {
     $subTotal += $item->price;
-
-    switch($item->size) {
-        case "Small":
-            $shippingCost += 2.5;
-            break;
-        case "Medium":
-            $shippingCost += 4;
-            break;
-        case "Large":
-            $shippingCost += 6;
-            break;
-    }
 }
+
+if ($subTotal <= 5) {
+    $shippingCost = 5;
+}
+else if ($subTotal >= 100) {
+    $shippingCost = 0;
+}
+else {
+    $shippingCost = 5 + ($subTotal * 0.03);
+    $shippingCost = min(15, $shippingCost);
+}
+
+$shippingCost = round($shippingCost, 2);
 
 drawHeader($db, $session);
 drawTitle("Shopping Cart");
