@@ -27,10 +27,12 @@ require_once(__DIR__ . '/../database/cart.class.php');
                         </button>
                     <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
                         <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                            <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                             <i class="fa-solid fa-heart"></i>
                         </button>
                     <?php } else { ?>
                         <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                            <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                             <i class="fa-regular fa-heart"></i>
                         </button>
                     <?php } ?>
@@ -93,10 +95,12 @@ require_once(__DIR__ . '/../database/cart.class.php');
                             </button>
                         <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
                             <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                 <i class="fa-solid fa-heart"></i>
                             </button>
                         <?php } else { ?>
                             <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                 <i class="fa-regular fa-heart"></i>
                             </button>
                         <?php } ?>
@@ -180,10 +184,12 @@ require_once(__DIR__ . '/../database/cart.class.php');
 
                             <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) { ?>
                                 <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                     <i class="fa-solid fa-heart"></i>
                                 </button>
                             <?php } else { ?>
                                 <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                                     <i class="fa-regular fa-heart"></i>
                                 </button>
                             <?php } ?>

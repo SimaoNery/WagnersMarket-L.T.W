@@ -42,18 +42,21 @@ try {
         $response = ['error' => 'An error occurred! Couldn\'t get token.'];
     }
 
-    handleResponse($response, $session);
+    header('Content-Type: application/json');
+    echo json_encode($response);
 
 } catch (PDOException $e) {
     $response = ['error' => 'A database error occurred. Please try again later.'];
 
-    handleResponse($response, $session);
+    header('Content-Type: application/json');
+    echo json_encode($response);
 
 } catch (Exception $e) {
 
     $response = ['error' => 'An error occurred. Please try again later.'];
 
-    handleResponse($response, $session);
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
 
 
