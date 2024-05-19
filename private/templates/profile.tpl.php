@@ -36,6 +36,7 @@ declare(strict_types=1);
             <form action="../actions/action_change_password.php" method="post">
                 <span>Change Password</span>
                 <section id="input-fields">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                     <input type="password" name="password" placeholder="Old password" required="" id="old-psw">
                     <input type="password" name="new-password" placeholder="New password" required="" id="new-psw">
                     <button>Change</button>

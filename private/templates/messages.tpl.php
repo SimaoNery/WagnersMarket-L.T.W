@@ -18,7 +18,7 @@ require_once(__DIR__ . '/../database/category.class.php');
             <?php } ?>
             <?php foreach ($lastMessages as $message) {
                 $user = $message->receiverId === $userId ? User::getUser($db, $message->authorId) : User::getUser($db, $message->receiverId); ?>
-                <a href="../../public/pages/messages.php?otherUserId=<?= $user->userId ?>">
+                <a href="../../pages/messages.php?otherUserId=<?= $user->userId ?>">
                     <section class="contact">
                         <?php
                         $timestamp = strtotime($message->timestamp);

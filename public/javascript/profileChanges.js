@@ -1,3 +1,4 @@
+const csrf = document.querySelector('.csrf');
 document.addEventListener('DOMContentLoaded', function() {
     const nameSpan = document.querySelector('#name-span');
     const emailSpan = document.querySelector('#email-span');
@@ -57,6 +58,7 @@ function setupEmailEditButton(initialEmailText) {
             emailInput.setAttribute('placeholder', 'Enter new email');
             emailInput.setAttribute('required', '');
 
+            form.appendChild(csrf)
             form.appendChild(emailInput);
 
             const saveButton = document.createElement('button');
@@ -122,6 +124,7 @@ function setupNameEditButton(initialNameText) {
             nameInput.setAttribute('placeholder', 'Enter new name');
             nameInput.setAttribute('required', '');
 
+            form.appendChild(csrf)
             form.appendChild(nameInput);
 
             const saveButton = document.createElement('button');
@@ -158,9 +161,11 @@ function setupImageEditButton() {
 
             const inputField = document.createElement('input');
             inputField.setAttribute('type', 'file');
-            inputField.setAttribute('name', 'image[]');
+            inputField.setAttribute('name', 'image');
             inputField.setAttribute('required', '');
             inputField.setAttribute('accept', "image/png,image/jpeg");
+
+            form.appendChild(csrf)
             form.appendChild(inputField);
 
             const saveButton = document.createElement('button');
@@ -185,7 +190,7 @@ function setupImageCancelButton() {
     const imageForm = document.querySelector('#image-form');
 
     if (imageCancel && imageForm) {
-        imageCancel.addEventListener('click', function(event) {
+        imageCancel.addEventListener('click', function() {
             imageForm.remove();
 
             const newButton = document.createElement('button');

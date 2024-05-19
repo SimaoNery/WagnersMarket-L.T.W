@@ -17,6 +17,8 @@ let searchedItem = ''
 let numberOfItems = 16
 let offsetOfItems = 0
 
+let end = false
+
 if (categories) {
     categories.forEach(category => {
         category.addEventListener('change', async function() {
@@ -31,7 +33,7 @@ if (categories) {
             } else {
                 selectedCategories = selectedCategories.filter(catId => catId !== categoryId)
             }
-            await getSearchResults()
+            await getSearchResults(true)
         })
     })
 }
@@ -49,7 +51,7 @@ if (conditions) {
             } else {
                 selectedConditions = selectedConditions.filter(cId => cId !== conditionId);
             }
-            await getSearchResults()
+            await getSearchResults(true)
         })
     })
 }
@@ -59,7 +61,7 @@ if (searchItem) {
         numberOfItems = 16
         offsetOfItems = 0
         searchedItem = this.value
-        await getSearchResults()
+        await getSearchResults(true)
     })
 }
 
@@ -73,7 +75,7 @@ if (minInput) {
             maxInput.value = this.value
             maxRange.value = this.value
         }
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
@@ -87,7 +89,7 @@ if (minRange) {
             maxInput.value = this.value
             maxRange.value = this.value
         }
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
@@ -101,7 +103,7 @@ if (maxInput) {
             minInput.value = this.value;
             minRange.value = this.value;
         }
-        await getSearchResults();
+        await getSearchResults(true);
     });
 }
 
@@ -116,7 +118,7 @@ if (maxRange) {
             minRange.value = this.value;
 
         }
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
@@ -124,30 +126,38 @@ if(orderSelected) {
     orderSelected.addEventListener('change', async function () {
         numberOfItems = 16
         offsetOfItems = 0
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
 
 if (filters) {
     const items = document.querySelector('#draw-items')
+    let prevScrollHeight = 0;
+
+
     if (items) {
         items.addEventListener('scroll', async function () {
             if (items.scrollHeight - items.scrollTop <= items.clientHeight + 20) {
-                numberOfItems += 16
-                offsetOfItems += 8
-                await getSearchResults();
+                prevScrollHeight = items.scrollHeight;
+                if (!end) {
+                    numberOfItems += 16
+                    offsetOfItems += 16
+                    await getSearchResults(false);
+
+                    //items.scrollTop = items.scrollHeight - prevScrollHeight;
+                }
             }
         })
     }
 }
 
-async function getSearchResults() {
+async function getSearchResults(reset) {
 
     let url = '../api/api_items.php?'
     let cat = selectedCategories.join(';')
     let cond = selectedConditions.join(';')
-    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: numberOfItems};
+    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: numberOfItems, offset: offsetOfItems};
     url += new URLSearchParams(params).toString()
 
     const response = await fetch(url)
@@ -155,13 +165,16 @@ async function getSearchResults() {
     let items = await response.json()
 
     const itemsSection = document.querySelector('#draw-items')
-    itemsSection.innerHTML = ''
+    if (reset) itemsSection.innerHTML = ''
 
     if (!items.length) {
-        const paragraph = document.createElement('p')
-        paragraph.id = 'not-found'
-        paragraph.textContent = 'No items found'
-        itemsSection.appendChild(paragraph)
+        end = true
+        if (reset) {
+            const paragraph = document.createElement('p')
+            paragraph.id = 'not-found'
+            paragraph.textContent = 'No items found'
+            itemsSection.appendChild(paragraph)
+        }
     }
 
     for (const item of items) {
@@ -226,7 +239,9 @@ async function getSearchResults() {
         itemElement.appendChild(linkElement);
         itemsSection.appendChild(itemElement);
 
+
     }
+
 }
 
 

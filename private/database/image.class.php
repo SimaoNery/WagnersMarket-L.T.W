@@ -44,6 +44,13 @@ class Image
 
         return $stmt->rowCount() == 1;
     }
+
+    static function removeImages(PDO $db, int $itemId): bool
+    {
+        $stmt = $db->prepare('DELETE FROM IMAGE WHERE ItemId = ?');
+
+        return $stmt->execute(array($itemId));
+    }
 }
 
 ?>
