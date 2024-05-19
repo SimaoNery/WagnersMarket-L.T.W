@@ -29,7 +29,7 @@ drawHeader($db, $session);
 drawProfileBody("wishlist", $userId);
 
 if($numItems === 0) {
-    drawEmpty("emptyYourAdds", "You are not selling any items!");
+    drawEmpty("empty-wishlist", "Your Wishlist is empty!");
 } else {
     drawItems($db, $items, $session);
     drawPagination(intval(ceil($numItems / $limit)), "wishlist");

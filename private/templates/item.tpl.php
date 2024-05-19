@@ -172,46 +172,43 @@ require_once(__DIR__ . '/../database/cart.class.php');
 <?php } ?>
 
 <?php function drawBag(PDO $db, int $user, array $items) { ?>
-        <?php if (count($items) !== 0) { ?>
-            <ul class="draw-bag" id="draw-bag">
-                <?php foreach($items as $item) { ?>
-                    <li id="item-<?= $item->itemId ?>" class="bag-card">
-                        <a href="../pages/item.php?id=<?=$item->itemId?>">
-                            <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bag-item-image">
-                        </a>
+    <section class="shopping-bag-page" id="shopping-bag-page">
+        <ul class="draw-bag" id="draw-bag">
+            <?php foreach($items as $item) { ?>
+                <li id="item-<?= $item->itemId ?>" class="bag-card">
+                    <a href="../pages/item.php?id=<?=$item->itemId?>">
+                        <img src="<?= $item->imagePath?>" style="width: 150px; height: 150px;" class="bag-item-image">
+                    </a>
 
-                        <section class="bag-item-buttons">
+                    <section class="bag-item-buttons">
 
-                            <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) { ?>
-                                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
-                                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                    <i class="fa-solid fa-heart"></i>
-                                </button>
-                            <?php } else { ?>
-                                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
-                                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                    <i class="fa-regular fa-heart"></i>
-                                </button>
-                            <?php } ?>
-
-                            <button id="<?= $item->itemId ?>" type="button" class="trash-button">
+                        <?php if (Wishlist::isInWishlist($db, $user, $item->itemId)) { ?>
+                            <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
                                 <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                <i id="trashIcon" class="fa-solid fa-trash"></i>
+                                <i class="fa-solid fa-heart"></i>
                             </button>
-                        </section>
+                        <?php } else { ?>
+                            <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        <?php } ?>
 
-                        <a href="../pages/item.php?id=<?=$item->itemId?>">
-                            <h4 class="bag-item-title"><?=$item->title?></h4>
-                            <p class="bag-item-price"><?=number_format($item->price, 2)?>€</p>
-                            <p class="bag-item-brand">Brand: <span id="brandName"><?=$item->brand?></span></p>
-                            <p class="bag-item-condition">Condition: <span id="conditionValue"><?=$item->condition?></span></p>
-                        </a>
-                    </li>
-                <?php } ?>
-            </ul>
-    <?php } else { ?>
-        <p id="empty-shopping-bag">Your shopping bag is empty!</p>
-    <?php } ?>
+                        <button id="<?= $item->itemId ?>" type="button" class="trash-button">
+                            <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                            <i id="trashIcon" class="fa-solid fa-trash"></i>
+                        </button>
+                    </section>
+
+                    <a href="../pages/item.php?id=<?=$item->itemId?>">
+                        <h4 class="bag-item-title"><?=$item->title?></h4>
+                        <p class="bag-item-price"><?=number_format($item->price, 2)?>€</p>
+                        <p class="bag-item-brand">Brand: <span id="brandName"><?=$item->brand?></span></p>
+                        <p class="bag-item-condition">Condition: <span id="conditionValue"><?=$item->condition?></span></p>
+                    </a>
+                </li>
+            <?php } ?>
+        </ul>
 <?php } ?>
 
 <?php function drawItemFilter(PDO $db, float $maxPrice, ?string $selectedCategory = null) { ?>

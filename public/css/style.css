@@ -369,6 +369,7 @@ section.home-body-left {
     border-radius: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     padding: 0.5em;
+    margin: 0 1em 0 1em;
 }
 
 .search-bar input {
@@ -555,6 +556,8 @@ ul#suggestions.suggestions {
     text-align: center;
     margin-right: 1em;
     margin-bottom: 1em;
+    min-height: 11em;
+    max-height: 12em;
 }
 
 .item-card .wishlist-button {
@@ -1005,7 +1008,7 @@ section.right-side span {
         "filter order"
         "filter items";
     grid-template-columns: 1fr 5fr;
-    grid-template-rows: 1fr 1fr 10fr;
+    grid-template-rows: auto 3em 1fr;
 }
 
 .search-items-body  section.search-bar {
@@ -1350,12 +1353,16 @@ input[type="range"]::-moz-range-thumb {
 
 
 /* ------ Shopping Bag Page ------ */
+
 .shopping-bag-page {
     display: grid;
     grid-template-columns: 1fr 0.35fr;
     gap: 2%;
     padding: 2%;
-    margin-top: 4em;
+}
+
+.shopping-bag-page:has(p#empty-shopping-bag) {
+    display: block;
 }
 
 
@@ -1363,15 +1370,10 @@ input[type="range"]::-moz-range-thumb {
     position: sticky;
 }
 
-#bag-title, #summary-title {
-    font-size: 2em;
+#summary-title {
+    font-size: 1.5em;
     margin-bottom: 1em;
 }
-
-#bag-title {
-    font-size: 2.5em;
-}
-
 
 #money-information {
     background-color: #fded84;
@@ -1405,7 +1407,7 @@ input[type="range"]::-moz-range-thumb {
     cursor: pointer;
     border: none;
     border-radius: 30px;
-    font-size: 21px;
+    font-size: 1.3em;
     font-weight: bolder;
     text-decoration: none;
     color: inherit;
@@ -1482,6 +1484,140 @@ input[type="range"]::-moz-range-thumb {
     color: rgba(64, 64, 64, 0.6);
 }
 
+/* ------ Checkout Page ------ */
+.checkout-page {
+    display: grid;
+    grid-template-areas: 
+        "delivery bag"
+        "payment bag";
+    grid-template-columns: 1fr 0.4fr;
+    grid-template-rows: auto 1fr;
+    margin: 0 2em;
+}
+
+#delivery-information {
+    grid-area: delivery;
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+#payment-options {
+    grid-area: payment;
+}
+
+.delivery-information-title,
+.payment-options-title {
+    margin-bottom: 0.7em;
+}
+
+.delivery-information-inputs {
+    display: grid;
+    grid-template-areas: 
+        "first last"
+        "address postal";
+    gap: 0.7em;
+}
+
+.delivery-information-inputs input,
+.card-info input,
+#cvv,
+#phone-number,
+a.cancel-button,
+button#confirm-order {
+    padding: 1em;
+    font-size: 0.8em;
+    border-radius: 1em;
+}
+
+#cvv {
+    font-size: 1em;
+}
+
+#phone-number {
+    width: 50%;
+    margin: 0.5em 0.5em 0.5em 0;
+}
+
+#first-name {
+    grid-area: first;
+}
+
+#last-name {
+    grid-area: last;
+}
+
+#address {
+    grid-area: address;
+}
+
+#postal-code {
+    grid-area: postal;
+}
+
+.card-info {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5em;
+    margin: 0.5em 1em 0.5em 0;
+}
+
+#in-your-bag {
+    grid-area: bag;
+    vertical-align: top;
+    position: sticky;
+}
+
+#in-your-bag-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.draw-in-your-bag a:last-child {
+    margin-left: 0.3em;
+}
+
+.draw-in-your-bag a:last-child p,
+.shopping-bag-edit,
+.subtotal-checkout,
+.shipping-cost-checkout {
+    font-size: 0.8em;
+}
+
+#in-your-bag-money-information {
+    background-color: #fded84;
+    padding: 1em;
+    margin-bottom: 2em;
+}
+
+#shipping-cost-span-checkout,
+#subtotal-span-checkout,
+#total-span-checkout {
+    font-family: 'Roboto', sans-serif;
+    font-weight: lighter;
+    font-size: 0.9em;
+}
+
+.total-checkout {
+    border-top: 3px solid #333333;
+    border-bottom: 3px solid #333333;
+    margin: 1em auto;
+}
+
+.checkout-items-container img {
+    width: 4em;
+    height: 4em;
+}
+
+.items-checkout-card {
+    list-style: none;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0.3em;
+    padding-bottom: 0.5em;
+    border-bottom: 0.2em solid rgb(252, 196, 92);
+}
 
 /* ------ Footer Style ------ */
 
@@ -1744,22 +1880,9 @@ footer ul li:last-child a{
     }
 }
 
-#emptyWishlist{
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-}
-
-#emptyShoppingBag {
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
-    font-size: 20px;
-
-    margin-top: 7%;
-}
-
+#empty-messages,
+#empty-wishlist,
+#empty-shopping-bag,
 #empty-your-adds{
     text-align: center;
     font-family: 'Open Sans', sans-serif;
@@ -1778,323 +1901,6 @@ footer ul li:last-child a{
     margin-bottom: 3em;
     text-align: left;
 
-}
-
-
-#delivery-information {
-    display: inline-block;
-
-    width: 45%;
-    margin-left: 5%;
-}
-
-.delivery-information-title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 2.3em;
-    font-weight: bolder;
-
-    grid-column: 1;
-
-    margin-bottom: 0.7em;
-}
-
-.delivery-information-inputs {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: auto auto;
-
-    gap: 1em;
-}
-
-#first-name {
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-
-    grid-column: 1 /span 3;
-    grid-row: 1;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-}
-
-#last-name {
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-
-    grid-column: 4 / span 3;
-    grid-row: 1;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-}
-
-#address {
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-
-    grid-column: 1 / span 4;
-    grid-row: 2;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-}
-
-#postal-code {
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-
-    grid-column: 5 /span 2;
-    grid-row: 2;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-}
-
-#payment-options {
-    display: inline-block;
-    margin-top: 3.5em;
-
-    width: 45%;
-    margin-left: 5%;
-}
-
-.payment-options-title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 2.3em;
-    font-weight: bolder;
-
-    grid-column: 1;
-
-    margin-bottom: 0.7em;
-}
-
-.payment-options-inputs {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-
-    gap: 0.3em;
-}
-
-.card {
-    grid-row: 1;
-    grid-column: 1;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: lighter;
-    font-size: 1.1em;
-}
-
-.mb-ways {
-    grid-row: 2;
-    grid-column: 1;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: lighter;
-    font-size: 1.1em;
-}
-
-.card-info {
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(6, 1fr);
-
-    gap: 0.5em;
-}
-
-.mbway-info {
-    grid-template-columns: repeat(6, 1fr);
-}
-
-#confirm-order {
-    background-color: #ffde00;
-    border-radius: 20px;
-    padding: 0.8em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1em;
-    cursor: pointer;
-    border: none;
-
-    grid-row: 4;
-    grid-column: 2;
-
-    margin-top: 2em;
-}
-
-.cancel-button {
-    text-align: center;
-    background-color: #fded84;
-    border-radius: 20px;
-    padding: 0.8em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1em;
-    text-decoration: none;
-    color: black;
-    display: inline-block;
-
-    grid-row: 4;
-    grid-column: 3;
-}
-
-.cancel-button:hover {
-    opacity: 0.8;
-}
-
-
-#cvv {
-    grid-row: 2;
-    grid-column: 1 / span 1;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-
-    padding: 1em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-}
-
-#phone-number {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: normal;
-    font-size: 1em;
-
-    padding: 1em 3em;
-    text-align: center;
-    border-radius: 10px;
-    border-style: ridge;
-
-    grid-column: 1 / span 3;
-}
-
-#inyourbag-info {
-    display: inline-block;
-    vertical-align: top;
-    margin-left: 15em;
-
-    width: 30%;
-
-    position: sticky;
-    top: 15%;
-    z-index: 1000;
-}
-
-#inyourbag-header {
-    display: grid;
-    grid-template-columns: repeat(2, 3fr);
-}
-
-#inyourbag-title {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 2.3em;
-    font-weight: bolder;
-
-    grid-column: 1 / span 2;
-
-    margin-left: 0.7em;
-}
-
-.shoppingbag-edit {
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.5em;
-    font-weight: lighter;
-
-    grid-column: 3 / span 1;
-    margin-top: 0.5em;
-    margin-right: 1em;
-}
-
-#inyourbag-money-information {
-    background-color: #fded84;
-    border-radius: 25px;
-
-    padding: 0.5em 0.5em 1em;
-    margin-bottom: 5em;
-}
-
-
-.subtotal-checkout {
-    padding: 0.7em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.5em;
-
-    display: flex;
-    justify-content: space-between;
-}
-
-#subtotal-span-checkout {
-    font-family: 'Roboto', sans-serif;
-    font-weight: lighter;
-}
-
-.shipping-cost-checkout {
-    padding: 0.7em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.5em;
-    margin-bottom: 0.5em;
-
-    display: flex;
-    justify-content: space-between;
-}
-
-#shippingcost-span-checkout {
-    font-family: 'Roboto', sans-serif;
-    font-weight: lighter;
-}
-
-.total-checkout {
-    padding: 0.7em;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 1.5em;
-
-    border-top: 3px solid #333333;
-    border-bottom: 3px solid #333333;
-
-    margin-bottom: 1.5em;
-
-    display: flex;
-    justify-content: space-between;
-}
-
-#total-span-checkout {
-    font-family: 'Roboto', sans-serif;
-    font-weight: lighter;
-}
-
-.checkout-items-container {
-    max-height: 19em;
-    overflow-y: auto;
-
-    background-color: #fffbe0;
-    border-radius: 5px;
-    padding: 0.5em;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-.items-checkout-card {
-    display: grid;
-    grid-template-columns: 30% 50%;
-    grid-template-rows: repeat(1, 1fr);
-
-    padding: 0.5em;
-
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-    background-color: #fded84;
-
-    border-bottom: #fffbe0 solid 5px;
 }
 
 #success-message {

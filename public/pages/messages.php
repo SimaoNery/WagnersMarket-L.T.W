@@ -39,7 +39,11 @@ if ($otherUserId === -1 && !empty($lastMessages)) {
 
 drawHeader($db, $session);
 drawProfileBody("messages", $userId);
-drawMessages($lastMessages, $messages, $db, $userId, $otherUserId);
+if (!empty($messages)) {
+    drawMessages($lastMessages, $messages, $db, $userId, $otherUserId);
+} else {
+    drawEmpty("empty-messages", "You haven't started any conversation!");
+}
 drawFooter();
 ?>
 
