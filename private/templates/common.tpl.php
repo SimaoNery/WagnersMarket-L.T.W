@@ -51,7 +51,6 @@ require_once (__DIR__ . '/../database/category.class.php');
                         <a class="not-logged-in">Sell</a>
                         <nav id="header-profile">
                             <a class="not-logged-in">Log in</a>
-                            <?php drawLoginAndSignUpForm('login-signup', 'chk'); ?>
                         </nav>
                         <a class="not-logged-in">Messages</a>
                         <a class="not-logged-in"><i class="fas fa-heart"></i></a>
@@ -100,7 +99,7 @@ require_once (__DIR__ . '/../database/category.class.php');
     { ?>
         <section class="profile" id="profile">
             <section id="user-logged">
-                <img src="<?= User::getImgPath($db, $session->getId()) ?>" style="width: 50px; height: 50px;">
+                <img src="<?= User::getImgPath($db, $session->getId()) ?>">
                 <h4><?= $session->getName() ?></h4>
             </section>
             <nav class="signup">
@@ -136,6 +135,8 @@ require_once (__DIR__ . '/../database/category.class.php');
         <script src="../javascript/wishlistButton.js"></script>
         <script src="../javascript/searchUsers.js"></script>
         <script src="../javascript/shoppingBagButton.js"></script>
+        <script src="../javascript/categoryPopUp.js"></script>
+        <script src="../javascript/loginPopUp.js"></script>
     </body>
 
     </html>
@@ -148,6 +149,7 @@ require_once (__DIR__ . '/../database/category.class.php');
         <button><i class="fa fa-search"></i></button>
     </section>
 <?php } ?>
+
 <?php function drawTitle(string $title): void
 { ?>
     <section id="title">
@@ -155,7 +157,7 @@ require_once (__DIR__ . '/../database/category.class.php');
             <?= $title ?>
         </h2>
         <hr class="line-yellow">
-    </section>
+    </section> 
 <?php } ?>
 
 
@@ -165,7 +167,7 @@ require_once (__DIR__ . '/../database/category.class.php');
         <section id="popup" class="popup">
             <section class="popup-content">
                 <span class="close" onclick="closeLoginPopUp()">&times;</span>
-                <p class="message">You have to login to access this feature</p>
+                <p class="pop-up-message">You have to login to access this feature</p>
                 <?php drawLoginAndSignUpForm('popup-form', 'popup-chk') ?>
             </section>
         </section>

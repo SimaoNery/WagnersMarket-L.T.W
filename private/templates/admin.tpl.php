@@ -7,21 +7,21 @@ require_once __DIR__ . '/condition.tpl.php';
 ?>
 <?php function drawAdminBoard(array $categories, array $conditions, array $sizes) { ?>
 
-    <section id="adminBoard">
-        <section id="editUsers">
+    <section id="admin-board">
+        <section id="edit-users">
             <?php drawTitle("Manage Users");
-                drawSearchBar("searchUsers", "Search for a user with his ID, username or email account");?>
+                drawSearchBar("search-users", "Search for a user with his ID, username or email account");?>
             <section id="users"></section>
         </section>
-        <section id="editCategories">
+        <section id="edit-categories">
             <?php drawTitle("Manage Categories");
             drawCategories($categories, true);?>
         </section>
-        <section id="editConditions">
+        <section id="edit-conditions">
             <?php drawTitle("Manage Item Conditions");
             drawConditions($conditions);?>
         </section>
-        <section id="editSizes">
+        <section id="edit-sizes">
             <?php drawTitle("Manage Item Sizes");
             drawSizes($sizes);?>
         </section>

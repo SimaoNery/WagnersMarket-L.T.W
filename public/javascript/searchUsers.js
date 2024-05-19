@@ -19,7 +19,7 @@ async function showMessage(message, success) {
 }
 
 
-const searchUsers = document.querySelector("#searchUsers")
+const searchUsers = document.querySelector("#search-users")
 const userBoxes = document.querySelector("#users")
 
 
@@ -32,8 +32,13 @@ if (searchUsers) {
     searchUsers.addEventListener('input', async function() {
         limitSearchUsers = 6
         offsetSearchUsers = 0
-        input = this.value
+        input = this.value.trim();
+        if (input.length === 0) {
+            users.innerHTML = "";
+            return
+        } 
         await drawUsers();
+        
     })
 }
 
@@ -64,8 +69,8 @@ async function drawUsers() {
                             const profileLinkOnImage = document.createElement('a')
                             const profileLink = document.createElement('a')
                             const userSection = document.createElement('section')
-                            const userInfo = document.createElement('userInfo')
-                            const userManagement = document.createElement('userManagement')
+                            const userInfo = document.createElement('user-info')
+                            const userManagement = document.createElement('user-management')
                             const profilePic = document.createElement('img')
                             const userId = document.createElement('p')
                             const name = document.createElement('p')
@@ -78,10 +83,11 @@ async function drawUsers() {
                             profileLinkOnImage.href = `../../public/pages/profile.php?id=${user.userId}`
                             profileLink.href = `../../public/pages/profile.php?id=${user.userId}`
                             profileLink.innerHTML = 'Profile'
-                            profileLink.classList.add('profileLink')
+                            profileLink.classList.add('profile-link')
+                            profileLink.classList.add('button')
                             profilePic.src= user.profilePic
                             userId.innerHTML = `User ID: ${user.userId}`
-                            userId.classList.add("userId")
+                            userId.classList.add("user-id")
                             name.innerHTML = `Name: ${user.name}`
                             name.classList.add("name")
                             username.innerHTML = `Username: ${user.username}`
@@ -90,17 +96,19 @@ async function drawUsers() {
                             email.classList.add("email")
 
                             manageAdminStatus.innerHTML = user.admin ? 'Revoke Admin Privileges' : 'Grant Admin Privileges'
-                            manageAdminStatus.classList.add('manageAdminStatus')
-                            manageAdminStatus.setAttribute('adminStatus', user.admin ? 'RevokeAdmin' : 'GrantAdmin')
-                            manageAdminStatus.setAttribute('userId', user.userId)
+                            manageAdminStatus.classList.add('manage-admin-status')
+                            manageAdminStatus.setAttribute('admin-status', user.admin ? 'RevokeAdmin' : 'GrantAdmin')
+                            manageAdminStatus.setAttribute('user-id', user.userId)
                             banUser.innerHTML = 'Ban User'
-                            banUser.classList.add('banUser')
+                            banUser.classList.add('ban-user')
+                            banUser.classList.add('button')
                             deleteAccount.innerHTML = 'Delete Account'
-                            deleteAccount.classList.add('deleteAccount')
-                            deleteAccount.setAttribute('userId', user.userId)
+                            deleteAccount.classList.add('delete-account')
+                            deleteAccount.classList.add('button')
+                            deleteAccount.setAttribute('user-id', user.userId)
 
-                            userInfo.classList.add('userInfo')
-                            userManagement.classList.add('userManagement')
+                            userInfo.classList.add('user-info')
+                            userManagement.classList.add('user-management')
 
                             userInfo.append(userId)
                             userInfo.append(name)
@@ -113,40 +121,40 @@ async function drawUsers() {
                             userManagement.append(deleteAccount)
 
                             profileLinkOnImage.append(profilePic)
-                            profileLinkOnImage.classList.add('profileLinkOnImage')
-                            userSection.classList.add('userBox')
+                            profileLinkOnImage.classList.add('profile-link-on-image')
+                            userSection.classList.add('user-box')
                             userSection.append(profileLinkOnImage)
                             userSection.append(userInfo)
                             userSection.append(userManagement)
 
                             users.append(userSection)
 
-                            const adminStatusButtons = document.querySelectorAll(".manageAdminStatus")
+                            const adminStatusButtons = document.querySelectorAll(".manage-admin-status")
                             if (adminStatusButtons) {
                                 adminStatusButtons.forEach(adminStatusButton => {
                                     adminStatusButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('userId')
-                                        const isAdmin = this.getAttribute('adminStatus') === 'RevokeAdmin'
+                                        const userId = this.getAttribute('user-id')
+                                        const isAdmin = this.getAttribute('admin-status') === 'RevokeAdmin'
                                         await changeAdminStatus(userId, isAdmin, adminStatusButton)
                                     })
                                 })
                             }
 
-                            const deleteAccountButtons = document.querySelectorAll(".deleteAccount")
+                            const deleteAccountButtons = document.querySelectorAll(".delete-account")
                             if (deleteAccountButtons) {
                                 deleteAccountButtons.forEach(deleteAccountButton => {
                                     deleteAccountButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('userId')
+                                        const userId = this.getAttribute('user-id')
                                         await deleteUserAccount(userId, userSection)
                                     })
                                 })
                             }
 
-                            const banUserButtons = document.querySelectorAll(".banUser")
+                            const banUserButtons = document.querySelectorAll(".ban-user")
                             if (banUserButtons) {
                                 banUserButtons.forEach(banUserButton => {
                                     banUserButton.addEventListener('click', async function() {
-                                        const userId = this.getAttribute('userId')
+                                        const userId = this.getAttribute('user-id')
                                         // await banUserAccount(userId, userSection)
                                     })
                                 })
@@ -177,8 +185,8 @@ async function drawUsers() {
 async function changeAdminStatus(userId, isAdmin, adminStatusButton) {
 
     const params = new URLSearchParams()
-    params.append('userId', userId.toString())
-    params.append('isAdmin', isAdmin.toString())
+    params.append('user-id', userId.toString())
+    params.append('is-admin', isAdmin.toString())
 
     const request = new XMLHttpRequest()
     request.open('POST', '../actions/action_change_admin_status.php', true)
@@ -191,11 +199,11 @@ async function changeAdminStatus(userId, isAdmin, adminStatusButton) {
             if (Boolean(changeWentWell)) {
                 if (!isAdmin) {
                     adminStatusButton.innerHTML = 'Revoke Admin Privileges'
-                    adminStatusButton.setAttribute('adminStatus', 'RevokeAdmin')
+                    adminStatusButton.setAttribute('admin-status', 'RevokeAdmin')
                 }
                 else {
                     adminStatusButton.innerHTML = 'Grant Admin Privileges'
-                    adminStatusButton.setAttribute('adminStatus', 'GrantAdmin')
+                    adminStatusButton.setAttribute('admin-status', 'GrantAdmin')
                 }
             }
 
@@ -210,7 +218,7 @@ async function changeAdminStatus(userId, isAdmin, adminStatusButton) {
 async function deleteUserAccount(userId, userSection) {
 
     const params = new URLSearchParams()
-    params.append('userId', userId.toString())
+    params.append('user-id', userId.toString())
 
     const request = new XMLHttpRequest()
     request.open('POST', '../actions/action_delete_account.php', true)
@@ -493,6 +501,7 @@ async function addSize(size) {
             const sizeList = document.getElementById('size-list')
             if (sizeList) {
                 const li = document.createElement('li')
+                li.classList.add('size-item')
                 const span = document.createElement('span')
                 span.innerHTML = size
                 const form = document.createElement('form')
@@ -508,13 +517,15 @@ async function addSize(size) {
                 const inputSubmit = document.createElement('input')
                 inputSubmit.type = 'submit'
                 inputSubmit.value = 'Remove Size'
+                inputSubmit.classList.add('button')
 
                 form.append(inputSizeName)
                 form.append(inputSubmit)
 
                 li.append(span)
                 li.append(form)
-                sizeList.append(li)
+                const referenceNode = sizeList.children[sizeList.children.length - 1]
+                sizeList.insertBefore(li, referenceNode)
             }
             showMessage(response.success, true);
         }
@@ -552,6 +563,7 @@ async function addCondition(condition) {
             const conditionList = document.getElementById('condition-list')
             if (conditionList) {
                 const li = document.createElement('li')
+                li.classList.add('size-item')
                 const span = document.createElement('span')
                 span.innerHTML = condition
                 const form = document.createElement('form')
@@ -573,7 +585,8 @@ async function addCondition(condition) {
 
                 li.append(span)
                 li.append(form)
-                conditionList.append(li)
+                const referenceNode = conditionList.children[conditionList.children.length - 1]
+                conditionList.insertBefore(li, referenceNode)
             }
             showMessage(response.success, true);
         }
