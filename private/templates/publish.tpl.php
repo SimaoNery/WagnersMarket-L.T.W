@@ -5,6 +5,7 @@ declare(strict_types = 1);
 <?php function drawPublishForm(array $categories, array $sizes, array $conditions) : void { ?>
         <section class="container">
             <form id="publish" action="../actions/action_publish_add.php" method="post" enctype="multipart/form-data">
+                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
                 <fieldset id="item-info">
                     <h3>More details are better!</h3>
                     <label>Title*<textarea name="title" placeholder="Think of a catchy title" maxlength="70" rows="2" cols="70" required="required"></textarea></label>

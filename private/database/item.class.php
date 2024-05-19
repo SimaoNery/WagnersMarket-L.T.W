@@ -80,7 +80,7 @@ class Item
         return $items;
     }
 
-    static function searchItems(PDO $db, string $search, array $categories, array $conditions, string $min, string $max, string $order, int $limit): array
+    static function searchItems(PDO $db, string $search, array $categories, array $conditions, string $min, string $max, string $order, int $limit, int $offset): array
     {
         $sql = 'SELECT DISTINCT ITEM.ItemId, UserId, Title, Price, Description, Condition, 
             Size, Brand, ImagePath, WishlistCounter, Timestamp
@@ -109,7 +109,7 @@ class Item
             default => ' ORDER BY WishlistCounter DESC ',
         };
 
-        $sql .= ' LIMIT ?';
+        $sql .= ' LIMIT ? OFFSET ?';
         $stmt = $db->prepare($sql);
 
         $paramIndex = 1;
@@ -135,6 +135,7 @@ class Item
         }
 
         $stmt->bindValue($paramIndex++, $limit, PDO::PARAM_INT);
+        $stmt->bindValue($paramIndex++, $offset, PDO::PARAM_INT);
 
         $stmt->execute();
 

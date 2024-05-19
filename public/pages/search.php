@@ -11,7 +11,7 @@ require_once(__DIR__ . '/../../private/database/item_category.class.php');
 require_once(__DIR__ . '/../../private/templates/common.tpl.php');
 require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 
-$limit = 16;
+$limit = 32;
 $offset = 0;
 
 $db = getDatabaseConnection();

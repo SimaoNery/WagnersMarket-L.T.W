@@ -11,7 +11,5 @@ require_once(__DIR__ . '/../../private/templates/access_denied.tpl.php');
 
 $db = getDatabaseConnection();
 
-drawHeader($db, $session);
-drawAccessDenied();
-drawFooter();
+
 ?>

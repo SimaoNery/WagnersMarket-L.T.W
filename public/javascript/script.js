@@ -14,13 +14,13 @@ const filters = document.querySelector("#filters");
 let selectedCategories = []
 let selectedConditions = []
 let searchedItem = ''
-let numberOfItems = 16
+let numberOfItems = 32
 let offsetOfItems = 0
 
 if (categories) {
     categories.forEach(category => {
         category.addEventListener('change', async function() {
-            numberOfItems = 16
+            numberOfItems = 32
             offsetOfItems = 0
             const categoryId = this.id
             if (this.checked) {
@@ -31,7 +31,7 @@ if (categories) {
             } else {
                 selectedCategories = selectedCategories.filter(catId => catId !== categoryId)
             }
-            await getSearchResults()
+            await getSearchResults(true)
         })
     })
 }
@@ -39,7 +39,7 @@ if (categories) {
 if (conditions) {
     conditions.forEach(condition => {
         condition.addEventListener('change', async function() {
-            numberOfItems = 16
+            numberOfItems = 32
             offsetOfItems = 0
             const conditionId = this.id;
             if (this.checked) {
@@ -49,23 +49,23 @@ if (conditions) {
             } else {
                 selectedConditions = selectedConditions.filter(cId => cId !== conditionId);
             }
-            await getSearchResults()
+            await getSearchResults(true)
         })
     })
 }
 
 if (searchItem) {
     searchItem.addEventListener('input', async function() {
-        numberOfItems = 16
+        numberOfItems = 32
         offsetOfItems = 0
         searchedItem = this.value
-        await getSearchResults()
+        await getSearchResults(true)
     })
 }
 
 if (minInput) {
     minInput.addEventListener('change', async function() {
-        numberOfItems = 16
+        numberOfItems = 32
         offsetOfItems = 0
         minRange.value = this.value;
         range.style.left = (this.value / this.max) * 100 + '%'
@@ -73,13 +73,13 @@ if (minInput) {
             maxInput.value = this.value
             maxRange.value = this.value
         }
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
 if (minRange) {
     minRange.addEventListener('change', async function() {
-        numberOfItems = 16
+        numberOfItems = 32
         offsetOfItems = 0
         minInput.value = this.value;
         range.style.left = (this.value / this.max) * 100 + '%'
@@ -87,13 +87,13 @@ if (minRange) {
             maxInput.value = this.value
             maxRange.value = this.value
         }
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
 if (maxInput) {
     maxInput.addEventListener('change', async function() {
-        numberOfItems = 16
+        numberOfItems = 32
         offsetOfItems = 0
         maxRange.value = this.value;
         range.style.right = 100 - (this.value / this.max) * 100 + '%'
@@ -101,13 +101,13 @@ if (maxInput) {
             minInput.value = this.value;
             minRange.value = this.value;
         }
-        await getSearchResults();
+        await getSearchResults(true);
     });
 }
 
 if (maxRange) {
     maxRange.addEventListener('change', async function() {
-        numberOfItems = 16
+        numberOfItems = 32
         offsetOfItems = 0
         maxInput.value = this.value;
         range.style.right = 100 - (this.value / this.max) * 100 + '%'
@@ -116,38 +116,45 @@ if (maxRange) {
             minRange.value = this.value;
 
         }
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
 if(orderSelected) {
     orderSelected.addEventListener('change', async function () {
-        numberOfItems = 16
+        numberOfItems = 32
         offsetOfItems = 0
-        await getSearchResults()
+        await getSearchResults(true)
     });
 }
 
 
 if (filters) {
     const items = document.querySelector('#draw-items')
+    let prevScrollHeight = 0;
+
+
     if (items) {
         items.addEventListener('scroll', async function () {
             if (items.scrollHeight - items.scrollTop <= items.clientHeight + 20) {
+                prevScrollHeight = items.scrollHeight;
+
                 numberOfItems += 16
-                offsetOfItems += 8
-                await getSearchResults();
+                offsetOfItems += 16
+                await getSearchResults(false);
+
+                items.scrollTop = items.scrollHeight - prevScrollHeight;
             }
         })
     }
 }
 
-async function getSearchResults() {
+async function getSearchResults(reset) {
 
     let url = '../api/api_items.php?'
     let cat = selectedCategories.join(';')
     let cond = selectedConditions.join(';')
-    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: numberOfItems};
+    let params = {search: searchedItem, category: cat, condition: cond, min: minInput.value, max: maxInput.value, order: orderSelected.value, limit: numberOfItems, offset: offsetOfItems};
     url += new URLSearchParams(params).toString()
 
     const response = await fetch(url)
@@ -155,7 +162,7 @@ async function getSearchResults() {
     let items = await response.json()
 
     const itemsSection = document.querySelector('#draw-items')
-    itemsSection.innerHTML = ''
+    if (reset) itemsSection.innerHTML = ''
 
     if (!items.length) {
         const paragraph = document.createElement('p')
@@ -226,7 +233,9 @@ async function getSearchResults() {
         itemElement.appendChild(linkElement);
         itemsSection.appendChild(itemElement);
 
+
     }
+
 }
 
 
