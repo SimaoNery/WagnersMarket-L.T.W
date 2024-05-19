@@ -6,8 +6,8 @@ async function showMessage(message, success) {
     if (messageOccurredSection && messageParagraph) {
         messageParagraph.innerHTML = message;
         messageOccurredSection.style.display = 'block';
-        if (success) messageOccurredSection.style.backgroundColor = 'rgba(99,219,107,0.8)'
-        else messageOccurredSection.style.backgroundColor = 'rgba(255, 0, 0, 0.8)'
+        if (success) messageOccurredSection.style.backgroundColor = 'rgba(99,219,107, 1)'
+        else messageOccurredSection.style.backgroundColor = 'rgba(255, 0, 0, 1)'
 
 
         setTimeout(() => {
@@ -15,7 +15,6 @@ async function showMessage(message, success) {
             messageParagraph.textContent = '';
         }, 3000);
     }
-
 }
 
 
