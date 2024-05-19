@@ -19,6 +19,7 @@ require_once(__DIR__ . '/../../private/templates/item.tpl.php');
 $db = getDatabaseConnection();
 
 
+
 $item = Item::getItem($db, intval($_GET['id']));
 $images = Image::getImages($db, $item->itemId);
 
@@ -30,9 +31,19 @@ if($session->isLoggedIn()) {
     $inShoppingBag = false;
 }
 
+
+$isAdmin = false;
+$myId = -1;
+
+if ($session->isLoggedIn()) {
+    $isAdmin = User::getUser($db,$session->getId())->admin;
+    $myId = $session->getId();
+}
+
+
 $user = User::getUser($db, $item->userId);
 
 drawHeader($db, $session);
-drawItem($db,$item, $images, $session, $user);
+drawItem($db,$item, $images, $session, $user, $myId, $isAdmin);
 drawFooter();
 ?>

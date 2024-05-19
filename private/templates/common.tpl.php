@@ -143,8 +143,8 @@ require_once (__DIR__ . '/../database/category.class.php');
         <script src="../javascript/profileChanges.js"></script>
         <script src="../javascript/loginPopUp.js"></script>
         <script src="../javascript/profileChanges.js"></script>
-        <script src="../javascript/trashButton.js"></script>
         <script src="../javascript/checkoutLogic.js"></script>
+        <script src="../javascript/editItem.js"></script>
     </body>
 
     </html>

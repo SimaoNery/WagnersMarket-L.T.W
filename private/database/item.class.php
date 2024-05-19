@@ -306,10 +306,42 @@ class Item
         return $stmt->rowCount() == 1;
     }
 
+    static function changeItemImage(PDO $db, int $itemId, string $imagePath): bool
+    {
+        $stmt = $db->prepare('SELECT COUNT(*) FROM ITEM WHERE ItemId = ?');
+        $stmt->execute(array($itemId));
+        $count = $stmt->fetchColumn();
+
+        if ($count === 1) {
+            $stmt = $db->prepare('UPDATE ITEM SET ImagePath = ? WHERE ItemId = ?');
+            $stmt->execute(array($imagePath, $itemId));
+            return true;
+        }
+
+        return false;
+    }
+
     static function incrementWishlistCounter(PDO $db, int $itemId): void
     {
         $stmt = $db->prepare('UPDATE ITEM SET WishlistCounter = WishlistCounter + 1 WHERE ItemId = ?');
         $stmt->execute(array($itemId));
+    }
+
+    static function changeBrand(PDO $db, int $itemId, string $brand): bool
+    {
+        $stmt = $db->prepare('UPDATE ITEM SET Brand = ? WHERE ItemId = ?');
+        return $stmt->execute(array($brand, $itemId));
+    }
+
+    static function changeDescription(PDO $db, int $itemId, string $description): bool
+    {
+        $stmt = $db->prepare('UPDATE ITEM SET Description = ? WHERE ItemId = ?');
+        return $stmt->execute(array($description, $itemId));
+    }
+    static function changeTitle(PDO $db, int $itemId, string $title): bool
+    {
+        $stmt = $db->prepare('UPDATE ITEM SET Title = ? WHERE ItemId = ?');
+        return $stmt->execute(array($title, $itemId));
     }
 
     static function decrementWishlistCounter(PDO $db, int $itemId): bool

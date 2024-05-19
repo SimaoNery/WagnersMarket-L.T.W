@@ -65,109 +65,125 @@ require_once(__DIR__ . '/../database/cart.class.php');
     </section>
 <?php } ?>
 
-<?php function drawItem(PDO $db, Item $item, array $images, Session $session, $user) { ?>
-    <section class="item-info-and-images">
-        <section id="images" class="col-2">
-
-            <section class="sideImagesContainer">
-                    <?php foreach($images as $image) { ?>
-                        <img src="/<?= $image->path ?>" class="sideImage">
-                    <?php } ?>
+<?php function drawItem(PDO $db, Item $item, array $images, Session $session, User $user, int $myId, bool $isAdmin) { ?>
+    <?php $editItem = ($myId === $user->userId) ?>
+    <section id="<?= $item->itemId ?>" class="item-page">
+        <section class="item-images">
+            <section class="side-images-container">
+                <?php foreach($images as $image) { ?>
+                    <img src="/<?= $image->path ?>" class="side-image">
+                <?php } ?>
             </section>
 
-            <section class="main_image">
-                <img src="/<?= $item->imagePath ?>" id="mainImage">
+            <section class="main-image">
+                <img src="/<?= $item->imagePath ?>" id="main-image">
             </section>
+            <?php if ($editItem) { ?>
+                <button type="button" class="change-images">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Change Images
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            <?php } ?>
         </section>
 
-        <section id="information" class="col-2">
-            <article id="mainInfo">
-                <h1><?=$item->title?></h1>
-                <ul>
-                    <li>
-                        <?=number_format($item->price, 2)?>€
-                    </li>
+        <article class="item-info">
+            <h1 id="title-name"><?=$item->title?></h1>
+            <?php if ($editItem) { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="change-title">
+                    <input class="title" type="hidden" value="<?=$item->title?>">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            <?php } ?>
 
-                    <li id="wishlist">
-                        <?php if(!$session->isLoggedIn()) { ?>
-                            <button id="not-logged-in" type="button" class="wishlist-button" disabled>
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
-                            <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
-                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                <i class="fa-solid fa-heart"></i>
-                            </button>
-                        <?php } else { ?>
-                            <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
-                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        <?php } ?>
-                    </li>
 
-                    <li id="bag">
-                        <?php if(!$session->isLoggedIn()) { ?>
-                        <button id="not-logged-in" type="button" class="bag-button" disabled>
-                            <i class="fa-solid fa-bag-shopping"></i> Add To Bag
-                        </button>
 
-                        <?php } elseif (Cart::isInShoppingBag($db, $session->getId(), $item->itemId)) { ?>
-                            <button id="<?= $item->itemId ?>" type="button" class="bag-button remove-from-bag">
-                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Remove From Cart
-                            </button>
-                        <?php } else { ?>
-                            <button id="<?= $item->itemId ?>" type="button" class="bag-button add-to-bag">
-                                <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
-                                <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Add To Cart
-                            </button>
-                        <?php } ?>
-                    </li>
-                </ul>
-            </article>
+            <h3><?=number_format($item->price, 2)?>€</h3>
 
-            <h3>Product Details</h3>
+            <?php if(!$session->isLoggedIn()) { ?>
+                <button id="not-logged-in" type="button" class="wishlist-button" disabled>
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            <?php } elseif (Wishlist::isInWishlist($db, $session->getId(), $item->itemId)) { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
+            <?php } else { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="wishlist-button">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            <?php } ?>
 
-            <p>Brand: <span id="brandName"><?=$item->brand?></span></p>
-            <p>Condition: <span id="conditionValue"><?=$item->condition?></span></p>
+            <?php if(!$session->isLoggedIn()) { ?>
+                <button id="not-logged-in" type="button" class="bag-button">
+                    <i class="fa-solid fa-bag-shopping"></i> Add To Bag
+                </button>
+
+            <?php } elseif (Cart::isInShoppingBag($db, $session->getId(), $item->itemId)) { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="bag-button remove-from-bag">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Remove From Cart
+                </button>
+            <?php } else { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="bag-button add-to-bag">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <i id="bag-icon" class="fa-solid fa-bag-shopping"></i>Add To Cart
+                </button>
+            <?php } ?>
+
+            <?php if ($isAdmin) { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="delete-item">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Delete Post
+                </button>
+            <?php } ?>
+
+            <?php if ($editItem && !$isAdmin) { ?>
+                <button id="<?= $item->itemId ?>" type="button" class="delete-item">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">Delete Post
+                </button>
+            <?php } ?>
+
+            <section class="product-details">
+                <h3>Product Details</h3>
+                <h4>Brand: <span id="brand-name"><?=$item->brand?></span></h4>
+                <?php if ($editItem) { ?>
+                    <button id="<?= $item->itemId ?>" type="button" class="change-brand">
+                        <input class="brand" type="hidden" value="<?=$item->brand?>">
+                        <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                <?php } ?>
+                <h4>Condition: <span id="condition-value"><?=$item->condition?></span></h4>
+            </section>
+        </article>
+
+        <section class="item-description">
+            <?php drawTitle("Product Description");?>
+            <p id="description-name" class="description"><?=$item->description?></p>
+
+            <?php if ($editItem) { ?>
+                <button type="button" class="change-description">
+                    <input class="title" type="hidden" value="<?=$item->description?>">
+                    <input class="csrf" type="hidden" name="csrf" value="<?= $_SESSION['csrf'] ?>">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            <?php } ?>
+        </section>
+
+
+        <section class="item-seller">
+            <?php drawTitle("Contact Seller");?>
+
+            <section class="seller-info">
+                    <img src= "/<?= $user->profilePic ?>">
+                    <h2 class="name"><?=$user->name ?></h2>
+                    <a href="../pages/messages.php?otherUserId=<?=$user->userId?>" class="send-message-button">Send Message</a>
+            </section>
 
         </section>
-    </section>
 
-    <section id="description-seller">
-        <h2>Product Description</h2>
-        <hr class="line-yellow">
-
-
-        <p class="description"><?=$item->description?></p>
-
-
-        <h2>Contact the seller</h2>
-        <hr class="line-yellow">
-
-        <div class="box_yellow">
-            <section id="sellerInfo">
-                <div class="profilePic">
-                    <a href="../pages/profile.php">
-                        <img src= "/<?= $user->profilePic ?>">
-                    </a>
-                </div>
-
-                <div class="sellerDetails">
-                    <a href="../pages/profile.php">
-                        <p class="username"><?=$user->username?></p>
-                    </a>
-
-                    <a href="../pages/profile.php">
-                        <p class="name"><?=$user->name ?></p>
-                    </a>
-                </div>
-
-                <a href="../pages/messages.php?otherUserId=<?=$user->userId?>" class="sendMessageButton">Send Message</a>
-
-            </section>
-        </div>
     </section>
 <?php } ?>
 
